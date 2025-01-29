@@ -3,6 +3,8 @@ from rest_framework import generics
 from .serializers import UserSerializers, PlacementSerializers
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Placement, CustomUser
+from django.http import JsonResponse
+
 
 class PlacementListCreate(generics.ListCreateAPIView):
     serializer_class = PlacementSerializers
@@ -30,4 +32,11 @@ class CreateUserView(generics.CreateAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializers
     permission_classes = [AllowAny]
+
+
+# def get_status_choices(request):
+#     choices = Placement.STATUS_CHOICES  # Your status choices data
+#     return JsonResponse(choices, safe=False)  # Return it as a JSON response
+
+  
 

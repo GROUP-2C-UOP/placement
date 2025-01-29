@@ -28,7 +28,19 @@ class UserSerializers(serializers.ModelSerializer):
 class PlacementSerializers(serializers.ModelSerializer):
     class Meta:
         model = Placement
-        fields = ["id", "company", "role", "salary", "starting_date", "duration", "user"]
+        fields = ["id", 
+                  "company", 
+                  "role", 
+                  "salary", 
+                  "starting_date", 
+                  "duration",
+                   "next_stage_deadline",
+                   #"status",
+                   #"resume_link",
+                   #"cover_letter_link",
+                   "contact",
+                   "date_applied",
+                  "user"]
         extra_kwargs = {"user": {"read_only": True}}
 
 
