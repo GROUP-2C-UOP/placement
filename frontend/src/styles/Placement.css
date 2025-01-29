@@ -1,0 +1,17 @@
+.placement-single {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 10px;
+    background-color: rgb(9, 9, 160);
+    border-radius: 100px;
+}
+
+.delete-button {
+    height: 20px;
+}
+
+.placement-company{
+    margin-left: 150px;
+}
