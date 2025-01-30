@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from api.views import CreateUserView # get_status_choices
+from api.views import CreateUserView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from api.serializers import CustomTokenObtainPairSerializer
 from django.conf import settings
@@ -13,5 +13,4 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='refresh'),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('api/', include('api.urls')), 
-    # path('api/status-choices/', get_status_choices, name="get_status_choices")
-] # + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -34,9 +34,5 @@ class CreateUserView(generics.CreateAPIView):
     permission_classes = [AllowAny]
 
 
-# def get_status_choices(request):
-#     choices = Placement.STATUS_CHOICES  # Your status choices data
-#     return JsonResponse(choices, safe=False)  # Return it as a JSON response
 
-  
 

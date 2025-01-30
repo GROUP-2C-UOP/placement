@@ -18,11 +18,9 @@ function Home() {
   const [cv, setCv] = useState("");
   const [coverLetter, setCoverLetter] = useState("");
   const [contact, setContact] = useState("");
-  const [statusChoices, setStatusChoices] = useState([]);
 
   useEffect(() => {
     getPlacements();
-    //getStatusChoices();
   }, []);
 
   const getPlacements = () => {
@@ -35,15 +33,16 @@ function Home() {
       .catch((err) => alert(err));
   };
 
-  const getStatusChoices = () => {
-    api
-      .get("/api/status-choices")
-      .then((res) => res.data)
-      .then((data) => {
-        setStatusChoices(data);
-      })
-      .catch((err) => alert("i am being triggered"));
-  };
+  const statusDropdown = [
+    { label: "Applied", value: "applied" },
+    { label: "Phone Interview", value: "phone_interview" },
+    { label: "Face to Face Interview", value: "face_to_face_interview" },
+    { label: "Assessment", value: "assessment" },
+    { label: "Rejected", value: "rejected" },
+    { label: "Offer Made", value: "offer_made" },
+    { label: "Hired", value: "hired" },
+    { label: "Withdrawn", value: "withdrawn" },
+  ];
 
   const deletePlacement = (id) => {
     api
@@ -59,38 +58,35 @@ function Home() {
 
   const createPlacement = (e) => {
     e.preventDefault();
-    
-    console.log({
-      company,
-      role,
-      salary,
-      starting_date: startingDate,
-      duration,
-      deadline,
-      applicationLink,
-      dateApplied,
-      contact
-    });
+
+    const formData = new FormData();
+    formData.append("company", company || null);
+    formData.append("role", role || null);
+    formData.append("salary", salary || null);
+    formData.append("starting_date", startingDate || null);
+    formData.append("duration", duration || null);
+    formData.append("next_stage_deadline", deadline || null);
+    formData.append("placement_link", applicationLink || null);
+    formData.append("date_applied", dateApplied || null);
+    formData.append("status", status || "Applied");
+    formData.append("contact", contact || null);
+    formData.append("cv", cv || null); 
+    formData.append("cover_letter", coverLetter || null);
+
+    console.log(formData);
 
     api
-      .post("/api/placements/", {
-        company,
-        role,
-        salary,
-        starting_date: startingDate,
-        duration,
-        next_stage_deadline: deadline,
-        placement_link: applicationLink,
-        date_applied: dateApplied,
-        // status,
-        // cv,
-        // coverLetter,
-        contact,
+      .post("/api/placements/", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       })
       .then((res) => {
         if (res.status === 201) {
           alert("Placement created successfully");
-        } else alert("Error creating placement");
+        } else {
+          alert("Error creating placement");
+        }
         getPlacements();
       })
       .catch((err) => alert(err));
@@ -141,6 +137,7 @@ function Home() {
             name="salary"
             onChange={(e) => setSalary(e.target.value)}
             value={salary}
+            required
           />
           <br />
           <label htmlFor="startingDate">Starting Date</label>
@@ -161,6 +158,7 @@ function Home() {
             name="duration"
             onChange={(e) => setDuration(e.target.value)}
             value={duration}
+            required
           />
           <br />
           <label htmlFor="deadline">Deadline</label>
@@ -193,7 +191,7 @@ function Home() {
             value={dateApplied}
           />
           <br />
-          {/* <label htmlFor="status">Status</label>
+          <label htmlFor="status">Status</label>
           <br />
           <select
             id="status"
@@ -203,14 +201,14 @@ function Home() {
             required
           >
             <option value="">Select a status</option>
-            {statusChoices.map(([value, label]) => (
-              <option key={value} value={value}>
-                {label}
+            {statusDropdown.map((status) => (
+              <option key={status.value} value={status.value}>
+                {status.label}
               </option>
             ))}
           </select>
-          <br /> */}
-          {/* <label htmlFor="cv">CV Used</label>
+          <br />
+          <label htmlFor="cv">CV</label>
           <br />
           <input
             type="file"
@@ -219,14 +217,14 @@ function Home() {
             onChange={(e) => setCv(e.target.files[0])}
           />
           <br />
-          <label htmlFor="coverLetter">Cover Letter Used</label>
+          <label htmlFor="coverLetter">Cover Letter</label>
           <br />
           <input
             type="file"
             id="coverLetter"
             name="coverLetter"
             onChange={(e) => setCoverLetter(e.target.files[0])}
-          /> */}
+          />
           <br />
           <label htmlFor="contact">Their Contact</label>
           <br />

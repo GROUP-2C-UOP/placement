@@ -31,9 +31,9 @@ class Placement(models.Model):
     next_stage_deadline = models.DateField(null=True)
     placement_link = models.URLField(null=True)
     date_applied = models.DateField()
-    #status = models.CharField(max_length=22, choices=STATUS_CHOICES, null=True, blank=True)
-    # resume_link = models.FileField(upload_to='resumes/', null=True, blank=True)
-    # cover_letter_link = models.FileField(upload_to='cover_letters/', null=True, blank=True)
+    status = models.CharField(max_length=22, choices=STATUS_CHOICES, null=True, blank=True)
+    cv = models.FileField(upload_to='resumes/', null=True, blank=True)
+    cover_letter = models.FileField(upload_to='cover_letters/', null=True, blank=True)
     contact = models.CharField(max_length=150, null=True) 
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 

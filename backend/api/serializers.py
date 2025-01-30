@@ -35,9 +35,10 @@ class PlacementSerializers(serializers.ModelSerializer):
                   "starting_date", 
                   "duration",
                    "next_stage_deadline",
-                   #"status",
-                   #"resume_link",
-                   #"cover_letter_link",
+                   "placement_link",
+                   "status",
+                   "cv",
+                   "cover_letter",
                    "contact",
                    "date_applied",
                   "user"]
