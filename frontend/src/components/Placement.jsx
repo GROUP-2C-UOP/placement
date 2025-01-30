@@ -1,7 +1,8 @@
 import "../styles/Placement.css";
+import { useEffect, useState } from "react";
+import PlacementModal from "./PlacementModal";
 
 function Placement({ placement, onDelete }) {
-
   const statusLabels = {
     applied: "Applied",
     phone_interview: "Phone Interview",
@@ -13,49 +14,55 @@ function Placement({ placement, onDelete }) {
     withdrawn: "Withdrawn",
   };
 
-  return (
-    <div className="placement-container">
-      <div className="placement-single">
-        <p className="placement-company">{placement.company}</p>
-        <p className="placement-role">{placement.role}</p>
-        <p className="placement-salary">{placement.salary}</p>
-        <p className="placement-starting-date">{placement.starting_date}</p>
-        <p className="placement-duration">{placement.duration}</p>
-        <p className="placement-deadline">{placement.next_stage_deadline}</p>
-        <p className="placement-application-link">
-          <a
-            href={placement.placement_link}
-            target="blank"
-            rel="noopener noreferrer"
-          >
-            {placement.placement_link}
-          </a>
-        </p>
-        <p className="placement-date-applied">{placement.date_applied}</p>
-        <p className="placement-status">{statusLabels[placement.status]}</p>
-        {placement.cv && (
-          <p className="placement-cv">
-            <a href={placement.cv} target="_blank" rel="noopener noreferrer">CV</a>
-          </p>
-        )}
-        {placement.cover_letter && (
-          <p className="placement-cover-letter">
-            <a href={placement.cover_letter} target="_blank" rel="noopener noreferrer">Cover Letter</a>
-          </p>
-        )}
-        <p className="placement-contact">{placement.contact}</p>
+  const [selectedPlacement, setSelectedPlacement] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
-        <button
-          className="delete-button"
-          onClick={() => onDelete(placement.id)}
-        >
-          Delete
-        </button>
-        <br />
-        <br />
-        <br />
+  const openModal = (placement) => {
+    setSelectedPlacement(placement);
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
+  return (
+    <>
+      <div className="placement-container" onClick={() => openModal(placement)}>
+        <table>
+          <thead className="placement-single">
+            <tr className="table-row">
+              <th className="placement-company">{placement.company}</th>
+              <th className="placement-role">{placement.role}</th>
+              <th className="placement-salary">{placement.salary}</th>
+              <th className="placement-duration">{placement.duration}</th>
+              <th className="placement-status">
+                {statusLabels[placement.status]}
+              </th>
+              <th className="placement-contact">{placement.contact}</th>
+              <th
+                className="delete-button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDelete(placement.id);
+                }}
+              >
+                Delete
+              </th>
+            </tr>
+          </thead>
+        </table>
       </div>
-    </div>
+      <div>
+        {showModal && (
+          <PlacementModal
+            placement={selectedPlacement}
+            closeModal={closeModal}
+            showModal={showModal}
+          ></PlacementModal>
+        )}
+      </div>
+    </>
   );
 }
 

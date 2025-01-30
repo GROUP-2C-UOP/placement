@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import api from "../api";
 import { data } from "react-router";
 import Placement from "../components/Placement";
+import PlacementModal from "../components/PlacementModal";
 import "../styles/Home.css";
 
 function Home() {
@@ -70,7 +71,7 @@ function Home() {
     formData.append("date_applied", dateApplied || null);
     formData.append("status", status || "Applied");
     formData.append("contact", contact || null);
-    formData.append("cv", cv || null); 
+    formData.append("cv", cv || null);
     formData.append("cover_letter", coverLetter || null);
 
     console.log(formData);
@@ -96,6 +97,22 @@ function Home() {
     <div className="cont">
       <div>
         <h1 className="placement-title">Placements</h1>
+        <div className="header-containerrr">
+        <table>
+          <thead id="headers">
+            <tr>
+            <th>Company</th>
+            <th>Role</th>
+            <th>Salary</th>
+            <th>Duration</th>
+            <th>Stage</th>
+            <th>Contact</th>
+            <th>Delete</th>
+            </tr>
+          </thead>
+        </table>
+        </div>
+
         {placements.map((placement) => (
           <Placement
             placement={placement}
