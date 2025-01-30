@@ -1,19 +1,8 @@
 import "../styles/Placement.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import PlacementModal from "./PlacementModal";
 
-function Placement({ placement, onDelete }) {
-  const statusLabels = {
-    applied: "Applied",
-    phone_interview: "Phone Interview",
-    face_to_face_interview: "Face to Face Interview",
-    assessment: "Assessment",
-    rejected: "Rejected",
-    offer_made: "Offer Made",
-    hired: "Hired",
-    withdrawn: "Withdrawn",
-  };
-
+function Placement({ placement, onDelete, statusLabels }) {
   const [selectedPlacement, setSelectedPlacement] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
@@ -59,6 +48,7 @@ function Placement({ placement, onDelete }) {
             placement={selectedPlacement}
             closeModal={closeModal}
             showModal={showModal}
+            statusLabels={statusLabels}
           ></PlacementModal>
         )}
       </div>

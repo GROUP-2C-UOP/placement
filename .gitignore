@@ -1,0 +1,49 @@
+# Environment files
+.env.local
+.env.development
+.env.production
+
+# Dependency directories
+node_modules/
+venv/
+.venv/
+env/
+
+# Build and output directories (for both React and Django)
+frontend/build/
+dist/
+*.log
+
+# Python bytecode files
+*.pyc
+*.pyo
+__pycache__/
+
+# IDE and editor files
+.vscode/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Database files
+backend/db.sqlite3
+
+# Ignore all migration files (except __init__.py)
+backend/migrations/
+!backend/migrations/__init__.py
+
+# User-uploaded media (files uploaded by users should not be versioned)
+backend/media/
+
+# Static files (Django collects these files in production)
+backend/static/
+
+# Testing and coverage files
+coverage/
+
+# Miscellaneous
+*.zip
+*.tar
+*.gz
+

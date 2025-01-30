@@ -1,0 +1,43 @@
+.add-placement {
+  margin-top: 30px;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  background-color: #395088;
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+input {
+  margin-bottom: 10px;
+}
+
+#add-container {
+  position: fixed;
+  top: 0px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  z-index: 999;
+  margin-top: -10px;
+}
+
+#close-modal {
+    position: absolute;
+    right: 30px;
+    top: 20px;
+    z-index: 1000;
+}
+
+#add-placement-button{
+    margin-bottom: 10px;
+}

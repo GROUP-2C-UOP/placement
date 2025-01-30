@@ -2,30 +2,6 @@
   color: white;
 }
 
-.add-placement {
-  margin-top: 30px;
-  align-content: center;
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  background-color: #395088;
-  width: 60%;
-  margin-left: auto;
-  margin-right: auto;
-  border-radius: 10px;
-  margin-bottom: 30px;
-}
-
-input {
-  margin-bottom: 10px;
-}
-
-.add-button {
-  margin-bottom: 30px;
-}
-
 .placement-title {
   font-size: 50px;
 }
@@ -52,4 +28,16 @@ table {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+}
+
+#add-button {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 20px;
+    margin-top: 10px;
+}
+
+button:hover{
+    cursor: pointer;
 }

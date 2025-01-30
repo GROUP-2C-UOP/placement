@@ -1,17 +1,8 @@
 import "../styles/PlacementModal.css";
+import { statusLabels } from "../constants";
 
-function PlacementModal({ placement, closeModal, showModal }) {
-  const statusLabels = {
-    applied: "Applied",
-    phone_interview: "Phone Interview",
-    face_to_face_interview: "Face to Face Interview",
-    assessment: "Assessment",
-    rejected: "Rejected",
-    offer_made: "Offer Made",
-    hired: "Hired",
-    withdrawn: "Withdrawn",
-  };
-
+function PlacementModal({ placement, closeModal, showModal, statusLabels }) {
+    
   return (
     <div id="modal-container" className={showModal ? "" : "hidden"}>
       <div id="modal-window">

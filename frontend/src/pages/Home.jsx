@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import api from "../api";
-import { data } from "react-router";
 import Placement from "../components/Placement";
-import PlacementModal from "../components/PlacementModal";
+import { statusLabels } from "../constants";
+import AddModal from "../components/AddModal";
+
 import "../styles/Home.css";
 
 function Home() {
@@ -19,6 +20,8 @@ function Home() {
   const [cv, setCv] = useState("");
   const [coverLetter, setCoverLetter] = useState("");
   const [contact, setContact] = useState("");
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showAddButton, setShowAddButton] = useState(true);
 
   useEffect(() => {
     getPlacements();
@@ -33,17 +36,6 @@ function Home() {
       })
       .catch((err) => alert(err));
   };
-
-  const statusDropdown = [
-    { label: "Applied", value: "applied" },
-    { label: "Phone Interview", value: "phone_interview" },
-    { label: "Face to Face Interview", value: "face_to_face_interview" },
-    { label: "Assessment", value: "assessment" },
-    { label: "Rejected", value: "rejected" },
-    { label: "Offer Made", value: "offer_made" },
-    { label: "Hired", value: "hired" },
-    { label: "Withdrawn", value: "withdrawn" },
-  ];
 
   const deletePlacement = (id) => {
     api
@@ -74,8 +66,6 @@ function Home() {
     formData.append("cv", cv || null);
     formData.append("cover_letter", coverLetter || null);
 
-    console.log(formData);
-
     api
       .post("/api/placements/", formData, {
         headers: {
@@ -85,10 +75,11 @@ function Home() {
       .then((res) => {
         if (res.status === 201) {
           alert("Placement created successfully");
+          setShowAddModal(false);
+          getPlacements();
         } else {
           alert("Error creating placement");
         }
-        getPlacements();
       })
       .catch((err) => alert(err));
   };
@@ -98,167 +89,71 @@ function Home() {
       <div>
         <h1 className="placement-title">Placements</h1>
         <div className="header-containerrr">
-        <table>
-          <thead id="headers">
-            <tr>
-            <th>Company</th>
-            <th>Role</th>
-            <th>Salary</th>
-            <th>Duration</th>
-            <th>Stage</th>
-            <th>Contact</th>
-            <th>Delete</th>
-            </tr>
-          </thead>
-        </table>
+          <table>
+            <thead id="headers">
+              <tr>
+                <th>Company</th>
+                <th>Role</th>
+                <th>Salary</th>
+                <th>Duration</th>
+                <th>Stage</th>
+                <th>Contact</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+          </table>
         </div>
 
         {placements.map((placement) => (
           <Placement
             placement={placement}
+            statusLabels={statusLabels}
             onDelete={deletePlacement}
             key={placement.id}
           />
         ))}
       </div>
-      <div className="add-placement">
-        <h2>Add Placement</h2>
-        <form onSubmit={createPlacement}>
-          <label htmlFor="company">Company</label>
-          <br />
-          <input
-            type="text"
-            id="company"
-            name="company"
-            required
-            onChange={(e) => setCompany(e.target.value)}
-            value={company}
-          />
-          <br />
-          <label htmlFor="role">Role</label>
-          <br />
-          <input
-            type="text"
-            id="role"
-            name="role"
-            required
-            onChange={(e) => setRole(e.target.value)}
-            value={role}
-          />
-          <br />
-          <label htmlFor="salary">Salary</label>
-          <br />
-          <input
-            type="number"
-            id="salary"
-            name="salary"
-            onChange={(e) => setSalary(e.target.value)}
-            value={salary}
-            required
-          />
-          <br />
-          <label htmlFor="startingDate">Starting Date</label>
-          <br />
-          <input
-            type="date"
-            id="startingDate"
-            name="startingDate"
-            onChange={(e) => setStartingDate(e.target.value)}
-            value={startingDate}
-          />
-          <br />
-          <label htmlFor="duration">Duration</label>
-          <br />
-          <input
-            type="number"
-            id="duration"
-            name="duration"
-            onChange={(e) => setDuration(e.target.value)}
-            value={duration}
-            required
-          />
-          <br />
-          <label htmlFor="deadline">Deadline</label>
-          <br />
-          <input
-            type="date"
-            id="deadline"
-            name="deadline"
-            onChange={(e) => setDeadline(e.target.value)}
-            value={deadline}
-          />
-          <br />
-          <label htmlFor="applicationLink">Application Link</label>
-          <br />
-          <input
-            type="url"
-            id="applicationLink"
-            name="applicationLink"
-            onChange={(e) => setApplicationLink(e.target.value)}
-            value={applicationLink}
-          />
-          <br />
-          <label htmlFor="dateApplied">Date Applied</label>
-          <br />
-          <input
-            type="date"
-            id="dateApplied"
-            name="dateApplied"
-            onChange={(e) => setDateApplied(e.target.value)}
-            value={dateApplied}
-          />
-          <br />
-          <label htmlFor="status">Status</label>
-          <br />
-          <select
-            id="status"
-            name="status"
-            onChange={(e) => setStatus(e.target.value)}
-            value={status}
-            required
-          >
-            <option value="">Select a status</option>
-            {statusDropdown.map((status) => (
-              <option key={status.value} value={status.value}>
-                {status.label}
-              </option>
-            ))}
-          </select>
-          <br />
-          <label htmlFor="cv">CV</label>
-          <br />
-          <input
-            type="file"
-            id="cv"
-            name="cv"
-            onChange={(e) => setCv(e.target.files[0])}
-          />
-          <br />
-          <label htmlFor="coverLetter">Cover Letter</label>
-          <br />
-          <input
-            type="file"
-            id="coverLetter"
-            name="coverLetter"
-            onChange={(e) => setCoverLetter(e.target.files[0])}
-          />
-          <br />
-          <label htmlFor="contact">Their Contact</label>
-          <br />
-          <input
-            type="text"
-            id="contact"
-            name="contact"
-            onChange={(e) => setContact(e.target.value)}
-            value={contact}
-          />
-          <br />
-          <br />
-          <button className="add-button" type="submit">
-            Add Placement
-          </button>
-        </form>
-      </div>
+      {showAddModal && (
+        <AddModal
+          company={company}
+          setCompany={setCompany}
+          role={role}
+          setRole={setRole}
+          salary={salary}
+          setSalary={setSalary}
+          startingDate={startingDate}
+          setStartingDate={setStartingDate}
+          duration={duration}
+          setDuration={setDuration}
+          deadline={deadline}
+          setDeadline={setDeadline}
+          applicationLink={applicationLink}
+          setApplicationLink={setApplicationLink}
+          dateApplied={dateApplied}
+          setDateApplied={setDateApplied}
+          status={status}
+          setStatus={setStatus}
+          cv={cv}
+          setCv={setCv}
+          coverLetter={coverLetter}
+          setCoverLetter={setCoverLetter}
+          contact={contact}
+          setContact={setContact}
+          createPlacement={createPlacement}
+          toClose={() => {setShowAddModal(false); setShowAddButton(true)}}
+        ></AddModal>
+      )}
+      {showAddButton && (
+        <button
+          id="add-button"
+          onClick={() => {
+            setShowAddModal(true);
+            setShowAddButton(false);
+          }}
+        >
+          +
+        </button>
+      )}
     </div>
   );
 }
