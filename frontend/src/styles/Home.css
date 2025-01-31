@@ -13,11 +13,20 @@ a[href] {
 #headers {
   align-items: center;
   background-color: rgb(9, 9, 160);
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
 }
 
 table {
   width: 100%;
+  
 }
+
+
+.single-row {
+  display: contents;
+}
+
 
 .header-containerrr {
   width: 90vw;

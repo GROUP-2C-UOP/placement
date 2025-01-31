@@ -91,13 +91,13 @@ function Home() {
         <div className="header-containerrr">
           <table>
             <thead id="headers">
-              <tr>
-                <th>Company</th>
-                <th>Role</th>
-                <th>Salary</th>
-                <th>Duration</th>
-                <th>Stage</th>
-                <th>Contact</th>
+              <tr className="single-row">
+                <th className="main-headers">Company</th>
+                <th className="main-headers">Role</th>
+                <th className="main-headers">Salary</th>
+                <th className="main-headers">Duration</th>
+                <th className="main-headers">Stage</th>
+                <th className="main-headers">Contact</th>
               </tr>
             </thead>
           </table>

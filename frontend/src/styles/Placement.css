@@ -1,37 +1,37 @@
 .delete-button:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
-
 .delete-button {
-    background-color: rgb(189, 182, 182);
-    border: solid 1px white;
-    color: black; 
-    font-weight: 100;   
-    height: 20px;
+  background-color: rgb(189, 182, 182);
+  border: solid 1px white;
+  color: black;
+  font-weight: 100;
+  height: 20px;
 }
 
 .placement-container {
-    width: 90vw;
-    margin: 10px auto; 
-    padding: 15px; 
-    background-color: rgb(9, 9, 160); 
-    border-radius: 50px;
-    
+  width: 90vw;
+  margin: 10px auto;
+  padding: 15px;
+  background-color: rgb(9, 9, 160);
+  border-radius: 50px;
 }
 
 .placement-container:hover {
-    background-color: blue;
-    transition: background-color 0.3s ease; 
+  background-color: blue;
+  transition: background-color 0.3s ease;
+}
+
+.placement-single {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
 }
 
 table {
-    width: 100%; 
+  width: 100%;
 }
 
 .table-row {
-    display: flex;
-    justify-content: space-evenly;
-    width: 100%;
+  display: contents;
 }
-
