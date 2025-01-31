@@ -76,6 +76,7 @@ function Home() {
         if (res.status === 201) {
           alert("Placement created successfully");
           setShowAddModal(false);
+          setShowAddButton(true)
           getPlacements();
         } else {
           alert("Error creating placement");
