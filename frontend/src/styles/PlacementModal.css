@@ -10,8 +10,9 @@
 }
 
 #modal-window {
-    width: 80%;
-    height: 90%;
+    width: 30%;
+    height: 70vh;
+    max-height: 80vh;
     background-color: navy;
     z-index: 1000;
     position: absolute;
@@ -35,9 +36,31 @@
 #modal-content {
     position: absolute;
     width: 100%;
-    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two columns */
+    gap: 20px; /* Spacing between columns */
+    justify-items: center; /* Align items to the left */
+}
+
+.detail {
+    text-align: center;
+    padding: 5px;
+}
+
+label {
+    font-weight: bold;
+}
+
+#general-title {
+    text-align: center;
+}
+
+#buttons {
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 20px;
     display: flex;
-    flex-direction: column;
     justify-content: center;
-    align-items: center;
+    width: 100%;
+    gap: 20px;
 }

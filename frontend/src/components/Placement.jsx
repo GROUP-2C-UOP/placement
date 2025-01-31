@@ -2,7 +2,7 @@ import "../styles/Placement.css";
 import { useState } from "react";
 import PlacementModal from "./PlacementModal";
 
-function Placement({ placement, onDelete, statusLabels }) {
+function Placement({ placement, onDelete, statusLabels}) {
   const [selectedPlacement, setSelectedPlacement] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
@@ -29,15 +29,6 @@ function Placement({ placement, onDelete, statusLabels }) {
                 {statusLabels[placement.status]}
               </th>
               <th className="placement-contact">{placement.contact}</th>
-              <th
-                className="delete-button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onDelete(placement.id);
-                }}
-              >
-                Delete
-              </th>
             </tr>
           </thead>
         </table>
@@ -49,6 +40,7 @@ function Placement({ placement, onDelete, statusLabels }) {
             closeModal={closeModal}
             showModal={showModal}
             statusLabels={statusLabels}
+            onDelete={() => {onDelete(selectedPlacement.id)}}
           ></PlacementModal>
         )}
       </div>

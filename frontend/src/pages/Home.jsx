@@ -98,7 +98,6 @@ function Home() {
                 <th>Duration</th>
                 <th>Stage</th>
                 <th>Contact</th>
-                <th>Delete</th>
               </tr>
             </thead>
           </table>
