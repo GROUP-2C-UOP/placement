@@ -3,6 +3,7 @@ import api from "../api";
 import Placement from "../components/Placement";
 import { statusLabels } from "../constants";
 import AddModal from "../components/AddModal";
+import NavBar from "../components/NavBar";
 
 import "../styles/Home.css";
 
@@ -87,7 +88,8 @@ function Home() {
 
   return (
     <div className="cont">
-      <div>
+      <NavBar></NavBar>
+      <div id="content-container">
         <h1 className="placement-title">Placements</h1>
         <div className="header-containerrr">
           <table>
@@ -103,7 +105,6 @@ function Home() {
             </thead>
           </table>
         </div>
-
         {placements.map((placement) => (
           <Placement
             placement={placement}

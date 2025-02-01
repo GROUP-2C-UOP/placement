@@ -43,7 +43,9 @@ function AddModal({
     <div id="add-container">
       <div className="add-placement">
         <h2>Add Placement</h2>
-        <button id="close-modal" onClick={toClose}>X</button>
+        <button id="close-modal" onClick={toClose}>
+          X
+        </button>
         <form onSubmit={createPlacement}>
           <label htmlFor="company">Company</label>
           <br />
