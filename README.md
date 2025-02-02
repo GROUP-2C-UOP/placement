@@ -25,3 +25,6 @@ Before you begin, you need to have:
 2. Change to the frontend and install dependencies ----> `cd ../frontend` & `npm install`
 3. Start the frontend server ----> `npm run dev`
 4. Control + Click the frontend link to access the app.
+
+
+# The Application's Structure 
