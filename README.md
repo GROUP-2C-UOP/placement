@@ -8,7 +8,7 @@ Before you begin, you need to have:
 - [Python](https://www.python.org/downloads/)
 
 
-## Project Setup
+## Project Setup 
 
 > **Note:** The following commands are for Windows. The commands for macOS may differ.
 
