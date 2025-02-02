@@ -55,3 +55,22 @@ API.JS - Sets up the API (using Axios), handles API requests, and manages authen
 APP.JSX - The main file that structures the application and deines navigation between pages.
 
 MAIN.JSX - Wrapper for our app.
+
+
+
+
+
+
+# Flow of App
+To help understand how the app works
+> **Note:** In this context the user has already registered.
+
+1. User Login:
+User enters details into Form Component and clicks login button. Form has method === login and API endpoint of /api/token/ so it will send the data to that endpoint.
+
+2. API Request and Credential Validation:
+Urls.py routes this endpoint to the TokenObtainPairView. The TokenObtainPairView uses built in authentication to check if user exists in database and if credentials match. If so, an access and refresh token are returned.
+
+3. The Form component recieves the tokens and checks if the method of the form was login. Since it was it now stores these tokens in localStorage and naviagtes to "/".
+
+4. App.jsx defines that when at "/" the Home page is rendered. The home page is wrapped within a ProtectedRoute component that checks if a user is authenticated with the right tokens before rendering the element wrapped within it. The tokens are valid so the home page is rendered and the user is logged in.
