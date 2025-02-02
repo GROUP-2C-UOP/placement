@@ -15,7 +15,7 @@ Before you begin, you need to have:
 2. Navigate to backend and start a virtual environment ----> ``cd backend`` & ``python -m venv venv``
 3. Activate the virtual environment ----> ``.\venv\Scripts\activate``
 4. Install requirements.txt ----> ``pip install -r requirements.txt``
-5. Set up the database ----> ``.\venv\Scripts\activate``
+5. Set up the database ----> ``python manage.py migrate``
 6. Start the backend server ----> ``python manage.py runserver``
 
 ### Frontend
