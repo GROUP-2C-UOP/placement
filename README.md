@@ -1,14 +1,14 @@
 # Project Setup Instructions - Basit
 
-
 ## Prerequisites
 
 Before you begin, you need to have:
 - [Node.js](https://nodejs.org/en/)
 - [Python](https://www.python.org/downloads/)
 
-
 ## Project Setup
+
+> **Note:** The following commands are for Windows. The commands for macOS may differ.
 
 ### Backend
 1. Clone the repository
@@ -19,11 +19,7 @@ Before you begin, you need to have:
 6. Start the backend server ----> ``python manage.py runserver``
 
 ### Frontend
-1. Split terminal and start virtaul environment ----> ``.\venv\Scripts\activate``
+1. Split terminal and start virtual environment ----> ``.\venv\Scripts\activate``
 2. Change to the frontend and install dependencies ----> ``cd ../frontend`` & ``npm install``
 3. Start the frontend server ----> ``npm run dev``
 4. Control + Click the frontend link to access the app.
-
-
-
-
