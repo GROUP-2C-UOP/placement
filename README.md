@@ -14,8 +14,8 @@ Before you begin, you need to have:
 
 ### Backend
 1. Clone the repository
-2. Navigate to backend and start a virtual environment ----> `python -m venv venv & cd backend
-3. Activate the virtual environment ----> `.\venv\Scripts\activate
+2. Navigate to backend and start a virtual environment ----> `python -m venv venv` & `cd backend`
+3. Activate the virtual environment ----> `.\venv\Scripts\activate`
 4. Install requirements.txt ----> `pip install -r requirements.txt
 5. Set up the database ----> `python manage.py makemigrations & python manage.py migrate
 6. Start the backend server ----> `python manage.py runserver
