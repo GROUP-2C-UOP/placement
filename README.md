@@ -28,3 +28,30 @@ Before you begin, you need to have:
 
 
 # The Application's Structure 
+
+## Backend
+
+DATABASE - Django has ORM. This lets us define the objects we want in our database and their constraints within models.py without writing explicit SQL.
+
+SERIALISERS - Since the applicaiton switches between Python (Django) and JavaScript (React), serialisers convert data between the two formats automatically.
+
+VIEWS - Functions or classes that handle requests from the frontend. They take in data, process it and send a response back.
+
+URLS (urls.py) - A file that matches the user's URL to trigger the corresponding view 
+
+
+## Frontend
+
+CONSTANTS.JS - File that defines fixed values that can be reused across the front end. Enforces DRY principle and makes code cleaner.
+
+COMPONENTS - Reusable building blocks for the UI. Components make up the whole page together.
+
+PAGES - Entire pages that are made with components.
+
+STYLES - Hosts all the css styling files for components and pages.
+
+API.JS - Sets up the API (using Axios), handles API requests, and manages authentication with JWTs.
+
+APP.JSX - The main file that structures the application and deines navigation between pages.
+
+MAIN.JSX - Wrapper for our app.
