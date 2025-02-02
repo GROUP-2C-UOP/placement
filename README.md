@@ -31,7 +31,7 @@ Before you begin, you need to have:
 
 ## Backend
 
-###DATABASE
+###DATABASE###
 Django has ORM. This lets us define the objects we want in our database and their constraints within models.py without writing explicit SQL.
 
 SERIALISERS - Since the applicaiton switches between Python (Django) and JavaScript (React), serialisers convert data between the two formats automatically.
