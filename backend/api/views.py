@@ -34,5 +34,10 @@ class CreateUserView(generics.CreateAPIView):
     permission_classes = [AllowAny]
 
 
+class PlacementUpdate(generics.UpdateAPIView):
+    serializer_class = PlacementSerializers
+    permission_classes = [IsAuthenticated]
 
-
+    def get_queryset(self):
+        user = self.request.user
+        return Placement.objects.filter(user=user)
