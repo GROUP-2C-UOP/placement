@@ -77,7 +77,7 @@ function Home() {
         if (res.status === 201) {
           alert("Placement created successfully");
           setShowAddModal(false);
-          setShowAddButton(true)
+          setShowAddButton(true);
           getPlacements();
         } else {
           alert("Error creating placement");
@@ -111,6 +111,31 @@ function Home() {
             statusLabels={statusLabels}
             onDelete={deletePlacement}
             key={placement.id}
+            company={company}
+            setCompany={setCompany}
+            role={role}
+            setRole={setRole}
+            salary={salary}
+            setSalary={setSalary}
+            startingDate={startingDate}
+            setStartingDate={setStartingDate}
+            duration={duration}
+            setDuration={setDuration}
+            deadline={deadline}
+            setDeadline={setDeadline}
+            applicationLink={applicationLink}
+            setApplicationLink={setApplicationLink}
+            dateApplied={dateApplied}
+            setDateApplied={setDateApplied}
+            status={status}
+            setStatus={setStatus}
+            cv={cv}
+            setCv={setCv}
+            coverLetter={coverLetter}
+            setCoverLetter={setCoverLetter}
+            contact={contact}
+            setContact={setContact}
+            getPlacements={getPlacements}
           />
         ))}
       </div>
@@ -141,7 +166,10 @@ function Home() {
           contact={contact}
           setContact={setContact}
           createPlacement={createPlacement}
-          toClose={() => {setShowAddModal(false); setShowAddButton(true)}}
+          toClose={() => {
+            setShowAddModal(false);
+            setShowAddButton(true);
+          }}
         ></AddModal>
       )}
       {showAddButton && (

@@ -7,7 +7,6 @@ const api = axios.create({
 
 const isTokenExpired = (token) => {
   const expiry = JSON.parse(atob(token.split('.')[1])).exp;
-  console.log("Decoded expiry:", expiry);
   return Date.now() >= expiry * 1000;
 };
 

@@ -39,6 +39,25 @@ function AddModal({
     { label: "Withdrawn", value: "withdrawn" },
   ];
 
+  const handleSubmit = (e) => {
+    e.preventDefault(); // Prevent default form submission behavior
+
+    // Call the createPlacement function to handle the form data
+    createPlacement(e);
+
+    // Reset the form fields
+    setCompany("");
+    setRole("");
+    setSalary("");
+    setStartingDate("");
+    setDuration("");
+    setDeadline("");
+    setStatus("");
+    setApplicationLink("");
+    setContact("");
+    setDateApplied("");
+  }
+
   return (
     <div id="add-container">
       <div className="add-placement">
@@ -46,7 +65,7 @@ function AddModal({
         <button id="close-modal" onClick={toClose}>
           X
         </button>
-        <form onSubmit={createPlacement}>
+        <form onSubmit={handleSubmit}>
           <label htmlFor="company">Company</label>
           <br />
           <input

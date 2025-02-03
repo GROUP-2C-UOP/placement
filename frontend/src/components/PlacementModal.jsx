@@ -1,9 +1,11 @@
 import "../styles/PlacementModal.css";
 import { statusLabels } from "../constants";
 import { useState } from "react";
+import api from "../api";
 
 function PlacementModal({
   placement,
+  getPlacements,
   closeModal,
   showModal,
   statusLabels,
@@ -32,8 +34,7 @@ function PlacementModal({
   setCoverLetter,
   contact,
   setContact,
-  createPlacement,
-  toClose,
+  setShowModal,
 }) {
   const [editing, setEditing] = useState(false);
 
@@ -47,6 +48,67 @@ function PlacementModal({
     { label: "Hired", value: "hired" },
     { label: "Withdrawn", value: "withdrawn" },
   ];
+
+  const updatedData = {
+    company,
+    role,
+    salary,
+    starting_date: startingDate,
+    duration,
+    next_stage_deadline: deadline,
+    status,
+    placement_link: applicationLink,
+    cv,
+    cover_letter: coverLetter,
+    contact,
+    date_applied: dateApplied,
+  };
+
+  const check = () => {
+    let formData = new FormData();
+
+    for (const field in updatedData) {
+      if (updatedData[field] !== "") {
+        formData.append(field, updatedData[field]);
+      }
+    }
+    return formData;
+  };
+
+  const updatePlacement = (id, getPlacements, setShowModal) => {
+    const modifiedFields = check();
+
+    api
+      .patch(`/api/placements/update/${id}/`, modifiedFields, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        if (res.status === 200 || res.status === 204) {
+          alert("Placement Updated");
+
+          setCompany("");
+          setRole("");
+          setSalary("");
+          setStartingDate("");
+          setDuration("");
+          setDeadline("");
+          setStatus("");
+          setApplicationLink("");
+          setCv("");
+          setCoverLetter("");
+          setContact("");
+          setDateApplied("");
+          getPlacements();
+          setShowModal(false);
+        } else alert("Something went wrong, try again.");
+      })
+      .catch((error) => {
+        console.error("Update failed", error);
+        alert("Failed, check console");
+      });
+  };
 
   return (
     <div>
@@ -331,7 +393,7 @@ function PlacementModal({
               <button
                 onClick={() => {
                   setEditing(false);
-                  alert("Finish Save Implementation");
+                  updatePlacement(placement.id, getPlacements, setShowModal);
                 }}
               >
                 Save

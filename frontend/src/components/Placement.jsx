@@ -2,7 +2,38 @@ import "../styles/Placement.css";
 import { useState } from "react";
 import PlacementModal from "./PlacementModal";
 
-function Placement({ placement, onDelete, statusLabels}) {
+function Placement({
+  placement,
+  onDelete,
+  statusLabels,
+  company,
+  setCompany,
+  role,
+  setRole,
+  salary,
+  setSalary,
+  startingDate,
+  setStartingDate,
+  duration,
+  setDuration,
+  deadline,
+  setDeadline,
+  applicationLink,
+  setApplicationLink,
+  dateApplied,
+  setDateApplied,
+  status,
+  setStatus,
+  cv,
+  setCv,
+  coverLetter,
+  setCoverLetter,
+  contact,
+  setContact,
+  createPlacement,
+  toClose,
+  getPlacements
+}) {
   const [selectedPlacement, setSelectedPlacement] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
@@ -40,8 +71,36 @@ function Placement({ placement, onDelete, statusLabels}) {
             closeModal={closeModal}
             showModal={showModal}
             statusLabels={statusLabels}
-            onDelete={() => {onDelete(selectedPlacement.id)}}
-          ></PlacementModal>
+            company={company}
+            setCompany={setCompany}
+            role={role}
+            setRole={setRole}
+            salary={salary}
+            setSalary={setSalary}
+            startingDate={startingDate}
+            setStartingDate={setStartingDate}
+            duration={duration}
+            setDuration={setDuration}
+            deadline={deadline}
+            setDeadline={setDeadline}
+            applicationLink={applicationLink}
+            setApplicationLink={setApplicationLink}
+            dateApplied={dateApplied}
+            setDateApplied={setDateApplied}
+            status={status}
+            setStatus={setStatus}
+            cv={cv}
+            setCv={setCv}
+            coverLetter={coverLetter}
+            setCoverLetter={setCoverLetter}
+            contact={contact}
+            setContact={setContact}
+            createPlacement={createPlacement}
+            toClose={toClose}
+            getPlacements={getPlacements}
+            setShowModal={setShowModal}
+            onDelete={() => onDelete(selectedPlacement.id)}
+          />
         )}
       </div>
     </>
