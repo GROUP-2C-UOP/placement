@@ -4,6 +4,7 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import Home from './pages/Home'
 import NotFound from './pages/NotFound'
+import Profiles from './pages/Profiles'
 import ProtectedRoute from './components/ProtectedRoute'
 import Layout from './components/Layout'
 
@@ -32,6 +33,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/register" element={<RegisterAndLogout />} />
+        <Route path="/profiles" element={<Profiles />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       </Layout>
@@ -39,4 +41,4 @@ function App() {
   )
 }
 
-export default App
+export default App;
