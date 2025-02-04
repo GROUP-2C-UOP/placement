@@ -35,6 +35,7 @@ class Placement(models.Model):
     cv = models.FileField(upload_to='resumes/', null=True, blank=True)
     cover_letter = models.FileField(upload_to='cover_letters/', null=True, blank=True)
     contact = models.CharField(max_length=150, null=True) 
+    description = models.TextField(null=True, blank=True)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 
     def __str__(self):

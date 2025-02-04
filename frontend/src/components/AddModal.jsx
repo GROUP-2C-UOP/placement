@@ -25,6 +25,8 @@ function AddModal({
   setCoverLetter,
   contact,
   setContact,
+  description,
+  setDescription,
   createPlacement,
   toClose,
 }) {
@@ -40,12 +42,26 @@ function AddModal({
   ];
 
   const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
+    e.preventDefault();
 
-    // Call the createPlacement function to handle the form data
     createPlacement(e);
 
-    // Reset the form fields
+    console.log({
+      company,
+      role,
+      salary,
+      startingDate,
+      duration,
+      deadline,
+      applicationLink,
+      dateApplied,
+      status,
+      cv,
+      coverLetter,
+      contact,
+      description,
+    });
+
     setCompany("");
     setRole("");
     setSalary("");
@@ -56,7 +72,8 @@ function AddModal({
     setApplicationLink("");
     setContact("");
     setDateApplied("");
-  }
+    setDescription("");
+  };
 
   return (
     <div id="add-container">
@@ -193,6 +210,15 @@ function AddModal({
             name="contact"
             onChange={(e) => setContact(e.target.value)}
             value={contact}
+          />
+          <br />
+          <label htmlFor="description">Description</label>
+          <textarea
+            type="text"
+            id="description"
+            name="description"
+            onChange={(e) => setDescription(e.target.value)}
+            value={description}
           />
           <br />
           <br />
