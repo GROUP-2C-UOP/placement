@@ -34,6 +34,8 @@ function PlacementModal({
   setCoverLetter,
   contact,
   setContact,
+  description,
+  setDescription,
   setShowModal,
 }) {
   const [editing, setEditing] = useState(false);
@@ -62,6 +64,7 @@ function PlacementModal({
     cover_letter: coverLetter,
     contact,
     date_applied: dateApplied,
+    description,
   };
 
   const check = () => {
@@ -100,6 +103,7 @@ function PlacementModal({
           setCoverLetter("");
           setContact("");
           setDateApplied("");
+          setDescription("");
           getPlacements();
           setShowModal(false);
         } else alert("Something went wrong, try again.");
@@ -201,6 +205,11 @@ function PlacementModal({
                 <label>Date Applied:</label>
                 <br />
                 {placement.date_applied}
+              </div>
+              <div className="detail">
+                <label>Desc</label>
+                <br />
+                {placement.description}
               </div>
             </div>
             <div id="buttons">
@@ -379,6 +388,17 @@ function PlacementModal({
                   name="dateApplied"
                   onChange={(e) => setDateApplied(e.target.value)}
                   value={dateApplied}
+                />
+              </div>
+              <div className="detail">
+                <label>Description:</label>
+                <br />
+                <textarea
+                  type="text"
+                  id="description"
+                  name="description"
+                  onChange={(e) => setDescription(e.target.value)}
+                  value={description}
                 />
               </div>
             </div>

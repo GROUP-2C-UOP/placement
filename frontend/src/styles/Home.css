@@ -14,7 +14,7 @@ a[href] {
   align-items: center;
   background-color: rgb(9, 9, 160);
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(5, 1fr);
 }
 
 table {

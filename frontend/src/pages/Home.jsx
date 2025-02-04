@@ -21,6 +21,7 @@ function Home() {
   const [cv, setCv] = useState("");
   const [coverLetter, setCoverLetter] = useState("");
   const [contact, setContact] = useState("");
+  const [description, setDescription] = useState("")
   const [showAddModal, setShowAddModal] = useState(false);
   const [showAddButton, setShowAddButton] = useState(true);
 
@@ -66,6 +67,7 @@ function Home() {
     formData.append("contact", contact || null);
     formData.append("cv", cv || null);
     formData.append("cover_letter", coverLetter || null);
+    formData.append("description", description || null)
 
     api
       .post("/api/placements/", formData, {
@@ -97,10 +99,9 @@ function Home() {
               <tr className="single-row">
                 <th className="main-headers">Company</th>
                 <th className="main-headers">Role</th>
-                <th className="main-headers">Salary</th>
-                <th className="main-headers">Duration</th>
-                <th className="main-headers">Stage</th>
-                <th className="main-headers">Contact</th>
+                <th className="main-headers">Status</th>
+                <th className="main-headers">Deadline</th>
+                <th className="main-headers">Description</th>
               </tr>
             </thead>
           </table>
@@ -134,6 +135,8 @@ function Home() {
             coverLetter={coverLetter}
             setCoverLetter={setCoverLetter}
             contact={contact}
+            description={description}
+            setDescription={setDescription}
             setContact={setContact}
             getPlacements={getPlacements}
           />
@@ -165,6 +168,8 @@ function Home() {
           setCoverLetter={setCoverLetter}
           contact={contact}
           setContact={setContact}
+          description={description}
+          setDescription={setDescription}
           createPlacement={createPlacement}
           toClose={() => {
             setShowAddModal(false);

@@ -41,6 +41,7 @@ class PlacementSerializers(serializers.ModelSerializer):
                    "cover_letter",
                    "contact",
                    "date_applied",
+                   "description",
                   "user"]
         extra_kwargs = {"user": {"read_only": True}}
 
