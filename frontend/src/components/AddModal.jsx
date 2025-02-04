@@ -1,4 +1,5 @@
 import "../styles/AddModal.css";
+import { useEffect } from "react";
 
 function AddModal({
   company,
@@ -40,7 +41,7 @@ function AddModal({
     { label: "Hired", value: "hired" },
     { label: "Withdrawn", value: "withdrawn" },
   ];
-
+  
   const handleSubmit = (e) => {
     e.preventDefault();
 

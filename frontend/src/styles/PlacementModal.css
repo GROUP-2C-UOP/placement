@@ -11,8 +11,8 @@
 
 #modal-window {
   width: 40vw;
-  height: 80vh;
-  max-height: 80vh;
+  height: 85vh;
+  max-height: 85vh;
   background-color: navy;
   z-index: 1000;
   position: absolute;
@@ -20,6 +20,11 @@
   left: 50%;
   transform: translate(-50%, -50%);
   border-radius: 50px;
+  padding: 20px; 
+  box-sizing: border-box; 
+  display: flex;
+  flex-direction: column; 
+  align-items: center;
 }
 
 #close-button {
@@ -34,7 +39,6 @@
 }
 
 #modal-content {
-  position: absolute;
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -70,5 +74,18 @@ label {
 }
 
 #applicationLink {
-    width: 100%;
+  width: 100%;
 }
+
+.textarea {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+textarea {
+  width: 100%; 
+  height: 5vh; 
+}
+
