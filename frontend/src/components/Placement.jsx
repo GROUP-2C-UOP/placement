@@ -54,23 +54,45 @@ function Placement({
     const timeDifference = deadlineDate - today;
     let daysRemaining = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
 
-    if (placement.status === "rejected" || placement.status === "hired" || placement.status === "offer_made") {
-      daysRemaining = "N/A"
-    } 
-    else if
-    (daysRemaining < 0) {
-      daysRemaining = "Deadline passed"
+    if (
+      placement.status === "rejected" ||
+      placement.status === "hired" ||
+      placement.status === "offer_made"
+    ) {
+      return "N/A";
     }
-    else if (daysRemaining === 0) {
-      daysRemaining = "Today"
+    if (daysRemaining < 0) {
+      return "Deadline passed";
     }
-    else if (daysRemaining === 1) {
-      daysRemaining = `${daysRemaining} Day`
-    } else {
-      daysRemaining = `${daysRemaining} Days`
+    if (daysRemaining === 0) {
+      return "Today";
+    }
+    if (daysRemaining === 1) {
+      return `1 Day`;
     }
 
-    return daysRemaining;
+    return `${daysRemaining} Days`;
+  };
+
+  const getDeadlineClass = (placement) => {
+    const remainingTime = calculateRemaining(placement);
+
+    if (remainingTime === "Today" || remainingTime === "1 Day") {
+      return "red";
+    }
+    if (remainingTime === "Deadline passed" || remainingTime === "N/A") {
+      return "";
+    }
+
+    const daysRemaining = parseInt(remainingTime);
+
+    if (daysRemaining < 3) {
+      return "red";
+    }
+    if (daysRemaining <= 5) {
+      return "orange";
+    }
+    return "green";
   };
 
   return (
@@ -90,9 +112,12 @@ function Placement({
               <th className="placement-status">
                 {statusLabels[placement.status]}
               </th>
-              <th className="placement-deadline">
+              <th
+                className={`placement-deadline ${getDeadlineClass(placement)}`}
+              >
                 {calculateRemaining(placement)}
               </th>
+
               <th className="task-description">{placement.description}</th>
             </tr>
           </thead>

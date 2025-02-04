@@ -388,19 +388,20 @@ function PlacementModal({
                   name="dateApplied"
                   onChange={(e) => setDateApplied(e.target.value)}
                   value={dateApplied}
+                  placeholder={placement.description2}
                 />
               </div>
-              <div className="detail">
-                <label>Description:</label>
-                <br />
-                <textarea
-                  type="text"
-                  id="description"
-                  name="description"
-                  onChange={(e) => setDescription(e.target.value)}
-                  value={description}
-                />
-              </div>
+            </div>
+            <div className="textarea">
+              <label>Description:</label>
+              <br />
+              <textarea
+                type="text"
+                id="description"
+                name="description"
+                onChange={(e) => setDescription(e.target.value)}
+                value={description}
+              />
             </div>
             <div id="buttons">
               <button
