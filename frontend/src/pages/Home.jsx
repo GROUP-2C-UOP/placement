@@ -101,7 +101,7 @@ function Home() {
                 <th className="main-headers">Role</th>
                 <th className="main-headers">Status</th>
                 <th className="main-headers">Deadline</th>
-                <th className="main-headers">Description</th>
+                <th className="main-headers">Note</th>
               </tr>
             </thead>
           </table>
