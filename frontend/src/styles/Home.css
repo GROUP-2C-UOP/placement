@@ -33,7 +33,7 @@ table {
   margin: 10px auto;
   padding: 15px;
   background-color: rgb(9, 9, 160);
-  border-radius: 50px;
+  border-radius: 10px;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;

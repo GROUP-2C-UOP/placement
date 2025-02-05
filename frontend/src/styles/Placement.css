@@ -1,15 +1,3 @@
-.delete-button:hover {
-  cursor: pointer;
-}
-
-.delete-button {
-  background-color: rgb(189, 182, 182);
-  border: solid 1px white;
-  color: black;
-  font-weight: 100;
-  height: 20px;
-}
-
 .placement-container {
   width: 90vw;
   margin: 10px auto;

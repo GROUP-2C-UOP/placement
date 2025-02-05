@@ -123,7 +123,7 @@ function PlacementModal({
               X
             </button>
             <h2 id="general-title">Placement Details</h2>
-            <div id="modal-content">
+            <div id="modal-content" className="placement-grid">
               <div className="detail">
                 <label>Company:</label>
                 <br />
