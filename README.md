@@ -85,3 +85,9 @@ Urls.py routes this endpoint to the TokenObtainPairView. The TokenObtainPairView
 3. The Form component recieves the tokens and checks if the method of the form was login. Since it was it now stores these tokens in localStorage and naviagtes to "/".
 
 4. App.jsx defines that when at "/" the Home page is rendered. The home page is wrapped within a ProtectedRoute component that checks if a user is authenticated with the right tokens before rendering the element wrapped within it. The tokens are valid so the home page is rendered and the user is logged in.
+
+
+# Git Instructions
+
+C2 - Please make a branch named after the feature you're working on and after it's been fully implemented we will merge it during our group meeting to ensure conflicts are solved without the loss of work
+Please use JIRA and add/update issues accordingly so.
