@@ -40,12 +40,10 @@ function AddModal({
   ];
 
   const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
+    e.preventDefault();
 
-    // Call the createPlacement function to handle the form data
     createPlacement(e);
 
-    // Reset the form fields
     setCompany("");
     setRole("");
     setSalary("");

@@ -41,3 +41,17 @@ class PlacementUpdate(generics.UpdateAPIView):
     def get_queryset(self):
         user = self.request.user
         return Placement.objects.filter(user=user)
+    
+class GetUserName(generics.RetrieveAPIView):
+    serializer_class = UserSerializers
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return CustomUser.objects.filter(id=self.request.user.id)
+    
+    def get_serializer_class(self):
+        class UserNameSerializer(UserSerializers):
+            class Meta(UserSerializers.Meta):
+                fields = ["first_name"]
+                
+        return UserNameSerializer
