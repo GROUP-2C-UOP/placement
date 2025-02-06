@@ -7,10 +7,17 @@ function profileStats() {
   ];
   statistics = [];
 
+  if (statistics.length === 0)
+    return (
+      <>
+        <h1>Profile Example</h1>
+        <p>No stats could be loaded</p>
+      </>
+    );
+
   return (
     <>
       <h1>Profile Example</h1>
-      {statistics.length === 0 && <p>No stats found</p>}
       <ul className="Profile-statistics">
         {statistics.map((statistic) => (
           <li key={statistic}>{statistic}</li>
