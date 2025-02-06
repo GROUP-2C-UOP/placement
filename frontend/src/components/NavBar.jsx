@@ -1,4 +1,5 @@
 import "../styles/NavBar.css";
+import { Link } from "react-router-dom";
 
 function NavBar() {
   return (
@@ -8,8 +9,8 @@ function NavBar() {
         Career Compass
         </div>
       <div id="header-container">
-        <a href="#">Dashboard</a>
-        <a href="#">Deadlines</a>
+        <Link to="/">Dashboard</Link>
+        <Link to="/home">Deadlines</Link>
         <a href="#">To-Do</a>
         <a href="#">Statistics</a>
         <a href="#">Profile</a>

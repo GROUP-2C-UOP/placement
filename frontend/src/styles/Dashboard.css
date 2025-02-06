@@ -1,0 +1,36 @@
+body, html {
+    overflow: hidden;
+}
+
+
+#container {
+    width: 100vw;
+    height: 100vh;      
+}
+
+#main-container {
+    width: 90vw;
+    height: 70vh;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -35%);
+    background-color: navy;
+    border-radius: 30px;
+}
+
+#welcome {
+    position: absolute;
+    top: 12%;
+    left: 5%;
+    font-size: 3rem;
+    color: white;
+}
+
+#dashboard {
+    position: absolute;
+    top: 20%;
+    right: 7%;
+    font-size: 2rem;
+    color: white;
+}
