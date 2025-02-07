@@ -1,8 +1,9 @@
 import "../styles/Dashboard.css";
 import api from "../api";
-import Placement from "./Placement";
+import Placement from "../components/Placement";
 import { statusLabels } from "../constants";
 import { useState, useEffect } from "react";
+import { Link } from "react-router";
 
 function Dashboard() {
   useEffect(() => {
@@ -12,6 +13,7 @@ function Dashboard() {
 
   const [name, setName] = useState("");
   const [placements, setPlacements] = useState([]);
+  const isDashboard = true;
 
   const getUser = () => {
     api
@@ -26,6 +28,7 @@ function Dashboard() {
   };
 
   const getPlacements = () => {
+    //NOTE: IN DOC TALK AB HOW GETTING ALL FUNC IS INEEFICIENT AND BAD IF WE ONLY WANT 3
     api
       .get("/api/placements/") //get all placements
       .then((res) => res.data) //extract data from response object
@@ -50,7 +53,7 @@ function Dashboard() {
             ) =>
               new Date(a.next_stage_deadline) - new Date(b.next_stage_deadline) // used to sort, if the result is negative a is put before b and if positive vice versa
           )
-          .slice(0, 3); //?
+          .slice(0, 5); //take the top 5 ones
         console.log(sortedPlacements);
         setPlacements(sortedPlacements);
       })
@@ -66,27 +69,39 @@ function Dashboard() {
         <header id="applications-header">Applications To Do</header>
         <div id="div-container">
           <div id="placement-container">
-            {placements.map((placement) => (
-              <Placement
-                isDashboard={true}
-                placement={placement}
-                statusLabels={statusLabels}
-                key={placement.id}
-                company={placement.company}
-                role={placement.role}
-                salary={placement.salary}
-                startingDate={placement.startingDate}
-                duration={placement.duration}
-                deadline={placement.deadline}
-                applicationLink={placement.applicationLink}
-                dateApplied={placement.dateApplied}
-                status={placement.status}
-                cv={placement.cv}
-                coverLetter={placement.coverLetter}
-                contact={placement.contact}
-                description={placement.description}
-              />
-            ))}
+            <div id="top">
+              <header>Company</header>
+              <header>Type</header>
+              <header>Days</header>
+            </div>
+            <div id="placements">
+              {placements.map((placement) => (
+                <Placement
+                  isDashboard={isDashboard}
+                  placement={placement}
+                  statusLabels={statusLabels}
+                  key={placement.id}
+                  company={placement.company}
+                  role={placement.role}
+                  salary={placement.salary}
+                  startingDate={placement.startingDate}
+                  duration={placement.duration}
+                  deadline={placement.deadline}
+                  applicationLink={placement.applicationLink}
+                  dateApplied={placement.dateApplied}
+                  status={placement.status}
+                  cv={placement.cv}
+                  coverLetter={placement.coverLetter}
+                  contact={placement.contact}
+                  description={placement.description}
+                />
+              ))}
+              <div id="bottom">
+              <Link to="/deadlines">
+                <button id="see-all">See All</button>
+              </Link>
+              </div>
+            </div>
           </div>
           <div id="todo-container"></div>
         </div>

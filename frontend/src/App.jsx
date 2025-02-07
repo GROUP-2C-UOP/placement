@@ -6,7 +6,7 @@ import Home from './pages/Home'
 import NotFound from './pages/NotFound'
 import ProtectedRoute from './components/ProtectedRoute'
 import Layout from './components/Layout'
-import Dashboard from './components/Dashboard'
+import Dashboard from './pages/Dashboard'
 
 function Logout() {
   localStorage.clear();

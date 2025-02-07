@@ -35,10 +35,15 @@ function PlacementModal({
   contact,
   setContact,
   description,
+  isDashboard,
   setDescription,
   setShowModal,
 }) {
   const [editing, setEditing] = useState(false);
+  const modalType = isDashboard
+    ? "dashboard-modal-screen"
+    : "placement-modal-screen";
+  const spacingClass = isDashboard ? "dashboard-spacing" : "home-spacing";
 
   const statusDropdown = [
     { label: "Applied", value: "applied" },
@@ -117,7 +122,7 @@ function PlacementModal({
   return (
     <div>
       {!editing && (
-        <div id="modal-container" className={showModal ? "" : "hidden"}>
+        <div className={`${showModal ? "" : "hidden"} ${modalType}`}>
           <div id="modal-window">
             <button id="close-button" onClick={closeModal}>
               X
@@ -212,7 +217,9 @@ function PlacementModal({
                 {placement.description}
               </div>
             </div>
-            <div id="buttons">
+            {!isDashboard &&
+              (
+               <div id="buttons">
               <button onClick={() => onDelete(placement.id)}>Delete</button>
               <button
                 onClick={() => {
@@ -221,12 +228,13 @@ function PlacementModal({
               >
                 Edit
               </button>
-            </div>
+            </div> 
+              )}
           </div>
         </div>
       )}
       {editing && (
-        <div id="modal-container" className={showModal ? "" : "hidden"}>
+        <div className={`${showModal ? "" : "hidden"} ${modalType}`}>
           <div id="modal-window">
             <button id="close-button" onClick={closeModal}>
               X

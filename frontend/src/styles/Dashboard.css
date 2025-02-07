@@ -1,4 +1,3 @@
-
 #main-container {
   width: 90vw;
   height: 70vh;
@@ -38,14 +37,36 @@
 }
 
 #placement-container {
-  background-color: rgb(19, 19, 226);
+  background-color: rgb(37, 37, 199);
   height: 100%;
   width: 60%;
   border-radius: 20px;
+  position: relative;
+}
+
+#top {
+  color: white;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  text-align: center;
+  font-size: 1.7rem;
+}
+
+#bottom {
+  display: flex;
+  position: absolute;
+  width: 100%;
+  height: 10%;
+  justify-content: center;
+  align-items: center;
+}
+
+#see-all {
+  font-size: 1.1rem;
 }
 
 #todo-container {
-  background-color: rgb(19, 19, 226);
+  background-color: rgb(37, 37, 199);
   height: 100%;
   width: 39%;
   position: absolute;
@@ -68,4 +89,7 @@
     right: 12%;
     top: 3%;
   }
+
+
+
   
