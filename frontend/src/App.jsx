@@ -24,7 +24,7 @@ function App() {
     <Layout>
       <Routes>
         <Route 
-        path="/deadlines" 
+        path="/placements" 
         element={
           <ProtectedRoute>
             <Home />
