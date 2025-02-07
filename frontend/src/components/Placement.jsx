@@ -171,6 +171,7 @@ function Placement({
             toClose={toClose}
             getPlacements={getPlacements}
             setShowModal={setShowModal}
+            isDashboard={isDashboard}
             onDelete={() => onDelete(selectedPlacement.id)}
           />
         )}

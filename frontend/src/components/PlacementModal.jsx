@@ -36,11 +36,11 @@ function PlacementModal({
   contact,
   setContact,
   description,
+  isDashboard,
   setDescription,
   setShowModal,
 }) {
   const [editing, setEditing] = useState(false);
-  const [confirmation, setConfirmation] = useState(false);
   const modalType = isDashboard
     ? "dashboard-modal-screen"
     : "placement-modal-screen";
@@ -123,7 +123,7 @@ function PlacementModal({
   return (
     <div>
       {!editing && (
-        <div id="modal-container" className={showModal ? "" : "hidden"}>
+        <div className={`${showModal ? "" : "hidden"} ${modalType}`}>
           <div id="modal-window">
             <button id="close-button" onClick={closeModal}>
               X
@@ -218,30 +218,25 @@ function PlacementModal({
                 {placement.description}
               </div>
             </div>
-            {!isDashboard && (
-              <div id="buttons">
-                <button
-                  onClick={() => {
-                    setConfirmation(true);
-                  }}
-                >
-                  Delete
-                </button>
-                <button
-                  onClick={() => {
-                    setEditing(true);
-                  }}
-                >
-                  Edit
-                </button>
-              </div>
-            )}
+            {!isDashboard &&
+              (
+               <div id="buttons">
+              <button onClick={() => onDelete(placement.id)}>Delete</button>
+              <button
+                onClick={() => {
+                  setEditing(true);
+                }}
+              >
+                Edit
+              </button>
+            </div> 
+              )}
           </div>
         </div>
       )}
       
       {editing && (
-        <div id="modal-container" className={showModal ? "" : "hidden"}>
+        <div className={`${showModal ? "" : "hidden"} ${modalType}`}>
           <div id="modal-window">
             <button id="close-button" onClick={closeModal}>
               X
