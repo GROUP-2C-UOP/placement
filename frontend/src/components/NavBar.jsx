@@ -10,7 +10,7 @@ function NavBar() {
         </div>
       <div id="header-container">
         <Link to="/">Dashboard</Link>
-        <Link to="/home">Deadlines</Link>
+        <Link to="/deadlines">Deadlines</Link>
         <a href="#">To-Do</a>
         <a href="#">Statistics</a>
         <a href="#">Profile</a>
