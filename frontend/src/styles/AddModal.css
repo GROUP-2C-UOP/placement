@@ -3,16 +3,19 @@
   align-content: center;
   align-items: center;
   justify-content: center;
-  display: flex;
+  display: grid;
   flex-direction: column;
   text-align: center;
   background-color: #395088;
-  width: 60%;
+  width: 40%;
   margin-left: auto;
   margin-right: auto;
   border-radius: 10px;
   margin-bottom: 30px;
-  position: relative;
+  position: absolute; 
+  top: 45%; 
+  left: 50%; 
+  transform: translate(-50%, -50%);
 }
 
 input {
@@ -38,6 +41,23 @@ input {
     z-index: 1000;
 }
 
+#close-modal:hover{
+  cursor: pointer;
+}
+
 #add-placement-button{
     margin-bottom: 10px;
 }
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 1rem; 
+  justify-items: center;
+}
+
+.input-field {
+  display: flex;
+  flex-direction: column;
+}
+

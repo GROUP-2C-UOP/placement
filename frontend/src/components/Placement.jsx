@@ -30,9 +30,11 @@ function Placement({
   setCoverLetter,
   contact,
   setContact,
+  description,
+  setDescription,
   createPlacement,
   toClose,
-  getPlacements
+  getPlacements,
 }) {
   const [selectedPlacement, setSelectedPlacement] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -46,20 +48,77 @@ function Placement({
     setShowModal(false);
   };
 
+  const calculateRemaining = (placement) => {
+    const today = new Date();
+    const deadlineDate = new Date(placement.next_stage_deadline);
+    const timeDifference = deadlineDate - today;
+    let daysRemaining = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+
+    if (
+      placement.status === "rejected" ||
+      placement.status === "hired" ||
+      placement.status === "offer_made"
+    ) {
+      return "N/A";
+    }
+    if (daysRemaining < 0) {
+      return "Deadline passed";
+    }
+    if (daysRemaining === 0) {
+      return "Today";
+    }
+    if (daysRemaining === 1) {
+      return `1 Day`;
+    }
+
+    return `${daysRemaining} Days`;
+  };
+
+  const getDeadlineClass = (placement) => {
+    const remainingTime = calculateRemaining(placement);
+
+    if (remainingTime === "Today" || remainingTime === "1 Day") {
+      return "red";
+    }
+    if (remainingTime === "Deadline passed" || remainingTime === "N/A") {
+      return "";
+    }
+
+    const daysRemaining = parseInt(remainingTime);
+
+    if (daysRemaining < 3) {
+      return "red";
+    }
+    if (daysRemaining <= 5) {
+      return "orange";
+    }
+    return "green";
+  };
+
   return (
     <>
-      <div className="placement-container" onClick={() => openModal(placement)}>
+      <div
+        className="placement-container"
+        onClick={() => {
+          openModal(placement);
+          console.log(placement);
+        }}
+      >
         <table>
           <thead className="placement-single">
             <tr className="table-row">
               <th className="placement-company">{placement.company}</th>
               <th className="placement-role">{placement.role}</th>
-              <th className="placement-salary">{placement.salary}</th>
-              <th className="placement-duration">{placement.duration}</th>
               <th className="placement-status">
                 {statusLabels[placement.status]}
               </th>
-              <th className="placement-contact">{placement.contact}</th>
+              <th
+                className={`placement-deadline ${getDeadlineClass(placement)}`}
+              >
+                {calculateRemaining(placement)}
+              </th>
+
+              <th className="task-description">{placement.description}</th>
             </tr>
           </thead>
         </table>
@@ -95,6 +154,8 @@ function Placement({
             setCoverLetter={setCoverLetter}
             contact={contact}
             setContact={setContact}
+            description={description}
+            setDescription={setDescription}
             createPlacement={createPlacement}
             toClose={toClose}
             getPlacements={getPlacements}

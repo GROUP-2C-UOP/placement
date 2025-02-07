@@ -34,6 +34,8 @@ function PlacementModal({
   setCoverLetter,
   contact,
   setContact,
+  description,
+  setDescription,
   setShowModal,
 }) {
   const [editing, setEditing] = useState(false);
@@ -62,6 +64,7 @@ function PlacementModal({
     cover_letter: coverLetter,
     contact,
     date_applied: dateApplied,
+    description,
   };
 
   const check = () => {
@@ -100,6 +103,7 @@ function PlacementModal({
           setCoverLetter("");
           setContact("");
           setDateApplied("");
+          setDescription("");
           getPlacements();
           setShowModal(false);
         } else alert("Something went wrong, try again.");
@@ -119,7 +123,7 @@ function PlacementModal({
               X
             </button>
             <h2 id="general-title">Placement Details</h2>
-            <div id="modal-content">
+            <div id="modal-content" className="placement-grid">
               <div className="detail">
                 <label>Company:</label>
                 <br />
@@ -201,6 +205,11 @@ function PlacementModal({
                 <label>Date Applied:</label>
                 <br />
                 {placement.date_applied}
+              </div>
+              <div className="detail">
+                <label>Desc</label>
+                <br />
+                {placement.description}
               </div>
             </div>
             <div id="buttons">
@@ -379,8 +388,20 @@ function PlacementModal({
                   name="dateApplied"
                   onChange={(e) => setDateApplied(e.target.value)}
                   value={dateApplied}
+                  placeholder={placement.description2}
                 />
               </div>
+            </div>
+            <div className="textarea">
+              <label>Description:</label>
+              <br />
+              <textarea
+                type="text"
+                id="description"
+                name="description"
+                onChange={(e) => setDescription(e.target.value)}
+                value={description}
+              />
             </div>
             <div id="buttons">
               <button
