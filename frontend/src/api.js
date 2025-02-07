@@ -37,7 +37,6 @@ api.interceptors.request.use(
   async (config) => {
     let accessToken = localStorage.getItem(ACCESS_TOKEN);
     let refreshToken = localStorage.getItem(REFRESH_TOKEN);
-    console.log(accessToken)
     if (refreshToken && isTokenExpired(refreshToken)) {
       handleRefreshTokenExpired();
       return Promise.reject("Refresh token expired, user logged out.");
@@ -49,7 +48,6 @@ api.interceptors.request.use(
 
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
-      console.log("Authorization header:", config.headers.Authorization);
 
     }
     return config;

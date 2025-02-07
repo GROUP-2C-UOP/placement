@@ -45,7 +45,7 @@ function App() {
     <Layout>
       <Routes>
         <Route 
-        path="/home" 
+        path="/deadlines" 
         element={
           <ProtectedRoute>
             <Home />

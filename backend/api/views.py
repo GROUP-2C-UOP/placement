@@ -46,12 +46,12 @@ class GetUserName(generics.RetrieveAPIView):
     serializer_class = UserSerializers
     permission_classes = [IsAuthenticated]
 
-    def get_queryset(self):
-        return CustomUser.objects.filter(id=self.request.user.id)
+    def get_object(self):
+        return self.request.user
     
     def get_serializer_class(self):
         class UserNameSerializer(UserSerializers):
             class Meta(UserSerializers.Meta):
                 fields = ["first_name"]
-                
+
         return UserNameSerializer

@@ -11,10 +11,11 @@ function Dashboard() {
 
   const getUser = () => {
     api
-      .get("/api/user/getname")
+      .get("/api/user/getname/")
       .then((res) => res.data)
       .then((data) => {
-        setName(data);
+        const firstName = data.first_name.charAt(0).toUpperCase() + data.first_name.slice(1)
+        setName(firstName);
       })
       .catch((err) => alert(err));
   };
