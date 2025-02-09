@@ -35,9 +35,16 @@ function Placement({
   createPlacement,
   toClose,
   getPlacements,
+  isDashboard,
 }) {
   const [selectedPlacement, setSelectedPlacement] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const containerClass = isDashboard
+    ? "placement-container-dashboard"
+    : "placement-container-home";
+  const spacingClass = isDashboard
+    ? "dashboard-spacing"
+    : "home-spacing";
 
   const openModal = (placement) => {
     setSelectedPlacement(placement);
@@ -98,17 +105,20 @@ function Placement({
   return (
     <>
       <div
-        className="placement-container"
+        className={containerClass}
         onClick={() => {
           openModal(placement);
           console.log(placement);
         }}
       >
         <table>
-          <thead className="placement-single">
+          <thead className={spacingClass}>
             <tr className="table-row">
               <th className="placement-company">{placement.company}</th>
-              <th className="placement-role">{placement.role}</th>
+              {!isDashboard && (
+                <th className="placement-role">{placement.role}</th>
+              )}
+
               <th className="placement-status">
                 {statusLabels[placement.status]}
               </th>
@@ -117,8 +127,9 @@ function Placement({
               >
                 {calculateRemaining(placement)}
               </th>
-
-              <th className="task-description">{placement.description}</th>
+              {!isDashboard && (
+                <th className="task-description">{placement.description}</th>
+              )}
             </tr>
           </thead>
         </table>
@@ -160,6 +171,7 @@ function Placement({
             toClose={toClose}
             getPlacements={getPlacements}
             setShowModal={setShowModal}
+            isDashboard={isDashboard}
             onDelete={() => onDelete(selectedPlacement.id)}
           />
         )}

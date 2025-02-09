@@ -36,6 +36,7 @@ function PlacementModal({
   contact,
   setContact,
   description,
+  isDashboard,
   setDescription,
   setShowModal,
 }) {
@@ -123,7 +124,7 @@ function PlacementModal({
   return (
     <div>
       {!editing && (
-        <div id="modal-container" className={showModal ? "" : "hidden"}>
+        <div className={`${showModal ? "" : "hidden"} ${modalType}`}>
           <div id="modal-window">
             <button id="close-button" onClick={closeModal}>
               X
@@ -241,7 +242,7 @@ function PlacementModal({
       )}
       
       {editing && (
-        <div id="modal-container" className={showModal ? "" : "hidden"}>
+        <div className={`${showModal ? "" : "hidden"} ${modalType}`}>
           <div id="modal-window">
             <button id="close-button" onClick={closeModal}>
               X

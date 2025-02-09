@@ -1,4 +1,4 @@
-.placement-container {
+.placement-container-home {
   width: 90vw;
   margin: 10px auto;
   padding: 15px;
@@ -6,14 +6,30 @@
   border-radius: 50px;
 }
 
-.placement-container:hover {
+.placement-container-dashboard {
+  width: 95%;
+  margin: 10px auto;
+  padding: 15px;
+  background-color: rgb(9, 9, 160);
+  border-radius: 50px;
+  color: white;
+  font-size: 1.1rem;
+}
+
+.placement-container-home:hover,
+.placement-container-dashboard:hover {
   background-color: blue;
   transition: background-color 0.3s ease;
 }
 
-.placement-single {
+.home-spacing {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
+}
+
+.dashboard-spacing {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
 }
 
 table {
@@ -36,5 +52,5 @@ table {
 
 .green {
   color: rgb(0, 255, 51);
-  font-weight:bolder;
+  font-weight: bolder;
 }

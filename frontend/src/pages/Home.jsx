@@ -21,7 +21,7 @@ function Home() {
   const [cv, setCv] = useState("");
   const [coverLetter, setCoverLetter] = useState("");
   const [contact, setContact] = useState("");
-  const [description, setDescription] = useState("")
+  const [description, setDescription] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
   const [showAddButton, setShowAddButton] = useState(true);
 
@@ -67,7 +67,7 @@ function Home() {
     formData.append("contact", contact || null);
     formData.append("cv", cv || null);
     formData.append("cover_letter", coverLetter || null);
-    formData.append("description", description || null)
+    formData.append("description", description || null);
 
     api
       .post("/api/placements/", formData, {
@@ -108,6 +108,7 @@ function Home() {
         </div>
         {placements.map((placement) => (
           <Placement
+            isDashboard={false}
             placement={placement}
             statusLabels={statusLabels}
             onDelete={deletePlacement}

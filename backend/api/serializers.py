@@ -19,7 +19,7 @@ class UserSerializers(serializers.ModelSerializer):
 
         validated_data['username'] = email
 
-        user = CustomUser.objects.create_user(email=email, **validated_data)
+        user = CustomUser.objects.create_user(email=email, first_name=first_name, last_name=last_name, **validated_data)
         user.first_name = first_name
         user.last_name = last_name
 

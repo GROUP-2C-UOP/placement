@@ -47,22 +47,6 @@ function AddModal({
 
     createPlacement(e);
 
-    console.log({
-      company,
-      role,
-      salary,
-      startingDate,
-      duration,
-      deadline,
-      applicationLink,
-      dateApplied,
-      status,
-      cv,
-      coverLetter,
-      contact,
-      description,
-    });
-
     setCompany("");
     setRole("");
     setSalary("");
