@@ -1,0 +1,38 @@
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    z-index: 1999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  #m-container {
+    width: 36vw;
+    background-color: rgb(200, 200, 234);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    z-index: 1100;
+  }
+  
+  #q p {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  #b {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 20px;
+  }
+  
+
+
+  
