@@ -8,8 +8,10 @@
     background-color: #395088;
     height: 80vh;
     width: 70vw;
-    margin-left: auto;
-    margin-right: auto;
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%, -50%);
   }
   
   .form-input {
@@ -43,17 +45,20 @@
   }
 
   .edge {
-    width: 100%;
-    height: 0%;
-    border-radius: 54px;
-    top: 9.6%;
-    right: 13.7%;
     position: absolute;
-    border-right: 572px solid white;
-    border-top: 300px solid transparent;
-    border-bottom: 300px solid transparent;
+    top: 0;
+    right: 0;
+    width: 692px;
+    height: 700px; 
+    background-image: url("../assets/react.svg");
+    background-size: cover;
+    background-position: center;
+    clip-path: polygon(100% 0%, 0% 50%, 100% 100%); 
     pointer-events: none;
-  }
+    background-color: white;
+    border-radius: 54px;
+}
+
 
   .type {
     margin-top: 150px;
@@ -66,6 +71,7 @@
     top: 100px;
     font-size: 50px;
     color: white;
+    z-index: 1000;
   }
 
   #remember-label {
