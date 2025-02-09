@@ -30,3 +30,7 @@
   align-items: center;
   text-align: center;
 }
+
+#logo {
+  transform: scale(0.1);
+}

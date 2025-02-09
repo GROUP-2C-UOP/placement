@@ -1,6 +1,7 @@
 import "../styles/PlacementModal.css";
 import { statusLabels } from "../constants";
 import { useState } from "react";
+import ConfirmationModal from "./ConfirmationModal.jsx";
 import api from "../api";
 
 function PlacementModal({
@@ -39,6 +40,11 @@ function PlacementModal({
   setShowModal,
 }) {
   const [editing, setEditing] = useState(false);
+  const [confirmation, setConfirmation] = useState(false);
+  const modalType = isDashboard
+    ? "dashboard-modal-screen"
+    : "placement-modal-screen";
+  const spacingClass = isDashboard ? "dashboard-spacing" : "home-spacing";
 
   const statusDropdown = [
     { label: "Applied", value: "applied" },
@@ -212,19 +218,28 @@ function PlacementModal({
                 {placement.description}
               </div>
             </div>
-            <div id="buttons">
-              <button onClick={() => onDelete(placement.id)}>Delete</button>
-              <button
-                onClick={() => {
-                  setEditing(true);
-                }}
-              >
-                Edit
-              </button>
-            </div>
+            {!isDashboard && (
+              <div id="buttons">
+                <button
+                  onClick={() => {
+                    setConfirmation(true);
+                  }}
+                >
+                  Delete
+                </button>
+                <button
+                  onClick={() => {
+                    setEditing(true);
+                  }}
+                >
+                  Edit
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}
+      
       {editing && (
         <div id="modal-container" className={showModal ? "" : "hidden"}>
           <div id="modal-window">
@@ -406,23 +421,31 @@ function PlacementModal({
             <div id="buttons">
               <button
                 onClick={() => {
-                  setEditing(false);
-                }}
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => {
-                  setEditing(false);
-                  updatePlacement(placement.id, getPlacements, setShowModal);
+                  setConfirmation(true)
                 }}
               >
                 Save
+              </button>
+              <button
+              onClick={() => {
+                setEditing(false);
+              }}
+              >
+                Cancel
               </button>
             </div>
           </div>
         </div>
       )}
+      {confirmation && (
+          <ConfirmationModal
+          func={() => updatePlacement(placement.id, getPlacements, setShowModal)}
+          method={"edit"}
+          type={"Placement"}
+          onClose={() => setConfirmation(false)}
+          setEditing = {setEditing}
+          ></ConfirmationModal>
+        )}
     </div>
   );
 }
