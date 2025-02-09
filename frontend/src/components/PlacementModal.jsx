@@ -1,6 +1,7 @@
 import "../styles/PlacementModal.css";
 import { statusLabels } from "../constants";
 import { useState } from "react";
+import ConfirmationModal from "./ConfirmationModal.jsx";
 import api from "../api";
 
 function PlacementModal({
@@ -34,9 +35,16 @@ function PlacementModal({
   setCoverLetter,
   contact,
   setContact,
+  description,
+  setDescription,
   setShowModal,
 }) {
   const [editing, setEditing] = useState(false);
+  const [confirmation, setConfirmation] = useState(false);
+  const modalType = isDashboard
+    ? "dashboard-modal-screen"
+    : "placement-modal-screen";
+  const spacingClass = isDashboard ? "dashboard-spacing" : "home-spacing";
 
   const statusDropdown = [
     { label: "Applied", value: "applied" },
@@ -62,6 +70,7 @@ function PlacementModal({
     cover_letter: coverLetter,
     contact,
     date_applied: dateApplied,
+    description,
   };
 
   const check = () => {
@@ -100,6 +109,7 @@ function PlacementModal({
           setCoverLetter("");
           setContact("");
           setDateApplied("");
+          setDescription("");
           getPlacements();
           setShowModal(false);
         } else alert("Something went wrong, try again.");
@@ -119,7 +129,7 @@ function PlacementModal({
               X
             </button>
             <h2 id="general-title">Placement Details</h2>
-            <div id="modal-content">
+            <div id="modal-content" className="placement-grid">
               <div className="detail">
                 <label>Company:</label>
                 <br />
@@ -202,20 +212,34 @@ function PlacementModal({
                 <br />
                 {placement.date_applied}
               </div>
+              <div className="detail">
+                <label>Desc</label>
+                <br />
+                {placement.description}
+              </div>
             </div>
-            <div id="buttons">
-              <button onClick={() => onDelete(placement.id)}>Delete</button>
-              <button
-                onClick={() => {
-                  setEditing(true);
-                }}
-              >
-                Edit
-              </button>
-            </div>
+            {!isDashboard && (
+              <div id="buttons">
+                <button
+                  onClick={() => {
+                    setConfirmation(true);
+                  }}
+                >
+                  Delete
+                </button>
+                <button
+                  onClick={() => {
+                    setEditing(true);
+                  }}
+                >
+                  Edit
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}
+      
       {editing && (
         <div id="modal-container" className={showModal ? "" : "hidden"}>
           <div id="modal-window">
@@ -379,29 +403,49 @@ function PlacementModal({
                   name="dateApplied"
                   onChange={(e) => setDateApplied(e.target.value)}
                   value={dateApplied}
+                  placeholder={placement.description2}
                 />
               </div>
+            </div>
+            <div className="textarea">
+              <label>Description:</label>
+              <br />
+              <textarea
+                type="text"
+                id="description"
+                name="description"
+                onChange={(e) => setDescription(e.target.value)}
+                value={description}
+              />
             </div>
             <div id="buttons">
               <button
                 onClick={() => {
-                  setEditing(false);
-                }}
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => {
-                  setEditing(false);
-                  updatePlacement(placement.id, getPlacements, setShowModal);
+                  setConfirmation(true)
                 }}
               >
                 Save
+              </button>
+              <button
+              onClick={() => {
+                setEditing(false);
+              }}
+              >
+                Cancel
               </button>
             </div>
           </div>
         </div>
       )}
+      {confirmation && (
+          <ConfirmationModal
+          func={() => updatePlacement(placement.id, getPlacements, setShowModal)}
+          method={"edit"}
+          type={"Placement"}
+          onClose={() => setConfirmation(false)}
+          setEditing = {setEditing}
+          ></ConfirmationModal>
+        )}
     </div>
   );
 }

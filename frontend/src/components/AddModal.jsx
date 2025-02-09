@@ -1,4 +1,5 @@
 import "../styles/AddModal.css";
+import { useEffect } from "react";
 
 function AddModal({
   company,
@@ -25,6 +26,8 @@ function AddModal({
   setCoverLetter,
   contact,
   setContact,
+  description,
+  setDescription,
   createPlacement,
   toClose,
 }) {
@@ -40,12 +43,26 @@ function AddModal({
   ];
 
   const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
+    e.preventDefault();
 
-    // Call the createPlacement function to handle the form data
     createPlacement(e);
 
-    // Reset the form fields
+    console.log({
+      company,
+      role,
+      salary,
+      startingDate,
+      duration,
+      deadline,
+      applicationLink,
+      dateApplied,
+      status,
+      cv,
+      coverLetter,
+      contact,
+      description,
+    });
+
     setCompany("");
     setRole("");
     setSalary("");
@@ -56,7 +73,8 @@ function AddModal({
     setApplicationLink("");
     setContact("");
     setDateApplied("");
-  }
+    setDescription("");
+  };
 
   return (
     <div id="add-container">
@@ -66,136 +84,147 @@ function AddModal({
           X
         </button>
         <form onSubmit={handleSubmit}>
-          <label htmlFor="company">Company</label>
-          <br />
-          <input
+          <div className="grid-container">
+            <div className="input-field">
+              <label htmlFor="company">Company</label>
+              <input
+                type="text"
+                id="company"
+                name="company"
+                required
+                onChange={(e) => setCompany(e.target.value)}
+                value={company}
+              />
+            </div>
+            <div className="input-field">
+              <label htmlFor="role">Role</label>
+              <input
+                type="text"
+                id="role"
+                name="role"
+                required
+                onChange={(e) => setRole(e.target.value)}
+                value={role}
+              />
+            </div>
+            <div className="input-field">
+              <label htmlFor="salary">Salary</label>
+              <input
+                type="number"
+                id="salary"
+                name="salary"
+                onChange={(e) => setSalary(e.target.value)}
+                value={salary}
+                required
+              />
+            </div>
+            <div className="input-field">
+              <label htmlFor="startingDate">Starting Date</label>
+              <input
+                type="date"
+                id="startingDate"
+                name="startingDate"
+                onChange={(e) => setStartingDate(e.target.value)}
+                value={startingDate}
+              />
+            </div>
+            <div className="input-field">
+              <label htmlFor="duration">Duration</label>
+              <input
+                type="number"
+                id="duration"
+                name="duration"
+                onChange={(e) => setDuration(e.target.value)}
+                value={duration}
+                required
+              />
+            </div>
+            <div className="input-field">
+              <label htmlFor="deadline">Deadline</label>
+              <input
+                type="date"
+                id="deadline"
+                name="deadline"
+                onChange={(e) => setDeadline(e.target.value)}
+                value={deadline}
+              />
+            </div>
+            <div className="input-field">
+              <label htmlFor="applicationLink">Application Link</label>
+              <input
+                type="url"
+                id="applicationLink"
+                name="applicationLink"
+                onChange={(e) => setApplicationLink(e.target.value)}
+                value={applicationLink}
+              />
+            </div>
+            <div className="input-field">
+              <label htmlFor="dateApplied">Date Applied</label>
+              <input
+                type="date"
+                id="dateApplied"
+                name="dateApplied"
+                onChange={(e) => setDateApplied(e.target.value)}
+                value={dateApplied}
+              />
+            </div>
+            <div className="input-field">
+              <label htmlFor="status">Status</label>
+              <select
+                id="status"
+                name="status"
+                onChange={(e) => setStatus(e.target.value)}
+                value={status}
+                required
+              >
+                <option value="">Select a status</option>
+                {statusDropdown.map((status) => (
+                  <option key={status.value} value={status.value}>
+                    {status.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="input-field">
+              <label htmlFor="cv">CV</label>
+              <input
+                type="file"
+                id="cv"
+                name="cv"
+                onChange={(e) => setCv(e.target.files[0])}
+              />
+            </div>
+            <div className="input-field">
+              <label htmlFor="coverLetter">Cover Letter</label>
+              <input
+                type="file"
+                id="coverLetter"
+                name="coverLetter"
+                onChange={(e) => setCoverLetter(e.target.files[0])}
+              />
+            </div>
+            <div className="input-field">
+              <label htmlFor="contact">Their Contact</label>
+              <input
+                type="text"
+                id="contact"
+                name="contact"
+                onChange={(e) => setContact(e.target.value)}
+                value={contact}
+              />
+            </div>
+          </div>
+
+          <label htmlFor="description">Description</label>
+          <textarea
             type="text"
-            id="company"
-            name="company"
-            required
-            onChange={(e) => setCompany(e.target.value)}
-            value={company}
+            id="description"
+            name="description"
+            onChange={(e) => setDescription(e.target.value)}
+            value={description}
           />
-          <br />
-          <label htmlFor="role">Role</label>
-          <br />
-          <input
-            type="text"
-            id="role"
-            name="role"
-            required
-            onChange={(e) => setRole(e.target.value)}
-            value={role}
-          />
-          <br />
-          <label htmlFor="salary">Salary</label>
-          <br />
-          <input
-            type="number"
-            id="salary"
-            name="salary"
-            onChange={(e) => setSalary(e.target.value)}
-            value={salary}
-            required
-          />
-          <br />
-          <label htmlFor="startingDate">Starting Date</label>
-          <br />
-          <input
-            type="date"
-            id="startingDate"
-            name="startingDate"
-            onChange={(e) => setStartingDate(e.target.value)}
-            value={startingDate}
-          />
-          <br />
-          <label htmlFor="duration">Duration</label>
-          <br />
-          <input
-            type="number"
-            id="duration"
-            name="duration"
-            onChange={(e) => setDuration(e.target.value)}
-            value={duration}
-            required
-          />
-          <br />
-          <label htmlFor="deadline">Deadline</label>
-          <br />
-          <input
-            type="date"
-            id="deadline"
-            name="deadline"
-            onChange={(e) => setDeadline(e.target.value)}
-            value={deadline}
-          />
-          <br />
-          <label htmlFor="applicationLink">Application Link</label>
-          <br />
-          <input
-            type="url"
-            id="applicationLink"
-            name="applicationLink"
-            onChange={(e) => setApplicationLink(e.target.value)}
-            value={applicationLink}
-          />
-          <br />
-          <label htmlFor="dateApplied">Date Applied</label>
-          <br />
-          <input
-            type="date"
-            id="dateApplied"
-            name="dateApplied"
-            onChange={(e) => setDateApplied(e.target.value)}
-            value={dateApplied}
-          />
-          <br />
-          <label htmlFor="status">Status</label>
-          <br />
-          <select
-            id="status"
-            name="status"
-            onChange={(e) => setStatus(e.target.value)}
-            value={status}
-            required
-          >
-            <option value="">Select a status</option>
-            {statusDropdown.map((status) => (
-              <option key={status.value} value={status.value}>
-                {status.label}
-              </option>
-            ))}
-          </select>
-          <br />
-          <label htmlFor="cv">CV</label>
-          <br />
-          <input
-            type="file"
-            id="cv"
-            name="cv"
-            onChange={(e) => setCv(e.target.files[0])}
-          />
-          <br />
-          <label htmlFor="coverLetter">Cover Letter</label>
-          <br />
-          <input
-            type="file"
-            id="coverLetter"
-            name="coverLetter"
-            onChange={(e) => setCoverLetter(e.target.files[0])}
-          />
-          <br />
-          <label htmlFor="contact">Their Contact</label>
-          <br />
-          <input
-            type="text"
-            id="contact"
-            name="contact"
-            onChange={(e) => setContact(e.target.value)}
-            value={contact}
-          />
-          <br />
-          <br />
+
           <button id="add-placement-button" type="submit">
             Add Placement
           </button>
