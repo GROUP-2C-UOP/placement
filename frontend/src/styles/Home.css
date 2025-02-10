@@ -10,9 +10,23 @@ a[href] {
   color: white;
 }
 
-#headers {
+#progress-headers {
   align-items: center;
-  background-color: rgb(9, 9, 160);
+  background-color: rgb(26, 26, 92);
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+
+#rejected-headers {
+  align-items: center;
+  background-color: rgb(26, 26, 92);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+#accepted-headers {
+  align-items: center;
+  background-color: rgb(26, 26, 92);
   display: grid;
   grid-template-columns: repeat(5, 1fr);
 }
@@ -32,7 +46,7 @@ table {
   width: 90vw;
   margin: 10px auto;
   padding: 15px;
-  background-color: rgb(9, 9, 160);
+  background-color: rgb(26, 26, 92);
   border-radius: 10px;
   display: flex;
   flex-direction: row;
@@ -41,12 +55,18 @@ table {
 
 #add-button {
     position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    right: 1%;
+    top: 15%;
     font-size: 20px;
-    margin-top: 10px;
+    margin-top: -15px;
+    width: 60px;
 }
 
 button:hover{
     cursor: pointer;
 }
+
+.main-headers:hover{
+  cursor: pointer;
+}
+

@@ -36,6 +36,7 @@ function Placement({
   toClose,
   getPlacements,
   isDashboard,
+  placementType,
 }) {
   const [selectedPlacement, setSelectedPlacement] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -44,6 +45,9 @@ function Placement({
     : "placement-container-home";
   const spacingClass = isDashboard
     ? "dashboard-spacing"
+    : "home-spacing";
+    const placementTypeSpacing = placementType === "rejected"
+    ? "rejected-spacing"
     : "home-spacing";
 
   const openModal = (placement) => {
@@ -112,21 +116,24 @@ function Placement({
         }}
       >
         <table>
-          <thead className={spacingClass}>
+          <thead className={`${spacingClass} ${placementTypeSpacing}`}>
             <tr className="table-row">
               <th className="placement-company">{placement.company}</th>
               {!isDashboard && (
                 <th className="placement-role">{placement.role}</th>
               )}
-
-              <th className="placement-status">
-                {statusLabels[placement.status]}
-              </th>
-              <th
-                className={`placement-deadline ${getDeadlineClass(placement)}`}
-              >
-                {calculateRemaining(placement)}
-              </th>
+              {placementType !== "rejected" && (
+                <>
+                  <th className="placement-status">
+                    {statusLabels[placement.status]}
+                  </th>
+                  <th
+                    className={`placement-deadline ${getDeadlineClass(placement)}`}
+                  >
+                    {calculateRemaining(placement)}
+                  </th>
+                </>
+              )}
               {!isDashboard && (
                 <th className="task-description">{placement.description}</th>
               )}

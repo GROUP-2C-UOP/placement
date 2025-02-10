@@ -21,3 +21,38 @@ function NavBar() {
 }
 
 export default NavBar;
+
+{/* <Placement
+              isDashboard={false}
+              placement={placement}
+              statusLabels={statusLabels}
+              onDelete={deletePlacement}
+              key={placement.id}
+              company={company}
+              setCompany={setCompany}
+              role={role}
+              setRole={setRole}
+              salary={salary}
+              setSalary={setSalary}
+              startingDate={startingDate}
+              setStartingDate={setStartingDate}
+              duration={duration}
+              setDuration={setDuration}
+              deadline={deadline}
+              setDeadline={setDeadline}
+              applicationLink={applicationLink}
+              setApplicationLink={setApplicationLink}
+              dateApplied={dateApplied}
+              setDateApplied={setDateApplied}
+              status={status}
+              setStatus={setStatus}
+              cv={cv}
+              setCv={setCv}
+              coverLetter={coverLetter}
+              setCoverLetter={setCoverLetter}
+              contact={contact}
+              description={description}
+              setDescription={setDescription}
+              setContact={setContact}
+              getPlacements={getPlacements}
+            /> */}

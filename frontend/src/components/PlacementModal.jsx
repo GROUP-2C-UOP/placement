@@ -234,7 +234,7 @@ function PlacementModal({
           </div>
         </div>
       )}
-      
+
       {editing && (
         <div className={`${showModal ? "" : "hidden"} ${modalType}`}>
           <div id="modal-window">
@@ -416,15 +416,15 @@ function PlacementModal({
             <div id="buttons">
               <button
                 onClick={() => {
-                  setConfirmation(true)
+                  setConfirmation(true);
                 }}
               >
                 Save
               </button>
               <button
-              onClick={() => {
-                setEditing(false);
-              }}
+                onClick={() => {
+                  setEditing(false);
+                }}
               >
                 Cancel
               </button>
@@ -433,14 +433,18 @@ function PlacementModal({
         </div>
       )}
       {confirmation && (
-          <ConfirmationModal
-          func={() => updatePlacement(placement.id, getPlacements, setShowModal)}
-          method={"edit"}
+        <ConfirmationModal
+          func={
+            editing
+              ? () => updatePlacement(placement.id, getPlacements, setShowModal)
+              : onDelete
+          }
+          method={editing ? "edit" : "delete"}
           type={"Placement"}
           onClose={() => setConfirmation(false)}
-          setEditing = {setEditing}
-          ></ConfirmationModal>
-        )}
+          setEditing={setEditing}
+        />
+      )}
     </div>
   );
 }

@@ -97,9 +97,16 @@ function Dashboard() {
                 />
               ))}
               <div id="bottom">
-              <Link to="/deadlines">
-                <button id="see-all">See All</button>
-              </Link>
+                {placements.length === 0 && (
+                  <Link to="/placements">
+                    <button id="see-all">Add Placement</button>
+                  </Link>
+                )}
+                {placements.length > 0 && (
+                  <Link to="/placements">
+                    <button id="see-all">See All</button>
+                  </Link>
+                )}
               </div>
             </div>
           </div>
