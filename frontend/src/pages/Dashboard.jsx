@@ -99,12 +99,16 @@ function Dashboard() {
               <div id="bottom">
                 {placements.length === 0 && (
                   <Link to="/placements">
-                    <button id="see-all">Add Placement</button>
+                    <button id="add">
+                      <img src="src/assets/add.svg" />
+                    </button>
                   </Link>
                 )}
                 {placements.length > 0 && (
                   <Link to="/placements">
-                    <button id="see-all">See All</button>
+                    <button id="see">
+                      <img src="src/assets/ellipses.svg" />
+                    </button>
                   </Link>
                 )}
               </div>
