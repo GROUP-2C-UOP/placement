@@ -42,6 +42,7 @@ function PlacementModal({
 }) {
   const [editing, setEditing] = useState(false);
   const [confirmation, setConfirmation] = useState(false);
+  const [update, setUpdate] = useState(false);
   const modalType = isDashboard
     ? "dashboard-modal-screen"
     : "placement-modal-screen";
@@ -126,8 +127,24 @@ function PlacementModal({
       {!editing && (
         <div className={`${showModal ? "" : "hidden"} ${modalType}`}>
           <div id="modal-window">
-            <button id="close-button" onClick={closeModal}>
-              X
+            <button class="close-button" onClick={closeModal}>
+              <img src="src/assets/close.svg" />
+            </button>
+            <button
+              id="edit-button"
+              onClick={() => {
+                setEditing(true);
+              }}
+            >
+              <img src="src/assets/edit.svg" />
+            </button>
+            <button
+              id="delete-button"
+              onClick={() => {
+                setConfirmation(true);
+              }}
+            >
+              <img src="src/assets/bin.svg" />
             </button>
             <h2 id="general-title">Placement Details</h2>
             <div id="modal-content" className="placement-grid">
@@ -213,39 +230,108 @@ function PlacementModal({
                 <br />
                 {placement.date_applied}
               </div>
-              <div className="detail">
-                <label>Desc</label>
-                <br />
-                {placement.description}
-              </div>
+              {placement.description && placement.description !== "null" && (
+                <div className="detail" id="note-on-modal">
+                  <label>Note</label>
+                  <br />
+                  {placement.description}
+                </div>
+              )}
             </div>
             {!isDashboard && (
               <div id="buttons">
                 <button
+                  id="update-button"
                   onClick={() => {
-                    setConfirmation(true);
+                    setUpdate(true);
                   }}
                 >
-                  Delete
-                </button>
-                <button
-                  onClick={() => {
-                    setEditing(true);
-                  }}
-                >
-                  Edit
+                  Update
                 </button>
               </div>
             )}
           </div>
         </div>
       )}
-
+      {update && (
+        <div className={`${showModal ? "" : "hidden"} ${modalType}`}>
+          <div id="modal-window" className="update">
+            <button
+              class="close-button"
+              onClick={() => {
+                setUpdate(false);
+              }}
+            >
+              <img src="src/assets/close.svg" />
+            </button>
+            <h2 id="general-title">Update Stage</h2>
+            <div id="modal-content">
+              <div className="detail">
+                <label>Status:</label>
+                <br />
+                <select
+                  id="status"
+                  name="status"
+                  onChange={(e) => setStatus(e.target.value)}
+                  value={status}
+                  placeholder={placement.status}
+                  required
+                >
+                  <option value="">Select a status</option>
+                  {statusDropdown.map((status) => (
+                    <option key={status.value} value={status.value}>
+                      {status.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="detail">
+                <label>Deadline:</label>
+                <br />
+                <input
+                  type="date"
+                  id="deadline"
+                  className="input-field"
+                  name="deadline"
+                  onChange={(e) => setDeadline(e.target.value)}
+                  value={deadline}
+                />
+              </div>
+            </div>
+            <div className="textarea">
+              <label>Note:</label>
+              <br />
+              <textarea
+                type="text"
+                id="description"
+                name="description"
+                onChange={(e) => setDescription(e.target.value)}
+                value={description}
+              />
+            </div>
+            <div id="update-buttons">
+              <button
+                className="save-button"
+                onClick={() => {
+                  updatePlacement(placement.id, getPlacements, setShowModal);
+                }}
+              >
+                <img src="src/assets/save.svg" />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       {editing && (
         <div className={`${showModal ? "" : "hidden"} ${modalType}`}>
-          <div id="modal-window">
-            <button id="close-button" onClick={closeModal}>
-              X
+          <div id="modal-window" className="editing-window">
+            <button
+              class="close-button"
+              onClick={() => {
+                setEditing(false);
+              }}
+            >
+              <img src="src/assets/close.svg" />
             </button>
             <h2 id="general-title">Placement Details</h2>
             <div id="modal-content">
@@ -318,37 +404,6 @@ function PlacementModal({
                 />
               </div>
               <div className="detail">
-                <label>Deadline:</label>
-                <br />
-                <input
-                  type="date"
-                  id="deadline"
-                  className="input-field"
-                  name="deadline"
-                  onChange={(e) => setDeadline(e.target.value)}
-                  value={deadline}
-                />
-              </div>
-              <div className="detail">
-                <label>Status:</label>
-                <br />
-                <select
-                  id="status"
-                  name="status"
-                  onChange={(e) => setStatus(e.target.value)}
-                  value={status}
-                  placeholder={placement.status}
-                  required
-                >
-                  <option value="">Select a status</option>
-                  {statusDropdown.map((status) => (
-                    <option key={status.value} value={status.value}>
-                      {status.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="detail">
                 <label>Application Link:</label>
                 <br />
                 <input
@@ -408,31 +463,14 @@ function PlacementModal({
                 />
               </div>
             </div>
-            <div className="textarea">
-              <label>Description:</label>
-              <br />
-              <textarea
-                type="text"
-                id="description"
-                name="description"
-                onChange={(e) => setDescription(e.target.value)}
-                value={description}
-              />
-            </div>
             <div id="buttons">
               <button
+                className="save-button"
                 onClick={() => {
                   setConfirmation(true);
                 }}
               >
-                Save
-              </button>
-              <button
-                onClick={() => {
-                  setEditing(false);
-                }}
-              >
-                Cancel
+                <img src="src/assets/save.svg" />
               </button>
             </div>
           </div>

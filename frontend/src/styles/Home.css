@@ -54,12 +54,28 @@ table {
 }
 
 #add-button {
-    position: absolute;
-    right: 1%;
-    top: 15%;
-    font-size: 20px;
-    margin-top: -15px;
-    width: 60px;
+  position: absolute;
+  margin-top: -20px;
+  right: 1%;
+  top: 15%;
+  border-radius: 50%;
+  background-color: blue;
+  border: none;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+#add-button img {
+  width: 60px; 
+  height: auto;
+  filter: invert(1);
+}
+
+#add-button:hover {
+  background-color: rgb(17, 17, 170);
 }
 
 button:hover{
