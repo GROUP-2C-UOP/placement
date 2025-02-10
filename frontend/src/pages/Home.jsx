@@ -197,20 +197,20 @@ function Home() {
                 </th>
                 <th
                   className="main-headers"
-                  onClick={() => sortByHeader("role")}
+                  onClick={() => sortByHeader("role", "progress")}
                 >
                   Role {sortProgressPlacements.key === "role" ? (sortProgressPlacements.ascending ? "▲" : "▼") : ""}
                 </th>
                 <th
                   className="main-headers"
-                  onClick={() => sortByHeader("status")}
+                  onClick={() => sortByHeader("status", "progress")}
                 >
                   Status
                   {sortProgressPlacements.key === "status" ? (sortProgressPlacements.ascending ? "▲" : "▼") : ""}
                 </th>
                 <th
                   className="main-headers"
-                  onClick={() => sortByHeader("next_stage_deadline")}
+                  onClick={() => sortByHeader("next_stage_deadline", "progress")}
                 >
                   Deadline
                   {sortProgressPlacements.key === "next_stage_deadline"
@@ -221,7 +221,7 @@ function Home() {
                 </th>
                 <th
                   className="main-headers"
-                  onClick={() => sortByHeader("description")}
+                  onClick={() => sortByHeader("description", "progress")}
                 >
                   Notes{" "}
                   {sortProgressPlacements.key === "description"
@@ -368,17 +368,10 @@ function Home() {
                 </th>
                 <th
                   className="main-headers"
-                  onClick={() => sortByHeader("status", "accepted")}
+                  onClick={() => sortByHeader("starting_date", "accepted")}
                 >
-                  Status{" "}
-                  {sortAccpetedPlacements.key === "status" ? (sortAccpetedPlacements.ascending ? "▲" : "▼") : ""}
-                </th>
-                <th
-                  className="main-headers"
-                  onClick={() => sortByHeader("next_stage_deadline", "accepted")}
-                >
-                  Deadline{" "}
-                  {sortAccpetedPlacements.key === "next_stage_deadline"
+                  Starting{" "}
+                  {sortAccpetedPlacements.key === "starting_date"
                     ? sortAccpetedPlacements.ascending
                       ? "▲"
                       : "▼"

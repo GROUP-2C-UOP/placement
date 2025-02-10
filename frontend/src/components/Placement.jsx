@@ -1,6 +1,7 @@
 import "../styles/Placement.css";
 import { useState } from "react";
 import PlacementModal from "./PlacementModal";
+import { icons } from "../constants";
 
 function Placement({
   placement,
@@ -43,12 +44,13 @@ function Placement({
   const containerClass = isDashboard
     ? "placement-container-dashboard"
     : "placement-container-home";
-  const spacingClass = isDashboard
-    ? "dashboard-spacing"
-    : "home-spacing";
-    const placementTypeSpacing = placementType === "rejected"
-    ? "rejected-spacing"
-    : "home-spacing";
+  const spacingClass = isDashboard ? "dashboard-spacing" : "home-spacing";
+  const placementTypeSpacing =
+    placementType === "rejected"
+      ? "rejected-spacing"
+      : placementType === "accepted"
+      ? "accepted-spacing"
+      : "home-spacing";
 
   const openModal = (placement) => {
     setSelectedPlacement(placement);
@@ -122,20 +124,38 @@ function Placement({
               {!isDashboard && (
                 <th className="placement-role">{placement.role}</th>
               )}
-              {placementType !== "rejected" && (
+              {placementType !== "rejected" && placementType !== "accepted" && (
                 <>
-                  <th className="placement-status">
-                    {statusLabels[placement.status]}
+                  <th id="icon-cont" className="placement-status">
+                    <img
+                      src={icons[placement.status].src}
+                      id={icons[placement.status].id}
+                      className={icons[placement.status].class}
+                      title={icons[placement.status].title}
+                    />
                   </th>
                   <th
-                    className={`placement-deadline ${getDeadlineClass(placement)}`}
+                    className={`placement-deadline ${getDeadlineClass(
+                      placement
+                    )}`}
                   >
                     {calculateRemaining(placement)}
                   </th>
                 </>
               )}
+              {placementType === "accepted" && (
+                <>
+                  <th className="placement-status">
+                    {placement.starting_date}
+                  </th>
+                </>
+              )}
               {!isDashboard && (
-                <th className="task-description">{placement.description}</th>
+                <th className="task-description">
+                  {placement.description === "null"
+                    ? ""
+                    : placement.description}
+                </th>
               )}
             </tr>
           </thead>
