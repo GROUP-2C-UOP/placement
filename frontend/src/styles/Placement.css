@@ -59,3 +59,33 @@ table {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
 }
+
+.accepted-spacing{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.icons {
+  filter: invert(1);
+}
+
+thead {
+  align-items: center;
+  justify-content: center;
+}
+
+#icon-cont {
+  padding: 0;
+  margin: 0;
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+}
+
+#icon-cont img {
+  display: block;
+  width: 30px; 
+  height: 30px;
+  object-fit: contain; 
+}
+
