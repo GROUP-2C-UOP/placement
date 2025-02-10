@@ -1,5 +1,5 @@
 import "../styles/AddModal.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function AddModal({
   company,
@@ -61,12 +61,20 @@ function AddModal({
     setDescription("");
   };
 
+  const [fadeOut, setFadeOut] = useState(false)
+  const handleClose = () => {
+    setFadeOut(true);
+    setTimeout(() => {
+      toClose(); 
+    }, 100); 
+  };
+
   return (
     <div id="add-container">
-      <div className="add-placement">
+      <div className={`add-placement ${fadeOut ? "fade-out" : ""}`}>
         <h2>Add Placement</h2>
-        <button id="close-modal" onClick={toClose}>
-          X
+        <button id="close-modal" className="close-button" onClick={handleClose}>
+          <img src="src/assets/close.svg" />
         </button>
         <form onSubmit={handleSubmit}>
           <div className="grid-container">
@@ -104,16 +112,6 @@ function AddModal({
               />
             </div>
             <div className="input-field">
-              <label htmlFor="startingDate">Starting Date</label>
-              <input
-                type="date"
-                id="startingDate"
-                name="startingDate"
-                onChange={(e) => setStartingDate(e.target.value)}
-                value={startingDate}
-              />
-            </div>
-            <div className="input-field">
               <label htmlFor="duration">Duration</label>
               <input
                 type="number"
@@ -122,36 +120,6 @@ function AddModal({
                 onChange={(e) => setDuration(e.target.value)}
                 value={duration}
                 required
-              />
-            </div>
-            <div className="input-field">
-              <label htmlFor="deadline">Deadline</label>
-              <input
-                type="date"
-                id="deadline"
-                name="deadline"
-                onChange={(e) => setDeadline(e.target.value)}
-                value={deadline}
-              />
-            </div>
-            <div className="input-field">
-              <label htmlFor="applicationLink">Application Link</label>
-              <input
-                type="url"
-                id="applicationLink"
-                name="applicationLink"
-                onChange={(e) => setApplicationLink(e.target.value)}
-                value={applicationLink}
-              />
-            </div>
-            <div className="input-field">
-              <label htmlFor="dateApplied">Date Applied</label>
-              <input
-                type="date"
-                id="dateApplied"
-                name="dateApplied"
-                onChange={(e) => setDateApplied(e.target.value)}
-                value={dateApplied}
               />
             </div>
             <div className="input-field">
@@ -172,6 +140,56 @@ function AddModal({
               </select>
             </div>
             <div className="input-field">
+              <label htmlFor="deadline">Deadline</label>
+              <input
+                type="date"
+                id="deadline"
+                name="deadline"
+                onChange={(e) => setDeadline(e.target.value)}
+                value={deadline}
+              />
+            </div>
+            <div className="input-field">
+              <label htmlFor="dateApplied">Date Applied</label>
+              <input
+                type="date"
+                id="dateApplied"
+                name="dateApplied"
+                onChange={(e) => setDateApplied(e.target.value)}
+                value={dateApplied}
+              />
+            </div>
+            <div className="input-field">
+              <label htmlFor="startingDate">Starting Date</label>
+              <input
+                type="date"
+                id="startingDate"
+                name="startingDate"
+                onChange={(e) => setStartingDate(e.target.value)}
+                value={startingDate}
+              />
+            </div>
+            <div className="input-field">
+              <label htmlFor="applicationLink">Application Link</label>
+              <input
+                type="url"
+                id="applicationLink"
+                name="applicationLink"
+                onChange={(e) => setApplicationLink(e.target.value)}
+                value={applicationLink}
+              />
+            </div>
+            <div className="input-field">
+              <label htmlFor="contact">Their Contact</label>
+              <input
+                type="text"
+                id="contact"
+                name="contact"
+                onChange={(e) => setContact(e.target.value)}
+                value={contact}
+              />
+            </div>
+            <div className="input-field">
               <label htmlFor="cv">CV</label>
               <input
                 type="file"
@@ -189,29 +207,23 @@ function AddModal({
                 onChange={(e) => setCoverLetter(e.target.files[0])}
               />
             </div>
-            <div className="input-field">
-              <label htmlFor="contact">Their Contact</label>
-              <input
-                type="text"
-                id="contact"
-                name="contact"
-                onChange={(e) => setContact(e.target.value)}
-                value={contact}
-              />
-            </div>
           </div>
-
-          <label htmlFor="description">Description</label>
-          <textarea
-            type="text"
-            id="description"
-            name="description"
-            onChange={(e) => setDescription(e.target.value)}
-            value={description}
-          />
-
-          <button id="add-placement-button" type="submit">
-            Add Placement
+          <div id="desc-cont">
+            <label htmlFor="description">Note</label>
+            <textarea
+              type="text"
+              id="description"
+              name="description"
+              onChange={(e) => setDescription(e.target.value)}
+              value={description}
+            />
+          </div>
+          <button
+            id="add-placement-button"
+            className="save-button"
+            type="submit"
+          >
+            <img src="src/assets/save.svg" />
           </button>
         </form>
       </div>

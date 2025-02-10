@@ -61,7 +61,7 @@ function Home() {
   const placementsInProg = () => {
     const pip = placements.filter(
       (placement) =>
-        placement.status !== "rejected" && placement.status !== "accepted"
+        placement.status !== "rejected" && placement.status !== "offer_made"
     );
     setPlacementsInProgress(pip);
   };
@@ -475,7 +475,7 @@ function Home() {
             setShowAddButton(false);
           }}
         >
-          +
+          <img src="src/assets/add.svg" />
         </button>
       )}
     </div>

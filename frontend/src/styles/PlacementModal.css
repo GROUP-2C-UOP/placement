@@ -23,7 +23,7 @@
 #modal-window {
   width: 40vw;
   height: 85vh;
-  max-height: 85vh;
+  max-height: 95vh;
   background-color: navy;
   z-index: 1000;
   position: absolute;
@@ -38,15 +38,78 @@
   align-items: center;
 }
 
-#close-button {
+.close-button {
   position: absolute;
   right: 30px;
   top: 20px;
   z-index: 1000;
+  background: none;
+  border: none;
 }
 
-#close-button:hover {
+#edit-button{
+  position: absolute;
+  left: 30px;
+  top: 20px;
+  z-index: 1000;
+  width: 36px;
+  height: auto;
+  background: none;
+  border: none;
+}
+
+#delete-button {
+  position: absolute;
+  right: 30px;
+  bottom: 20px;
+  z-index: 1000;
+  width: 36px;
+  height: auto;
+  background: none;
+  border: none;
+}
+
+#edit-button img {
+  filter: invert(1);
+}
+
+#update-button {
+  all: unset;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-weight: bold;
+  height: auto;
+  background-color: #2600ff; /* Slightly cleaner blue */
+  padding: 8px 12px;
+  width: 100px;
+  border-radius: 8px;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#update-button:hover {
   cursor: pointer;
+  background-color: rgb(31, 7, 166);
+}
+
+.close-button img {
+  width: 18px;
+  height: auto;
+  filter: invert(1);
+}
+
+.save-button {
+  background: none;
+  border: none;
+  margin-top: 8px;  
+}
+
+.save-button img {
+  width: 35px;
+  height: auto;
+  filter: invert(1);
 }
 
 #modal-content {
@@ -97,7 +160,7 @@ label {
 
 textarea {
   width: 100%; 
-  height: 5vh; 
+  height: 7vh; 
   resize: none;
 }
 
@@ -109,5 +172,12 @@ textarea {
 
 #modal-content .detail:nth-child(13) {
   grid-column: span 2;
-  margin-top: 30px;
+}
+
+.update {
+  height: 40vh !important;
+}
+
+.editing-window {
+  height: 73vh !important;
 }
