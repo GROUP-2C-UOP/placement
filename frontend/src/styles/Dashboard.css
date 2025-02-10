@@ -61,10 +61,6 @@
   align-items: center;
 }
 
-#see-all {
-  font-size: 1.1rem;
-}
-
 #todo-container {
   background-color: rgb(37, 37, 199);
   height: 100%;
@@ -90,6 +86,48 @@
     top: 3%;
   }
 
+
+#see {
+  background-color: rgb(1, 1, 123);
+  border: none;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  border-radius: 20px;
+}
+
+#see img {
+  width: 30px;
+  height: auto;
+  filter: invert(1);
+}
+
+#see:hover {
+  background-color: rgb(7, 7, 173);
+}
+
+#add {
+  background-color: rgb(1, 1, 123);
+  border: none;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  border-radius: 20px;
+}
+
+#add img {
+  width: 30px;
+  height: auto;
+  filter: invert(1);
+}
+
+#add:hover {
+  background-color: rgb(7, 7, 173);
+}
 
 
   
