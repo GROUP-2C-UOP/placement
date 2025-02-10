@@ -9,6 +9,9 @@ import "../styles/Home.css";
 
 function Home() {
   const [placements, setPlacements] = useState([]);
+  const [placementsInProgress, setPlacementsInProgress] = useState([]);
+  const [placementsRejected, setPlacementsRejected] = useState([]);
+  const [placementsAccepted, setPlacementsAccepted] = useState([]);
   const [company, setCompany] = useState("");
   const [role, setRole] = useState("");
   const [salary, setSalary] = useState("");
@@ -24,10 +27,26 @@ function Home() {
   const [description, setDescription] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
   const [showAddButton, setShowAddButton] = useState(true);
+ 
+  const [sortProgressPlacements, setSortProgressPlacements] = useState({ key: null, ascending: true });
+  const [sortRejectedPlacements, setSortRejectedPlacements] = useState({ key: null, ascending: true });
+  const [sortAccpetedPlacements, setSortAcceptedPlacements] = useState({ key: null, ascending: true });
 
   useEffect(() => {
     getPlacements();
   }, []);
+
+  useEffect(() => {
+    placementsInProg();
+  }, [placements]);
+
+  useEffect(() => {
+    placementsRej();
+  }, [placements]);
+
+  useEffect(() => {
+    placementsAcc();
+  }, [placements]);
 
   const getPlacements = () => {
     api
@@ -37,6 +56,28 @@ function Home() {
         setPlacements(data);
       })
       .catch((err) => alert(err));
+  };
+
+  const placementsInProg = () => {
+    const pip = placements.filter(
+      (placement) =>
+        placement.status !== "rejected" && placement.status !== "accepted"
+    );
+    setPlacementsInProgress(pip);
+  };
+
+  const placementsRej = () => {
+    const rej = placements.filter(
+      (placement) => placement.status === "rejected"
+    );
+    setPlacementsRejected(rej);
+  };
+
+  const placementsAcc = () => {
+    const acc = placements.filter(
+      (placement) => placement.status === "offer_made"
+    );
+    setPlacementsAccepted(acc);
   };
 
   const deletePlacement = (id) => {
@@ -88,60 +129,315 @@ function Home() {
       .catch((err) => alert(err));
   };
 
+  const sortByHeader = (header, type) => {
+    let isAscending;
+    let sortedPlacements;
+  
+    switch (type) {
+      case "progress":
+        isAscending = sortProgressPlacements.key === header ? !sortProgressPlacements.ascending : true;
+        sortedPlacements = [...placementsInProgress].sort((a, b) => {
+          if (typeof a[header] === "string") {
+            return isAscending ? a[header].localeCompare(b[header]) : b[header].localeCompare(a[header]);
+          } else {
+            return isAscending ? a[header] - b[header] : b[header] - a[header];
+          }
+        });
+        setPlacementsInProgress(sortedPlacements);
+        setSortProgressPlacements({ key: header, ascending: isAscending });
+        break;
+  
+      case "rejected":
+        isAscending = sortRejectedPlacements.key === header ? !sortRejectedPlacements.ascending : true;
+        sortedPlacements = [...placementsRejected].sort((a, b) => {
+          if (typeof a[header] === "string") {
+            return isAscending ? a[header].localeCompare(b[header]) : b[header].localeCompare(a[header]);
+          } else {
+            return isAscending ? a[header] - b[header] : b[header] - a[header];
+          }
+        });
+        setPlacementsRejected(sortedPlacements);
+        setSortRejectedPlacements({ key: header, ascending: isAscending });
+        break;
+  
+      case "accepted":
+        isAscending = sortAccpetedPlacements.key === header ? !sortAccpetedPlacements.ascending : true;
+        sortedPlacements = [...placementsAccepted].sort((a, b) => {
+          if (typeof a[header] === "string") {
+            return isAscending ? a[header].localeCompare(b[header]) : b[header].localeCompare(a[header]);
+          } else {
+            return isAscending ? a[header] - b[header] : b[header] - a[header];
+          }
+        });
+        setPlacementsAccepted(sortedPlacements);
+        setSortAcceptedPlacements({ key: header, ascending: isAscending });
+        break;
+  
+      default:
+        console.error("Invalid placement type for sorting");
+        return;
+    }
+  };
+
   return (
     <div className="cont">
-      <NavBar></NavBar>
       <div id="content-container">
         <h1 className="placement-title">Placements</h1>
+        <h2 className="placement-subtitle">In Progress</h2>
         <div className="header-containerrr">
           <table>
-            <thead id="headers">
+            <thead id="progress-headers">
               <tr className="single-row">
-                <th className="main-headers">Company</th>
-                <th className="main-headers">Role</th>
-                <th className="main-headers">Status</th>
-                <th className="main-headers">Deadline</th>
-                <th className="main-headers">Note</th>
+                <th
+                  className="main-headers"
+                  onClick={() => sortByHeader("company", "progress")}
+                >
+                  Company
+                  {sortProgressPlacements.key === "company" ? (sortProgressPlacements.ascending ? "▲" : "▼") : ""}
+                </th>
+                <th
+                  className="main-headers"
+                  onClick={() => sortByHeader("role")}
+                >
+                  Role {sortProgressPlacements.key === "role" ? (sortProgressPlacements.ascending ? "▲" : "▼") : ""}
+                </th>
+                <th
+                  className="main-headers"
+                  onClick={() => sortByHeader("status")}
+                >
+                  Status
+                  {sortProgressPlacements.key === "status" ? (sortProgressPlacements.ascending ? "▲" : "▼") : ""}
+                </th>
+                <th
+                  className="main-headers"
+                  onClick={() => sortByHeader("next_stage_deadline")}
+                >
+                  Deadline
+                  {sortProgressPlacements.key === "next_stage_deadline"
+                    ? sortProgressPlacements.ascending
+                      ? "▲"
+                      : "▼"
+                    : ""}
+                </th>
+                <th
+                  className="main-headers"
+                  onClick={() => sortByHeader("description")}
+                >
+                  Notes{" "}
+                  {sortProgressPlacements.key === "description"
+                    ? sortProgressPlacements.ascending
+                      ? "▲"
+                      : "▼"
+                    : ""}
+                </th>
               </tr>
             </thead>
           </table>
         </div>
-        {placements.map((placement) => (
-          <Placement
-            isDashboard={false}
-            placement={placement}
-            statusLabels={statusLabels}
-            onDelete={deletePlacement}
-            key={placement.id}
-            company={company}
-            setCompany={setCompany}
-            role={role}
-            setRole={setRole}
-            salary={salary}
-            setSalary={setSalary}
-            startingDate={startingDate}
-            setStartingDate={setStartingDate}
-            duration={duration}
-            setDuration={setDuration}
-            deadline={deadline}
-            setDeadline={setDeadline}
-            applicationLink={applicationLink}
-            setApplicationLink={setApplicationLink}
-            dateApplied={dateApplied}
-            setDateApplied={setDateApplied}
-            status={status}
-            setStatus={setStatus}
-            cv={cv}
-            setCv={setCv}
-            coverLetter={coverLetter}
-            setCoverLetter={setCoverLetter}
-            contact={contact}
-            description={description}
-            setDescription={setDescription}
-            setContact={setContact}
-            getPlacements={getPlacements}
-          />
-        ))}
+        <div className="placement-type">
+          {placementsInProgress.map((placement) => (
+            <Placement
+              placementType={"progress"}
+              isDashboard={false}
+              placement={placement}
+              statusLabels={statusLabels}
+              onDelete={deletePlacement}
+              key={placement.id}
+              company={company}
+              setCompany={setCompany}
+              role={role}
+              setRole={setRole}
+              salary={salary}
+              setSalary={setSalary}
+              startingDate={startingDate}
+              setStartingDate={setStartingDate}
+              duration={duration}
+              setDuration={setDuration}
+              deadline={deadline}
+              setDeadline={setDeadline}
+              applicationLink={applicationLink}
+              setApplicationLink={setApplicationLink}
+              dateApplied={dateApplied}
+              setDateApplied={setDateApplied}
+              status={status}
+              setStatus={setStatus}
+              cv={cv}
+              setCv={setCv}
+              coverLetter={coverLetter}
+              setCoverLetter={setCoverLetter}
+              contact={contact}
+              description={description}
+              setDescription={setDescription}
+              setContact={setContact}
+              getPlacements={getPlacements}
+            />
+          ))}
+        </div>
+        <h2 className="placement-subtitle">Rejected</h2>
+        <div className="placement-type"></div>
+        <div className="header-containerrr">
+          <table>
+            <thead id="rejected-headers">
+              <tr className="single-row">
+                <th
+                  className="main-headers"
+                  onClick={() => sortByHeader("company", "rejected")}
+                >
+                  Company
+                  {sortRejectedPlacements.key === "company" ? (sortRejectedPlacements.ascending ? "▲" : "▼") : ""}
+                </th>
+                <th
+                  className="main-headers"
+                  onClick={() => sortByHeader("role", "rejected")}
+                >
+                  Role
+                  {sortRejectedPlacements.key === "role" ? (sortRejectedPlacements.ascending ? "▲" : "▼") : ""}
+                </th>
+                <th
+                  className="main-headers"
+                  onClick={() => sortByHeader("description", "rejected")}
+                >
+                  Feedback
+                  {sortRejectedPlacements.key === "description"
+                    ? sortRejectedPlacements.ascending
+                      ? "▲"
+                      : "▼"
+                    : ""}
+                </th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <div className="placement-type">
+          {placementsRejected.map((placement) => (
+            <Placement
+              placementType={"rejected"}
+              isDashboard={false}
+              placement={placement}
+              statusLabels={statusLabels}
+              onDelete={deletePlacement}
+              key={placement.id}
+              company={company}
+              setCompany={setCompany}
+              role={role}
+              setRole={setRole}
+              salary={salary}
+              setSalary={setSalary}
+              startingDate={startingDate}
+              setStartingDate={setStartingDate}
+              duration={duration}
+              setDuration={setDuration}
+              deadline={deadline}
+              setDeadline={setDeadline}
+              applicationLink={applicationLink}
+              setApplicationLink={setApplicationLink}
+              dateApplied={dateApplied}
+              setDateApplied={setDateApplied}
+              status={status}
+              setStatus={setStatus}
+              cv={cv}
+              setCv={setCv}
+              coverLetter={coverLetter}
+              setCoverLetter={setCoverLetter}
+              contact={contact}
+              description={description}
+              setDescription={setDescription}
+              setContact={setContact}
+              getPlacements={getPlacements}
+            />
+          ))}
+        </div>
+        <h2 className="placement-subtitle">Accepted</h2>
+        <div className="placement-type"></div>
+        <div className="header-containerrr">
+          <table>
+            <thead id="accepted-headers">
+              <tr className="single-row">
+                <th
+                  className="main-headers"
+                  onClick={() => sortByHeader("company", "accepted")}
+                >
+                  Company{" "}
+                  {sortAccpetedPlacements.key === "company" ? (sortAccpetedPlacements.ascending ? "▲" : "▼") : ""}
+                </th>
+                <th
+                  className="main-headers"
+                  onClick={() => sortByHeader("role", "accepted")}
+                >
+                  Role {sortAccpetedPlacements.key === "role" ? (sortAccpetedPlacements.ascending ? "▲" : "▼") : ""}
+                </th>
+                <th
+                  className="main-headers"
+                  onClick={() => sortByHeader("status", "accepted")}
+                >
+                  Status{" "}
+                  {sortAccpetedPlacements.key === "status" ? (sortAccpetedPlacements.ascending ? "▲" : "▼") : ""}
+                </th>
+                <th
+                  className="main-headers"
+                  onClick={() => sortByHeader("next_stage_deadline", "accepted")}
+                >
+                  Deadline{" "}
+                  {sortAccpetedPlacements.key === "next_stage_deadline"
+                    ? sortAccpetedPlacements.ascending
+                      ? "▲"
+                      : "▼"
+                    : ""}
+                </th>
+                <th
+                  className="main-headers"
+                  onClick={() => sortByHeader("description", "accepted")}
+                >
+                  Notes{" "}
+                  {sortAccpetedPlacements.key === "description"
+                    ? sortAccpetedPlacements.ascending
+                      ? "▲"
+                      : "▼"
+                    : ""}
+                </th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <div className="placement-type">
+          {placementsAccepted.map((placement) => (
+            <Placement
+              placementType={"accepted"}
+              isDashboard={false}
+              placement={placement}
+              statusLabels={statusLabels}
+              onDelete={deletePlacement}
+              key={placement.id}
+              company={company}
+              setCompany={setCompany}
+              role={role}
+              setRole={setRole}
+              salary={salary}
+              setSalary={setSalary}
+              startingDate={startingDate}
+              setStartingDate={setStartingDate}
+              duration={duration}
+              setDuration={setDuration}
+              deadline={deadline}
+              setDeadline={setDeadline}
+              applicationLink={applicationLink}
+              setApplicationLink={setApplicationLink}
+              dateApplied={dateApplied}
+              setDateApplied={setDateApplied}
+              status={status}
+              setStatus={setStatus}
+              cv={cv}
+              setCv={setCv}
+              coverLetter={coverLetter}
+              setCoverLetter={setCoverLetter}
+              contact={contact}
+              description={description}
+              setDescription={setDescription}
+              setContact={setContact}
+              getPlacements={getPlacements}
+            />
+          ))}
+        </div>
       </div>
       {showAddModal && (
         <AddModal

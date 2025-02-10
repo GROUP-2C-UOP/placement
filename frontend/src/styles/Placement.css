@@ -54,3 +54,8 @@ table {
   color: rgb(0, 255, 51);
   font-weight: bolder;
 }
+
+.rejected-spacing{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
