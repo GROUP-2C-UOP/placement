@@ -90,4 +90,4 @@ Urls.py routes this endpoint to the TokenObtainPairView. The TokenObtainPairView
 # Git Instructions
 
 C2 - Please make a branch named after the feature you're working on and after it's been fully implemented we will merge it during our group meeting to ensure conflicts are solved without the loss of work
-Please use JIRA and add/update issues accordingly so.
+Please use JIRA and add/update issues accordingly so. Check our Jira's project pages for the listed user requirements we should program for.
