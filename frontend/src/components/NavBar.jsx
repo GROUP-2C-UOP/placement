@@ -1,4 +1,5 @@
 import "../styles/NavBar.css";
+import { Link } from "react-router-dom";
 
 function NavBar() {
   return (
@@ -10,7 +11,7 @@ function NavBar() {
       <div id="header-container">
         <a href="#">Dashboard</a>
         <a href="#">Deadlines</a>
-        <a href="#">To-Do</a>
+        <Link to="/to-do">To-Do</Link>
         <a href="#">Statistics</a>
         <a href="#">Profile</a>
       </div>

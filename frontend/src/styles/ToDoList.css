@@ -1,0 +1,82 @@
+/* general page layout */
+.todo-list-container {
+    color: white; 
+    text-align: center;
+    margin: 20px auto;
+    width: 90vw;
+  }
+  
+  /* title*/
+  .todo-list-container h1 {
+    font-size: 50px;
+    margin-bottom: 20px;
+  }
+  
+  /* container for to do items */
+  .todo-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  /* individual to do item*/
+  .todo-item {
+    background-color: rgb(9, 9, 160); 
+    width: 80%;
+    padding: 15px;
+    border-radius: 50px; 
+    transition: background-color 0.3s ease;
+    display: grid;
+    grid-template-columns: 3fr 2fr 2fr 2fr;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+  
+  .todo-item:hover {
+    background-color: blue;
+  }
+  
+  .todo-item button {
+    padding: 10px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    font-size: 16px;
+  }
+  
+  /* move to active button */
+  .todo-item button:first-child {
+    background-color: #007bff; /* Blue - Matches theme */
+    color: white;
+  }
+  
+  .todo-item button:first-child:hover {
+    background-color: #0056b3; /* Darker hover effect */
+  }
+  
+  /* delete */
+  .todo-item button:last-child {
+    background-color: rgb(189, 182, 182); /* Matches Placement Delete Button */
+    color: black;
+  }
+  
+  .todo-item button:last-child:hover {
+    background-color: red;
+    color: white;
+  }
+  
+  /* responsive */
+  @media (max-width: 768px) {
+    .todo-item {
+      grid-template-columns: 1fr;
+      width: 95%;
+    }
+  
+    .todo-item button {
+      width: 100%;
+      margin-top: 10px;
+    }
+  }
+  
