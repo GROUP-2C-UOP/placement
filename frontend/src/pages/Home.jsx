@@ -3,7 +3,7 @@ import api from "../api";
 import Placement from "../components/Placement";
 import { statusLabels } from "../constants";
 import AddModal from "../components/AddModal";
-import NavBar from "../components/NavBar";
+import FilterModal from "../components/FilterModal";
 
 import "../styles/Home.css";
 
@@ -27,10 +27,20 @@ function Home() {
   const [description, setDescription] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
   const [showAddButton, setShowAddButton] = useState(true);
- 
-  const [sortProgressPlacements, setSortProgressPlacements] = useState({ key: null, ascending: true });
-  const [sortRejectedPlacements, setSortRejectedPlacements] = useState({ key: null, ascending: true });
-  const [sortAccpetedPlacements, setSortAcceptedPlacements] = useState({ key: null, ascending: true });
+  const [showFilter, setShowFilter] = useState(false);
+
+  const [sortProgressPlacements, setSortProgressPlacements] = useState({
+    key: null,
+    ascending: true,
+  });
+  const [sortRejectedPlacements, setSortRejectedPlacements] = useState({
+    key: null,
+    ascending: true,
+  });
+  const [sortAccpetedPlacements, setSortAcceptedPlacements] = useState({
+    key: null,
+    ascending: true,
+  });
 
   useEffect(() => {
     getPlacements();
@@ -55,6 +65,8 @@ function Home() {
       .then((data) => {
         setPlacements(data);
       })
+      
+
       .catch((err) => alert(err));
   };
 
@@ -132,13 +144,18 @@ function Home() {
   const sortByHeader = (header, type) => {
     let isAscending;
     let sortedPlacements;
-  
+
     switch (type) {
       case "progress":
-        isAscending = sortProgressPlacements.key === header ? !sortProgressPlacements.ascending : true;
+        isAscending =
+          sortProgressPlacements.key === header
+            ? !sortProgressPlacements.ascending
+            : true;
         sortedPlacements = [...placementsInProgress].sort((a, b) => {
           if (typeof a[header] === "string") {
-            return isAscending ? a[header].localeCompare(b[header]) : b[header].localeCompare(a[header]);
+            return isAscending
+              ? a[header].localeCompare(b[header])
+              : b[header].localeCompare(a[header]);
           } else {
             return isAscending ? a[header] - b[header] : b[header] - a[header];
           }
@@ -146,12 +163,17 @@ function Home() {
         setPlacementsInProgress(sortedPlacements);
         setSortProgressPlacements({ key: header, ascending: isAscending });
         break;
-  
+
       case "rejected":
-        isAscending = sortRejectedPlacements.key === header ? !sortRejectedPlacements.ascending : true;
+        isAscending =
+          sortRejectedPlacements.key === header
+            ? !sortRejectedPlacements.ascending
+            : true;
         sortedPlacements = [...placementsRejected].sort((a, b) => {
           if (typeof a[header] === "string") {
-            return isAscending ? a[header].localeCompare(b[header]) : b[header].localeCompare(a[header]);
+            return isAscending
+              ? a[header].localeCompare(b[header])
+              : b[header].localeCompare(a[header]);
           } else {
             return isAscending ? a[header] - b[header] : b[header] - a[header];
           }
@@ -159,12 +181,17 @@ function Home() {
         setPlacementsRejected(sortedPlacements);
         setSortRejectedPlacements({ key: header, ascending: isAscending });
         break;
-  
+
       case "accepted":
-        isAscending = sortAccpetedPlacements.key === header ? !sortAccpetedPlacements.ascending : true;
+        isAscending =
+          sortAccpetedPlacements.key === header
+            ? !sortAccpetedPlacements.ascending
+            : true;
         sortedPlacements = [...placementsAccepted].sort((a, b) => {
           if (typeof a[header] === "string") {
-            return isAscending ? a[header].localeCompare(b[header]) : b[header].localeCompare(a[header]);
+            return isAscending
+              ? a[header].localeCompare(b[header])
+              : b[header].localeCompare(a[header]);
           } else {
             return isAscending ? a[header] - b[header] : b[header] - a[header];
           }
@@ -172,7 +199,7 @@ function Home() {
         setPlacementsAccepted(sortedPlacements);
         setSortAcceptedPlacements({ key: header, ascending: isAscending });
         break;
-  
+
       default:
         console.error("Invalid placement type for sorting");
         return;
@@ -183,7 +210,12 @@ function Home() {
     <div className="cont">
       <div id="content-container">
         <h1 className="placement-title">Placements</h1>
-        <h2 className="placement-subtitle">In Progress</h2>
+        <h2 className="placement-subtitle">
+          In Progress
+          <button id="filter-button" onClick={() => setShowFilter(true)}>
+            <img src="/src/assets/filter.svg"></img>
+          </button>
+        </h2>
         <div className="header-containerrr">
           <table>
             <thead id="progress-headers">
@@ -193,24 +225,39 @@ function Home() {
                   onClick={() => sortByHeader("company", "progress")}
                 >
                   Company
-                  {sortProgressPlacements.key === "company" ? (sortProgressPlacements.ascending ? "▲" : "▼") : ""}
+                  {sortProgressPlacements.key === "company"
+                    ? sortProgressPlacements.ascending
+                      ? "▲"
+                      : "▼"
+                    : ""}
                 </th>
                 <th
                   className="main-headers"
                   onClick={() => sortByHeader("role", "progress")}
                 >
-                  Role {sortProgressPlacements.key === "role" ? (sortProgressPlacements.ascending ? "▲" : "▼") : ""}
+                  Role{" "}
+                  {sortProgressPlacements.key === "role"
+                    ? sortProgressPlacements.ascending
+                      ? "▲"
+                      : "▼"
+                    : ""}
                 </th>
                 <th
                   className="main-headers"
                   onClick={() => sortByHeader("status", "progress")}
                 >
                   Status
-                  {sortProgressPlacements.key === "status" ? (sortProgressPlacements.ascending ? "▲" : "▼") : ""}
+                  {sortProgressPlacements.key === "status"
+                    ? sortProgressPlacements.ascending
+                      ? "▲"
+                      : "▼"
+                    : ""}
                 </th>
                 <th
                   className="main-headers"
-                  onClick={() => sortByHeader("next_stage_deadline", "progress")}
+                  onClick={() =>
+                    sortByHeader("next_stage_deadline", "progress")
+                  }
                 >
                   Deadline
                   {sortProgressPlacements.key === "next_stage_deadline"
@@ -273,7 +320,9 @@ function Home() {
             />
           ))}
         </div>
-        <h2 className="placement-subtitle">Rejected</h2>
+        <h2 className="placement-subtitle">
+          <span>🔴</span>Rejected<span>🔴</span>
+        </h2>
         <div className="placement-type"></div>
         <div className="header-containerrr">
           <table>
@@ -284,14 +333,22 @@ function Home() {
                   onClick={() => sortByHeader("company", "rejected")}
                 >
                   Company
-                  {sortRejectedPlacements.key === "company" ? (sortRejectedPlacements.ascending ? "▲" : "▼") : ""}
+                  {sortRejectedPlacements.key === "company"
+                    ? sortRejectedPlacements.ascending
+                      ? "▲"
+                      : "▼"
+                    : ""}
                 </th>
                 <th
                   className="main-headers"
                   onClick={() => sortByHeader("role", "rejected")}
                 >
                   Role
-                  {sortRejectedPlacements.key === "role" ? (sortRejectedPlacements.ascending ? "▲" : "▼") : ""}
+                  {sortRejectedPlacements.key === "role"
+                    ? sortRejectedPlacements.ascending
+                      ? "▲"
+                      : "▼"
+                    : ""}
                 </th>
                 <th
                   className="main-headers"
@@ -347,7 +404,9 @@ function Home() {
             />
           ))}
         </div>
-        <h2 className="placement-subtitle">Accepted</h2>
+        <h2 className="placement-subtitle">
+          <span>🟢</span>Accepted<span>🟢</span>
+        </h2>
         <div className="placement-type"></div>
         <div className="header-containerrr">
           <table>
@@ -358,13 +417,22 @@ function Home() {
                   onClick={() => sortByHeader("company", "accepted")}
                 >
                   Company{" "}
-                  {sortAccpetedPlacements.key === "company" ? (sortAccpetedPlacements.ascending ? "▲" : "▼") : ""}
+                  {sortAccpetedPlacements.key === "company"
+                    ? sortAccpetedPlacements.ascending
+                      ? "▲"
+                      : "▼"
+                    : ""}
                 </th>
                 <th
                   className="main-headers"
                   onClick={() => sortByHeader("role", "accepted")}
                 >
-                  Role {sortAccpetedPlacements.key === "role" ? (sortAccpetedPlacements.ascending ? "▲" : "▼") : ""}
+                  Role{" "}
+                  {sortAccpetedPlacements.key === "role"
+                    ? sortAccpetedPlacements.ascending
+                      ? "▲"
+                      : "▼"
+                    : ""}
                 </th>
                 <th
                   className="main-headers"
@@ -478,6 +546,7 @@ function Home() {
           <img src="src/assets/add.svg" />
         </button>
       )}
+      {showFilter && <FilterModal setShowFilter={setShowFilter} placementsInProgress={placementsInProgress}></FilterModal>}
     </div>
   );
 }
