@@ -89,3 +89,9 @@ thead {
   object-fit: contain; 
 }
 
+.table-row th {
+  white-space: nowrap;  /* Prevents text from wrapping */
+  overflow: hidden;  /* Hides overflowing text */
+  text-overflow: ellipsis;  /* Adds "..." at the end */
+   
+}
