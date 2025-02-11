@@ -265,8 +265,8 @@ function PlacementModal({
               <img src="src/assets/close.svg" />
             </button>
             <h2 id="general-title">Update Stage</h2>
-            <div id="modal-content">
-              <div className="detail">
+            <div id="modal-content" className="updateChoicesDiv"> 
+              <div className="detailU">
                 <label>Status:</label>
                 <br />
                 <select
@@ -285,7 +285,7 @@ function PlacementModal({
                   ))}
                 </select>
               </div>
-              <div className="detail">
+              <div className="detailU">
                 <label>Deadline:</label>
                 <br />
                 <input
@@ -335,7 +335,7 @@ function PlacementModal({
             </button>
             <h2 id="general-title">Placement Details</h2>
             <div id="modal-content">
-              <div className="detail">
+              <div className="detailU">
                 <label>Company:</label>
                 <br />
                 <input
@@ -349,7 +349,7 @@ function PlacementModal({
                   placeholder={placement.company}
                 />
               </div>
-              <div className="detail">
+              <div className="detailU">
                 <label>Role:</label>
                 <br />
                 <input
@@ -363,7 +363,7 @@ function PlacementModal({
                   placeholder={placement.role}
                 />
               </div>
-              <div className="detail">
+              <div className="detailU">
                 <label>Salary:</label>
                 <br />
                 <input
@@ -377,7 +377,7 @@ function PlacementModal({
                   required
                 />
               </div>
-              <div className="detail">
+              <div className="detailU">
                 <label>Starting Date:</label>
                 <br />
                 <input
@@ -389,7 +389,7 @@ function PlacementModal({
                   value={startingDate}
                 />
               </div>
-              <div className="detail">
+              <div className="detailU">
                 <label>Duration:</label>
                 <br />
                 <input
@@ -403,7 +403,7 @@ function PlacementModal({
                   required
                 />
               </div>
-              <div className="detail">
+              <div className="detailU">
                 <label>Application Link:</label>
                 <br />
                 <input
@@ -416,7 +416,7 @@ function PlacementModal({
                   value={applicationLink}
                 />
               </div>
-              <div className="detail">
+              <div className="detailU">
                 <label>CV:</label>
                 <br />
                 <input
@@ -426,7 +426,7 @@ function PlacementModal({
                   onChange={(e) => setCv(e.target.files[0])}
                 />
               </div>
-              <div className="detail">
+              <div className="detailU">
                 <label>Cover Letter:</label>
                 <br />
                 <input
@@ -436,7 +436,7 @@ function PlacementModal({
                   onChange={(e) => setCoverLetter(e.target.files[0])}
                 />
               </div>
-              <div className="detail">
+              <div className="detailU">
                 <label>Contact:</label>
                 <br />
                 <input
@@ -449,7 +449,7 @@ function PlacementModal({
                   placeholder={placement.contact}
                 />
               </div>
-              <div className="detail">
+              <div className="detailU">
                 <label>Date Applied:</label>
                 <br />
                 <input

@@ -118,12 +118,22 @@
   grid-template-columns: 1fr 1fr;
   gap: 20px;
   justify-items: center;
+  overflow: hidden;
 }
 
 .detail {
   text-align: center;
   padding: 5px;
+  width: 100%;
+  overflow: hidden; 
+  text-overflow: ellipsis; 
 }
+
+.detailU {
+  text-align: center;
+  padding: 5px;
+}
+
 
 label {
   font-weight: bold;
@@ -175,7 +185,7 @@ textarea {
 }
 
 .update {
-  height: 40vh !important;
+  height: 45vh !important;
 }
 
 .editing-window {
