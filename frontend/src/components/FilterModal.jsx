@@ -1,110 +1,75 @@
+import "../styles/FilterModal.css";
 import { useState } from "react";
-import { Range } from "react-range";
 
-function FilterModal({ setShowFilter, placementsInProgress }) {
+function FilterModal({
+  setShowFilter,
+  placementsInProgress,
+  setFilterRoles,
+  setIsFiltered,
+  filteredPlacementsInProg,
+}) {
   const placementRoles = new Set();
 
   for (const placement of placementsInProgress) {
     placementRoles.add(placement.role);
   }
 
-  const days = [];
+  const [selectedRoles, setSelectedRoles] = useState(new Set());
 
-  for (const placement of placementsInProgress) {
-    const today = new Date();
-    const deadlineDate = new Date(placement.next_stage_deadline);
-    const timeDifference = deadlineDate - today;
-    let daysRemaining = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-    days.push(daysRemaining);
-  }
+  const handleRoleChange = (role) => {
+    const newSelectedRoles = new Set(selectedRoles);
+    if (newSelectedRoles.has(role)) {
+      newSelectedRoles.delete(role);
+    } else {
+      newSelectedRoles.add(role);
+    }
+    setSelectedRoles(newSelectedRoles);
+  };
 
-  const [showRoles, setShowRoles] = useState(false);
-  const [showSlider, setShowSlider] = useState(false);
-  const minRange = Math.min(...days);
-  const maxRange = Math.max(...days);
+  const handleSave = () => {
+    if (selectedRoles.size === 0) {
+      alert("Please select at least one role.");
+    } else {
+      setFilterRoles([...selectedRoles]);
+      setIsFiltered(true);
+      setShowFilter(false);
+    }
+  };
 
-  // Define the values state for the Range component (two values for two thumbs)
-  const [values, setValues] = useState([minRange, maxRange]); // Set initial values to minRange and maxRange
+  const handleClearFilter = () => {
+    setSelectedRoles(new Set());
+    setFilterRoles([]);
+    setIsFiltered(false);
+    setShowFilter(false);
+  };
 
   return (
-    <div>
-      <div id="modal-window" className="update">
+    <div id="overlay">
+      <div id="filter-modal-window">
         <button className="close-button" onClick={() => setShowFilter(false)}>
           <img src="src/assets/close.svg" alt="Close" />
         </button>
+        <button className="clear-filter" onClick={handleClearFilter}>
+          <img src="src/assets/clear.svg" />
+        </button>
         <h2>Filter Placements</h2>
-        <button
-          onClick={() => {
-            setShowRoles(!showRoles);
-          }}
-        >
-          By Role
-        </button>
-        {showRoles &&
-          [...placementRoles].map((role) => (
-            <label key={role}>
-              <input type="checkbox" />
-              {role}
-            </label>
-          ))}
-        <button
-          onClick={() => {
-            setShowSlider(!showSlider);
-          }}
-        >
-          By Days Remaining
-        </button>
-        {showSlider && (
-          <div>
-            <Range
-              label="Select your value"
-              step={1}
-              min={minRange}
-              max={maxRange}
-              values={values}
-              onChange={(newValues) => setValues(newValues)}
-              renderTrack={({ props, children }) => (
-                <div
-                  {...props}
-                  style={{
-                    ...props.style,
-                    height: "6px",
-                    width: "100%",
-                    backgroundColor: "#ccc",
-                  }}
-                >
-                  {children}
-                </div>
-              )}
-              renderThumb={({ props, index }) => (
-                <div
-                  {...props}
-                  key={props.key}
-                  style={{
-                    ...props.style,
-                    height: "22px",
-                    width: "22px",
-                    backgroundColor: index === 0 ? "#999" : "#666", // Different colors for each thumb
-                  }}
+        <div id="filter-options">
+          <p>By Role</p>
+          <div id="roles">
+            {[...placementRoles].map((role) => (
+              <label key={role}>
+                <input
+                  type="checkbox"
+                  onChange={() => handleRoleChange(role)}
                 />
-              )}
-            />
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <span>Min: {values[0]}</span>
-              <span>Max: {values[1]}</span>
-            </div>
+                {role}
+              </label>
+            ))}
           </div>
-        )}
+        </div>
         <div id="update-buttons">
-          <button
-            className="save-button"
-            onClick={() => {
-              console.log([...placementRoles]);
-              console.log(minRange);
-              console.log(maxRange);
-            }}
-          >
-            <img src="src/assets/save.svg" alt="Save" />
+          <button className="save-button filt-but" onClick={handleSave}>
+            <img src="src/assets/save.svg" />
           </button>
         </div>
       </div>
