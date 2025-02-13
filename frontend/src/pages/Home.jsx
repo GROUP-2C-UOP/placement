@@ -162,6 +162,13 @@ function Home() {
     let isAscending;
     let sortedPlacements;
 
+    const handleNull = (value, isAscending) => {
+      if (value === "null" || value === "" || value === null) {
+        return isAscending ? "zzzzzzz" : ""; //value becomes zzzz to put at the end for ascending and becomes empty to be put first for descending
+      }
+      return value;
+    };
+
     switch (type) {
       case "progress":
         isAscending =
@@ -169,10 +176,13 @@ function Home() {
             ? !sortProgressPlacements.ascending
             : true;
         sortedPlacements = [...placementsInProgress].sort((a, b) => {
+          const aValue = handleNull(a[header]);
+          const bValue = handleNull(b[header]);
+
           if (typeof a[header] === "string") {
             return isAscending
-              ? a[header].localeCompare(b[header])
-              : b[header].localeCompare(a[header]);
+              ? aValue.localeCompare(b[header])
+              : bValue.localeCompare(a[header]);
           } else {
             return isAscending ? a[header] - b[header] : b[header] - a[header];
           }
@@ -187,10 +197,13 @@ function Home() {
             ? !sortRejectedPlacements.ascending
             : true;
         sortedPlacements = [...placementsRejected].sort((a, b) => {
+          const aValue = handleNull(a[header]);
+          const bValue = handleNull(b[header]);
+
           if (typeof a[header] === "string") {
             return isAscending
-              ? a[header].localeCompare(b[header])
-              : b[header].localeCompare(a[header]);
+              ? aValue.localeCompare(b[header])
+              : bValue.localeCompare(a[header]);
           } else {
             return isAscending ? a[header] - b[header] : b[header] - a[header];
           }
@@ -205,10 +218,13 @@ function Home() {
             ? !sortAccpetedPlacements.ascending
             : true;
         sortedPlacements = [...placementsAccepted].sort((a, b) => {
+          const aValue = handleNull(a[header]);
+          const bValue = handleNull(b[header]);
+
           if (typeof a[header] === "string") {
             return isAscending
-              ? a[header].localeCompare(b[header])
-              : b[header].localeCompare(a[header]);
+              ? aValue.localeCompare(b[header])
+              : bValue.localeCompare(a[header]);
           } else {
             return isAscending ? a[header] - b[header] : b[header] - a[header];
           }

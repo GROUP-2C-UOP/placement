@@ -1,6 +1,6 @@
 import "../styles/PlacementModal.css";
 import { statusLabels } from "../constants";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ConfirmationModal from "./ConfirmationModal.jsx";
 import api from "../api";
 
@@ -121,6 +121,16 @@ function PlacementModal({
         alert("Failed, check console");
       });
   };
+
+  useEffect(() => {
+    if (showModal) {
+      setDescription(
+        placement.description === "null" ? "" : placement.description
+      );
+      setStatus(placement.status);
+      setDeadline(placement.next_stage_deadline);
+    }
+  }, [showModal, placement.description, placement.status, placement.deadline]);
 
   return (
     <div>
@@ -265,7 +275,7 @@ function PlacementModal({
               <img src="src/assets/close.svg" />
             </button>
             <h2 id="general-title">Update Stage</h2>
-            <div id="modal-content" className="updateChoicesDiv"> 
+            <div id="modal-content" className="updateChoicesDiv">
               <div className="detailU">
                 <label>Status:</label>
                 <br />
@@ -305,7 +315,9 @@ function PlacementModal({
                 type="text"
                 id="description"
                 name="description"
-                onChange={(e) => setDescription(e.target.value)}
+                onChange={(e) =>
+                  setDescription(e.target.value === "" ? null : e.target.value)
+                }
                 value={description}
               />
             </div>
@@ -314,6 +326,7 @@ function PlacementModal({
                 className="save-button"
                 onClick={() => {
                   updatePlacement(placement.id, getPlacements, setShowModal);
+                  console.log(placement.description);
                 }}
               >
                 <img src="src/assets/save.svg" />
