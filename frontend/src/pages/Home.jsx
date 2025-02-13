@@ -10,6 +10,8 @@ import "../styles/Home.css";
 function Home() {
   const [placements, setPlacements] = useState([]);
   const [placementsInProgress, setPlacementsInProgress] = useState([]);
+  const [filteredPlacementsInProgress, setFilteredPlacementsInProgress] =
+    useState([]);
   const [placementsRejected, setPlacementsRejected] = useState([]);
   const [placementsAccepted, setPlacementsAccepted] = useState([]);
   const [company, setCompany] = useState("");
@@ -28,6 +30,8 @@ function Home() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showAddButton, setShowAddButton] = useState(true);
   const [showFilter, setShowFilter] = useState(false);
+  const [isFiltered, setIsFiltered] = useState(false);
+  const [filterRoles, setFilterRoles] = useState([]);
 
   const [sortProgressPlacements, setSortProgressPlacements] = useState({
     key: null,
@@ -58,6 +62,10 @@ function Home() {
     placementsAcc();
   }, [placements]);
 
+  useEffect(() => {
+    filteredPlacementsInProg();
+  }, [filterRoles]);
+
   const getPlacements = () => {
     api
       .get("/api/placements/")
@@ -65,7 +73,6 @@ function Home() {
       .then((data) => {
         setPlacements(data);
       })
-      
 
       .catch((err) => alert(err));
   };
@@ -76,6 +83,16 @@ function Home() {
         placement.status !== "rejected" && placement.status !== "offer_made"
     );
     setPlacementsInProgress(pip);
+  };
+
+  const filteredPlacementsInProg = () => {
+    const pip = placements.filter(
+      (placement) =>
+        placement.status !== "rejected" &&
+        placement.status !== "offer_made" &&
+        filterRoles.includes(placement.role)
+    );
+    setFilteredPlacementsInProgress(pip);
   };
 
   const placementsRej = () => {
@@ -282,44 +299,84 @@ function Home() {
           </table>
         </div>
         <div className="placement-type">
-          {placementsInProgress.map((placement) => (
-            <Placement
-              placementType={"progress"}
-              isDashboard={false}
-              placement={placement}
-              statusLabels={statusLabels}
-              onDelete={deletePlacement}
-              key={placement.id}
-              company={company}
-              setCompany={setCompany}
-              role={role}
-              setRole={setRole}
-              salary={salary}
-              setSalary={setSalary}
-              startingDate={startingDate}
-              setStartingDate={setStartingDate}
-              duration={duration}
-              setDuration={setDuration}
-              deadline={deadline}
-              setDeadline={setDeadline}
-              applicationLink={applicationLink}
-              setApplicationLink={setApplicationLink}
-              dateApplied={dateApplied}
-              setDateApplied={setDateApplied}
-              status={status}
-              setStatus={setStatus}
-              cv={cv}
-              setCv={setCv}
-              coverLetter={coverLetter}
-              setCoverLetter={setCoverLetter}
-              contact={contact}
-              description={description}
-              setDescription={setDescription}
-              setContact={setContact}
-              getPlacements={getPlacements}
-            />
-          ))}
+          {!isFiltered &&
+            placementsInProgress.map((placement) => (
+              <Placement
+                placementType={"progress"}
+                isDashboard={false}
+                placement={placement}
+                statusLabels={statusLabels}
+                onDelete={deletePlacement}
+                key={placement.id}
+                company={company}
+                setCompany={setCompany}
+                role={role}
+                setRole={setRole}
+                salary={salary}
+                setSalary={setSalary}
+                startingDate={startingDate}
+                setStartingDate={setStartingDate}
+                duration={duration}
+                setDuration={setDuration}
+                deadline={deadline}
+                setDeadline={setDeadline}
+                applicationLink={applicationLink}
+                setApplicationLink={setApplicationLink}
+                dateApplied={dateApplied}
+                setDateApplied={setDateApplied}
+                status={status}
+                setStatus={setStatus}
+                cv={cv}
+                setCv={setCv}
+                coverLetter={coverLetter}
+                setCoverLetter={setCoverLetter}
+                contact={contact}
+                description={description}
+                setDescription={setDescription}
+                setContact={setContact}
+                getPlacements={getPlacements}
+              />
+            ))}
+          {isFiltered &&
+            filteredPlacementsInProgress.map((placement) => (
+              <Placement
+                placementType={"progress"}
+                isDashboard={false}
+                placement={placement}
+                statusLabels={statusLabels}
+                onDelete={deletePlacement}
+                key={placement.id}
+                company={company}
+                setCompany={setCompany}
+                role={role}
+                setRole={setRole}
+                salary={salary}
+                setSalary={setSalary}
+                startingDate={startingDate}
+                setStartingDate={setStartingDate}
+                duration={duration}
+                setDuration={setDuration}
+                deadline={deadline}
+                setDeadline={setDeadline}
+                applicationLink={applicationLink}
+                setApplicationLink={setApplicationLink}
+                dateApplied={dateApplied}
+                setDateApplied={setDateApplied}
+                status={status}
+                setStatus={setStatus}
+                cv={cv}
+                setCv={setCv}
+                coverLetter={coverLetter}
+                setCoverLetter={setCoverLetter}
+                contact={contact}
+                description={description}
+                setDescription={setDescription}
+                setContact={setContact}
+                getPlacements={getPlacements}
+              />
+            ))}
         </div>
+
         <h2 className="placement-subtitle">
           <span>🔴</span>Rejected<span>🔴</span>
         </h2>
@@ -546,7 +603,15 @@ function Home() {
           <img src="src/assets/add.svg" />
         </button>
       )}
-      {showFilter && <FilterModal setShowFilter={setShowFilter} placementsInProgress={placementsInProgress}></FilterModal>}
+      {showFilter && (
+        <FilterModal
+          setShowFilter={setShowFilter}
+          placementsInProgress={placementsInProgress}
+          setFilterRoles={setFilterRoles}
+          setIsFiltered={setIsFiltered}
+          filteredPlacementsInProg={filteredPlacementsInProg}
+        ></FilterModal>
+      )}
     </div>
   );
 }

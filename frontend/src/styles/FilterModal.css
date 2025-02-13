@@ -1,0 +1,54 @@
+#filter-options {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+}
+
+#update-buttons {
+  position: absolute;
+  bottom: 3%;
+}
+
+#filter-modal-window {
+  height: auto;
+  width: 40vw;
+  max-height: 95vh;
+  background-color: navy;
+  z-index: 1000;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50px;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#roles {
+  text-align: center;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+  margin-bottom: 50px;
+}
+
+.clear-filter {
+  position: absolute;
+  left: 5%;
+  top: 5%;
+  background: none;
+  border: none;
+  margin-top: 8px;
+}
+
+.clear-filter img {
+    width: 25px;
+    height: auto;
+    filter: invert(1);
+}
