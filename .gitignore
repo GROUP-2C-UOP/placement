@@ -28,7 +28,8 @@ Thumbs.db
 
 # Database files
 backend/db.sqlite3
-backend/api/migrations/0001_initial.py
+backend/api/migrations/*
+!backend/api/migrations/__init__.py
 
 # Ignore all migration files (except __init__.py)
 backend/migrations/
