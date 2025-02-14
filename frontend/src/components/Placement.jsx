@@ -74,6 +74,9 @@ function Placement({
     ) {
       return "N/A";
     }
+    if (placement.next_stage_deadline === null) {
+      return "N/A"
+    }
     if (daysRemaining < 0) {
       return "Deadline passed";
     }
@@ -83,6 +86,7 @@ function Placement({
     if (daysRemaining === 1) {
       return `1 Day`;
     }
+    
 
     return `${daysRemaining} Days`;
   };

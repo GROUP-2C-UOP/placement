@@ -75,6 +75,28 @@ function PlacementModal({
     description,
   };
 
+  const resetForm = () => {
+    setCompany("");
+    setRole("");
+    setSalary("");
+    setStartingDate("");
+    setDuration("");
+    setDeadline("");
+    setStatus("");
+    setApplicationLink("");
+    setCv("");
+    setCoverLetter("");
+    setContact("");
+    setDateApplied("");
+    setDescription("");
+  };
+
+  useEffect(() => {
+    if (editing && !isDashboard) {
+      resetForm();
+    }
+  }, [editing]);
+
   const check = () => {
     let formData = new FormData();
 
@@ -98,22 +120,9 @@ function PlacementModal({
       .then((res) => {
         if (res.status === 200 || res.status === 204) {
           alert("Placement Updated");
-
-          setCompany("");
-          setRole("");
-          setSalary("");
-          setStartingDate("");
-          setDuration("");
-          setDeadline("");
-          setStatus("");
-          setApplicationLink("");
-          setCv("");
-          setCoverLetter("");
-          setContact("");
-          setDateApplied("");
-          setDescription("");
           getPlacements();
           setShowModal(false);
+          resetForm();
         } else alert("Something went wrong, try again.");
       })
       .catch((error) => {
@@ -123,7 +132,7 @@ function PlacementModal({
   };
 
   useEffect(() => {
-    if (showModal) {
+    if (showModal && !isDashboard) {
       setDescription(
         placement.description === "null" ? "" : placement.description
       );
@@ -136,26 +145,33 @@ function PlacementModal({
     <div>
       {!editing && (
         <div className={`${showModal ? "" : "hidden"} ${modalType}`}>
-          <div id="modal-window">
+          <div
+            id="modal-window"
+            className={isDashboard ? "dashboard-modal-window" : ""}
+          >
             <button class="close-button" onClick={closeModal}>
               <img src="src/assets/close.svg" />
             </button>
-            <button
-              id="edit-button"
-              onClick={() => {
-                setEditing(true);
-              }}
-            >
-              <img src="src/assets/edit.svg" />
-            </button>
-            <button
-              id="delete-button"
-              onClick={() => {
-                setConfirmation(true);
-              }}
-            >
-              <img src="src/assets/bin.svg" />
-            </button>
+            {!isDashboard && (
+              <>
+                <button
+                  id="edit-button"
+                  onClick={() => {
+                    setEditing(true);
+                  }}
+                >
+                  <img src="src/assets/edit.svg" />
+                </button>
+                <button
+                  id="delete-button"
+                  onClick={() => {
+                    setConfirmation(true);
+                  }}
+                >
+                  <img src="src/assets/bin.svg" />
+                </button>
+              </>
+            )}
             <h2 id="general-title">Placement Details</h2>
             <div id="modal-content" className="placement-grid">
               <div className="detail">
@@ -171,22 +187,30 @@ function PlacementModal({
               <div className="detail">
                 <label>Salary:</label>
                 <br />
-                {placement.salary}
+                {placement.salary === "null" ? "" : placement.salary || ""}
               </div>
               <div className="detail">
                 <label>Starting Date:</label>
                 <br />
-                {placement.starting_date}
+                {placement.starting_date === "null"
+                  ? ""
+                  : new Date(placement.starting_date).toLocaleDateString(
+                      "en-GB"
+                    ) || ""}
               </div>
               <div className="detail">
                 <label>Duration:</label>
                 <br />
-                {placement.duration}
+                {placement.duration === "null" ? "" : placement.duration || ""}
               </div>
               <div className="detail">
                 <label>Deadline:</label>
                 <br />
-                {placement.next_stage_deadline}
+                {placement.next_stage_deadline === "null"
+                  ? ""
+                  : new Date(placement.next_stage_deadline).toLocaleDateString(
+                      "en-GB"
+                    ) || ""}
               </div>
               <div className="detail">
                 <label>Status:</label>
@@ -196,18 +220,23 @@ function PlacementModal({
               <div className="detail">
                 <label>Application Link:</label>
                 <br />
-                <a
-                  href={placement.placement_link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  View Listing
-                </a>
+                {placement.placement_link &&
+                placement.placement_link !== "null" ? (
+                  <a
+                    href={placement.placement_link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    View Listing
+                  </a>
+                ) : (
+                  ""
+                )}
               </div>
               <div className="detail">
                 <label>CV:</label>
                 <br />
-                {placement.cv && (
+                {placement.cv && placement.cv !== "null" ? (
                   <a
                     href={placement.cv}
                     target="_blank"
@@ -215,12 +244,14 @@ function PlacementModal({
                   >
                     View CV
                   </a>
+                ) : (
+                  ""
                 )}
               </div>
               <div className="detail">
                 <label>Cover Letter:</label>
                 <br />
-                {placement.cover_letter && (
+                {placement.cover_letter && placement.cover_letter !== "null" ? (
                   <a
                     href={placement.cover_letter}
                     target="_blank"
@@ -228,17 +259,19 @@ function PlacementModal({
                   >
                     View Cover Letter
                   </a>
+                ) : (
+                  ""
                 )}
               </div>
               <div className="detail">
                 <label>Contact:</label>
                 <br />
-                {placement.contact}
+                {placement.contact === "null" ? "" : placement.contact || ""}
               </div>
               <div className="detail">
                 <label>Date Applied:</label>
                 <br />
-                {placement.date_applied}
+                {new Date(placement.date_applied).toLocaleDateString("en-GB")}
               </div>
               {placement.description && placement.description !== "null" && (
                 <div className="detail" id="note-on-modal">
@@ -350,7 +383,7 @@ function PlacementModal({
             <div id="modal-content">
               <div className="detailU">
                 <label>Company:</label>
-                <br />
+
                 <input
                   type="text"
                   id="company"
@@ -364,7 +397,7 @@ function PlacementModal({
               </div>
               <div className="detailU">
                 <label>Role:</label>
-                <br />
+
                 <input
                   type="text"
                   id="role"
@@ -378,7 +411,7 @@ function PlacementModal({
               </div>
               <div className="detailU">
                 <label>Salary:</label>
-                <br />
+
                 <input
                   type="number"
                   id="salary"
@@ -386,13 +419,15 @@ function PlacementModal({
                   name="salary"
                   onChange={(e) => setSalary(e.target.value)}
                   value={salary}
-                  placeholder={placement.salary}
+                  placeholder={
+                    placement.salary === "null" ? "" : placement.salary || ""
+                  }
                   required
                 />
               </div>
               <div className="detailU">
                 <label>Starting Date:</label>
-                <br />
+
                 <input
                   type="date"
                   id="startingDate"
@@ -404,7 +439,7 @@ function PlacementModal({
               </div>
               <div className="detailU">
                 <label>Duration:</label>
-                <br />
+
                 <input
                   type="number"
                   id="duration"
@@ -412,25 +447,44 @@ function PlacementModal({
                   name="duration"
                   onChange={(e) => setDuration(e.target.value)}
                   value={duration}
-                  placeholder={placement.duration}
+                  placeholder={
+                    placement.duration === "null"
+                      ? ""
+                      : placement.duration || ""
+                  }
                   required
                 />
               </div>
               <div className="detailU">
                 <label>Application Link:</label>
-                <br />
+
                 <input
                   type="url"
                   id="applicationLink"
                   className="input-field"
                   name="applicationLink"
-                  placeholder={placement.placement_link}
+                  placeholder={
+                    placement.placement_link === "null"
+                      ? ""
+                      : placement.placement_link || ""
+                  }
                   onChange={(e) => setApplicationLink(e.target.value)}
                   value={applicationLink}
                 />
               </div>
               <div className="detailU">
-                <label>CV:</label>
+                <label>Change CV:</label>
+                {placement.cv && (
+                  <div>
+                    <a
+                      href={placement.cv}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      View existing CV
+                    </a>
+                  </div>
+                )}
                 <br />
                 <input
                   type="file"
@@ -440,7 +494,18 @@ function PlacementModal({
                 />
               </div>
               <div className="detailU">
-                <label>Cover Letter:</label>
+                <label>Change Cover Letter:</label>
+                {placement.cover_letter && (
+                  <div>
+                    <a
+                      href={placement.cover_letter}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      View existing Cover Letter
+                    </a>
+                  </div>
+                )}
                 <br />
                 <input
                   type="file"
@@ -451,7 +516,7 @@ function PlacementModal({
               </div>
               <div className="detailU">
                 <label>Contact:</label>
-                <br />
+
                 <input
                   type="text"
                   id="contact"
@@ -459,12 +524,13 @@ function PlacementModal({
                   name="contact"
                   onChange={(e) => setContact(e.target.value)}
                   value={contact}
-                  placeholder={placement.contact}
+                  placeholder={
+                    placement.contact === "null" ? "" : placement.contact || ""
+                  }
                 />
               </div>
               <div className="detailU">
                 <label>Date Applied:</label>
-                <br />
                 <input
                   type="date"
                   id="dateApplied"
@@ -472,7 +538,7 @@ function PlacementModal({
                   name="dateApplied"
                   onChange={(e) => setDateApplied(e.target.value)}
                   value={dateApplied}
-                  placeholder={placement.description2}
+                  placeholder={placement.date_applied}
                 />
               </div>
             </div>
