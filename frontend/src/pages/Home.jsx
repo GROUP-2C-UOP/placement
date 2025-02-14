@@ -123,22 +123,31 @@ function Home() {
 
   const createPlacement = (e) => {
     e.preventDefault();
-
+  
     const formData = new FormData();
-    formData.append("company", company || null);
-    formData.append("role", role || null);
-    formData.append("salary", salary || null);
-    formData.append("starting_date", startingDate || null);
-    formData.append("duration", duration || null);
-    formData.append("next_stage_deadline", deadline || null);
-    formData.append("placement_link", applicationLink || null);
-    formData.append("date_applied", dateApplied || null);
-    formData.append("status", status || "Applied");
-    formData.append("contact", contact || null);
-    formData.append("cv", cv || null);
-    formData.append("cover_letter", coverLetter || null);
-    formData.append("description", description || null);
 
+    const fields = {
+      company,
+      role,
+      salary,
+      starting_date: startingDate,
+      duration,
+      next_stage_deadline: deadline,
+      placement_link: applicationLink,
+      date_applied: dateApplied,
+      status: status, 
+      contact,
+      cv,
+      cover_letter: coverLetter,
+      description,
+    };
+  
+    for (const [key, value] of Object.entries(fields)) {
+      if (value) {
+        formData.append(key, value);
+      }
+    }
+  
     api
       .post("/api/placements/", formData, {
         headers: {
@@ -157,7 +166,7 @@ function Home() {
       })
       .catch((err) => alert(err));
   };
-
+  
   const sortByHeader = (header, type) => {
     let isAscending;
     let sortedPlacements;

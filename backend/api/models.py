@@ -27,7 +27,7 @@ class Placement(models.Model):
     role = models.CharField(max_length=100)
     salary = models.FloatField(null=True)
     starting_date = models.DateField(null=True)
-    duration = models.IntegerField()
+    duration = models.IntegerField(null=True)
     next_stage_deadline = models.DateField(null=True)
     placement_link = models.URLField(null=True)
     date_applied = models.DateField()

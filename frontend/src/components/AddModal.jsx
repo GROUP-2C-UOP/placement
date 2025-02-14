@@ -42,11 +42,7 @@ function AddModal({
     { label: "Withdrawn", value: "withdrawn" },
   ];
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    createPlacement(e);
-
+  const resetForm = () => {
     setCompany("");
     setRole("");
     setSalary("");
@@ -55,30 +51,59 @@ function AddModal({
     setDeadline("");
     setStatus("");
     setApplicationLink("");
+    setCv("");
+    setCoverLetter("");
     setContact("");
     setDateApplied("");
     setDescription("");
   };
 
-  const [fadeOut, setFadeOut] = useState(false)
+  useEffect(() => {
+    resetForm();
+  }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    createPlacement(e);
+
+    console.log("Company:", company);
+    console.log("Role:", role);
+    console.log("Salary:", salary);
+    console.log("Starting Date:", startingDate);
+    console.log("Duration:", duration);
+    console.log("Deadline:", deadline);
+    console.log("Application Link:", applicationLink);
+    console.log("Date Applied:", dateApplied);
+    console.log("Status:", status);
+    console.log("CV:", cv ? cv.name : "No file uploaded");
+    console.log(
+      "Cover Letter:",
+      coverLetter ? coverLetter.name : "No file uploaded"
+    );
+    console.log("Contact:", contact);
+    console.log("Description:", description);
+  };
+
+  const [fadeOut, setFadeOut] = useState(false);
   const handleClose = () => {
     setFadeOut(true);
     setTimeout(() => {
-      toClose(); 
-    }, 100); 
+      toClose();
+    }, 100);
   };
 
   return (
     <div id="add-container">
       <div className={`add-placement ${fadeOut ? "fade-out" : ""}`}>
-        <h2>Add Placement</h2>
+        <h2 id="title">Add Placement</h2>
+        <p>(Fields marked with * are required)</p>
         <button id="close-modal" className="close-button" onClick={handleClose}>
           <img src="src/assets/close.svg" />
         </button>
         <form onSubmit={handleSubmit}>
           <div className="grid-container">
             <div className="input-field">
-              <label htmlFor="company">Company</label>
+              <label htmlFor="company">Company*</label>
               <input
                 type="text"
                 id="company"
@@ -89,7 +114,7 @@ function AddModal({
               />
             </div>
             <div className="input-field">
-              <label htmlFor="role">Role</label>
+              <label htmlFor="role">Role*</label>
               <input
                 type="text"
                 id="role"
@@ -100,29 +125,18 @@ function AddModal({
               />
             </div>
             <div className="input-field">
-              <label htmlFor="salary">Salary</label>
+              <label htmlFor="dateApplied">Date Applied*</label>
               <input
-                type="number"
-                id="salary"
-                name="salary"
-                onChange={(e) => setSalary(e.target.value)}
-                value={salary}
+                type="date"
+                id="dateApplied"
+                name="dateApplied"
+                onChange={(e) => setDateApplied(e.target.value)}
+                value={dateApplied}
                 required
               />
             </div>
             <div className="input-field">
-              <label htmlFor="duration">Duration</label>
-              <input
-                type="number"
-                id="duration"
-                name="duration"
-                onChange={(e) => setDuration(e.target.value)}
-                value={duration}
-                required
-              />
-            </div>
-            <div className="input-field">
-              <label htmlFor="status">Status</label>
+              <label htmlFor="status">Status*</label>
               <select
                 id="status"
                 name="status"
@@ -139,7 +153,7 @@ function AddModal({
               </select>
             </div>
             <div className="input-field">
-              <label htmlFor="deadline">Deadline</label>
+              <label htmlFor="deadline">Deadline for Status</label>
               <input
                 type="date"
                 id="deadline"
@@ -149,13 +163,23 @@ function AddModal({
               />
             </div>
             <div className="input-field">
-              <label htmlFor="dateApplied">Date Applied</label>
+              <label htmlFor="salary">Salary</label>
               <input
-                type="date"
-                id="dateApplied"
-                name="dateApplied"
-                onChange={(e) => setDateApplied(e.target.value)}
-                value={dateApplied}
+                type="number"
+                id="salary"
+                name="salary"
+                onChange={(e) => setSalary(e.target.value)}
+                value={salary}
+              />
+            </div>
+            <div className="input-field">
+              <label htmlFor="duration">Duration</label>
+              <input
+                type="number"
+                id="duration"
+                name="duration"
+                onChange={(e) => setDuration(e.target.value)}
+                value={duration}
               />
             </div>
             <div className="input-field">
