@@ -14,6 +14,7 @@ function Home() {
     useState([]);
   const [placementsRejected, setPlacementsRejected] = useState([]);
   const [placementsAccepted, setPlacementsAccepted] = useState([]);
+  const [notifications, setNotifications] = useState([])
   const [company, setCompany] = useState("");
   const [role, setRole] = useState("");
   const [salary, setSalary] = useState("");
@@ -48,6 +49,11 @@ function Home() {
 
   useEffect(() => {
     getPlacements();
+  }, []);
+
+  useEffect(() => {
+    getNotifications();
+    console.log(notifications);
   }, []);
 
   useEffect(() => {
@@ -123,7 +129,7 @@ function Home() {
 
   const createPlacement = (e) => {
     e.preventDefault();
-  
+
     const formData = new FormData();
 
     const fields = {
@@ -135,19 +141,19 @@ function Home() {
       next_stage_deadline: deadline,
       placement_link: applicationLink,
       date_applied: dateApplied,
-      status: status, 
+      status: status,
       contact,
       cv,
       cover_letter: coverLetter,
       description,
     };
-  
+
     for (const [key, value] of Object.entries(fields)) {
       if (value) {
         formData.append(key, value);
       }
     }
-  
+
     api
       .post("/api/placements/", formData, {
         headers: {
@@ -166,7 +172,20 @@ function Home() {
       })
       .catch((err) => alert(err));
   };
-  
+
+  const getNotifications = () => {
+    api
+      .get("/api/notifications/")
+      .then((res) => res.data)
+      .then((data) => {
+        setNotifications(data);
+      })
+
+      .catch((err) => alert(err));
+  };
+
+
+
   const sortByHeader = (header, type) => {
     let isAscending;
     let sortedPlacements;
