@@ -4,6 +4,7 @@ import Placement from "../components/Placement";
 import { statusLabels } from "../constants";
 import AddModal from "../components/AddModal";
 import FilterModal from "../components/FilterModal";
+import NotificationsPopUp from "../components/NotificationPopUp";
 
 import "../styles/Home.css";
 
@@ -14,7 +15,7 @@ function Home() {
     useState([]);
   const [placementsRejected, setPlacementsRejected] = useState([]);
   const [placementsAccepted, setPlacementsAccepted] = useState([]);
-  const [notifications, setNotifications] = useState([])
+  const [notifications, setNotifications] = useState([]);
   const [company, setCompany] = useState("");
   const [role, setRole] = useState("");
   const [salary, setSalary] = useState("");
@@ -33,6 +34,9 @@ function Home() {
   const [showFilter, setShowFilter] = useState(false);
   const [isFiltered, setIsFiltered] = useState(false);
   const [filterRoles, setFilterRoles] = useState([]);
+  const [showNoti, setShowNoti] = useState(false);
+  const [showSingleNoti, setShowSingleNoti] = useState(false);
+  const [singleNotification, setSingleNotification] = useState(null);
 
   const [sortProgressPlacements, setSortProgressPlacements] = useState({
     key: null,
@@ -53,7 +57,6 @@ function Home() {
 
   useEffect(() => {
     getNotifications();
-    console.log(notifications);
   }, []);
 
   useEffect(() => {
@@ -179,12 +182,20 @@ function Home() {
       .then((res) => res.data)
       .then((data) => {
         setNotifications(data);
+        console.log(data);
+        if (data.length > 1) {
+          setShowNoti(true);
+          setSingleNotification(null);
+          setShowSingleNoti(false);
+        } else if (data.length === 1) {
+          setSingleNotification(data[0]);
+          setShowSingleNoti(true);
+          setShowNoti(false);
+        }
       })
 
       .catch((err) => alert(err));
   };
-
-
 
   const sortByHeader = (header, type) => {
     let isAscending;
@@ -655,6 +666,15 @@ function Home() {
           setIsFiltered={setIsFiltered}
           filteredPlacementsInProg={filteredPlacementsInProg}
         ></FilterModal>
+      )}
+      {showSingleNoti && singleNotification.status !== "applied" && (
+        <NotificationsPopUp
+          setShowSingleNoti={setShowSingleNoti}
+          company={singleNotification.company}
+          role={singleNotification.role}
+          days={singleNotification.days}
+          status={singleNotification.status}
+        ></NotificationsPopUp>
       )}
     </div>
   );

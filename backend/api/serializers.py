@@ -54,6 +54,8 @@ class NotificationSerializers(serializers.ModelSerializer):
                   "role",
                   "days",
                   "status",
+                  "shown",
+                  "read",
                   "user"]
         extra_kwargs = {"user": {"read_only": True}}
         
