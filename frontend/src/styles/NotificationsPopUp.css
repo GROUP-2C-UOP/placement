@@ -4,7 +4,52 @@
     left: 50%;
     transform: translateX(-50%);
     width: 36vw;
-    height: 25vh;
-    background-color: aqua;
+    height: 22vh;
+    background-color: #ffffff;
+    color: #333333;
     z-index: 10000;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
+
+#notification-content-cont {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+}
+
+#noti-title {
+    font-weight: bold;
+    color: #007BFF;
+    margin-bottom: -15px;
+}
+
+#text-cont p {
+    text-align: center;
+    color: #555555;
+    margin-bottom: 0;
+}
+
+#text-cont {
+    margin-bottom: 20px;
+}
+
+#close-noti {
+    padding: 5px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#close-noti:hover {
+    background-color: #0056b3;
+}
+
+

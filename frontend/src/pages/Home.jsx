@@ -16,6 +16,7 @@ function Home() {
   const [placementsRejected, setPlacementsRejected] = useState([]);
   const [placementsAccepted, setPlacementsAccepted] = useState([]);
   const [notifications, setNotifications] = useState([]);
+  const [toShowNotifications, setToShowNotifications] = useState([]);
   const [company, setCompany] = useState("");
   const [role, setRole] = useState("");
   const [salary, setSalary] = useState("");
@@ -52,12 +53,16 @@ function Home() {
   });
 
   useEffect(() => {
-    getPlacements();
+    getPlacements(); //called twice due to react's strict mode which renders everything twice for developement
+  }, []);
+
+  useEffect(() => {
+    getNotifications(); //called twice due to strictmode -- makes two notifications. strict mode needs to be disabled in main.jsx
   }, []);
 
   useEffect(() => {
     getNotifications();
-  }, []);
+  }, [placements]);
 
   useEffect(() => {
     placementsInProg();
@@ -182,18 +187,25 @@ function Home() {
       .then((res) => res.data)
       .then((data) => {
         setNotifications(data);
+
+        const filteredNotifications = data.filter(
+          (notification) => !notification.shown
+        );
+        setToShowNotifications(filteredNotifications);
+
         console.log(data);
-        if (data.length > 1) {
-          setShowNoti(true);
+        console.log(`to show notifications`, filteredNotifications);
+
+        if (filteredNotifications.length > 1) {
           setSingleNotification(null);
           setShowSingleNoti(false);
-        } else if (data.length === 1) {
-          setSingleNotification(data[0]);
+          setShowNoti(true);
+        } else if (filteredNotifications.length === 1) {
+          setSingleNotification(filteredNotifications[0]);
           setShowSingleNoti(true);
           setShowNoti(false);
         }
       })
-
       .catch((err) => alert(err));
   };
 
@@ -667,13 +679,21 @@ function Home() {
           filteredPlacementsInProg={filteredPlacementsInProg}
         ></FilterModal>
       )}
-      {showSingleNoti && singleNotification.status !== "applied" && (
+      {showSingleNoti && (
         <NotificationsPopUp
           setShowSingleNoti={setShowSingleNoti}
+          singleNotification={singleNotification}
           company={singleNotification.company}
           role={singleNotification.role}
           days={singleNotification.days}
           status={singleNotification.status}
+        ></NotificationsPopUp>
+      )}
+      {showNoti && (
+        <NotificationsPopUp
+          setShowNoti={setShowNoti}
+          toShowNotifications={toShowNotifications}
+          type={"multi"}
         ></NotificationsPopUp>
       )}
     </div>
