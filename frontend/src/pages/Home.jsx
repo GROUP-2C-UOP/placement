@@ -5,6 +5,8 @@ import { statusLabels } from "../constants";
 import AddModal from "../components/AddModal";
 import FilterModal from "../components/FilterModal";
 import NotificationsPopUp from "../components/NotificationPopUp";
+import AllNotifications from "../components/AllNotifications";
+import Notification from "../components/Notification";
 
 import "../styles/Home.css";
 

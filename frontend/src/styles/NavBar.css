@@ -27,7 +27,7 @@
   height: 100%;
   right: 0;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   justify-content: center;
   align-items: center;
   text-align: center;
@@ -36,3 +36,20 @@
 #logo {
   transform: scale(0.1);
 }
+
+#header-container a { 
+  text-decoration: none; 
+}
+
+#noti-button {
+  background: none;
+  border: none;
+  margin-top: 8px;  
+}
+
+#noti-button img {
+  width: 20px;
+  height: auto;
+  filter: invert(1);
+}
+

@@ -1,0 +1,35 @@
+#cont {
+  height: fit-content;
+  max-height: 35vh;
+  width: fit-content;
+  background-color: white;
+  z-index: 10000;
+  position: absolute;
+  right: 3.5%;
+  top: 10%;
+}
+
+#noti-cont {
+  overflow-y: scroll;
+  height: fit-content;
+  max-height: 35vh;
+}
+
+#close img {
+  width: 15px;
+  height: auto;
+}
+
+#close {
+  margin-top: 2px;
+  right: 0;
+  z-index: 1000;
+  background: none;
+  border: none;
+  margin-right: -5px;
+}
+
+#button-cont {
+  display: flex;
+  justify-content: flex-end;
+}
