@@ -149,7 +149,7 @@ function PlacementModal({
             id="modal-window"
             className={isDashboard ? "dashboard-modal-window" : ""}
           >
-            <button class="close-button" onClick={closeModal}>
+            <button className="close-button" onClick={closeModal}>
               <img src="src/assets/close.svg" />
             </button>
             {!isDashboard && (
@@ -300,7 +300,7 @@ function PlacementModal({
         <div className={`${showModal ? "" : "hidden"} ${modalType}`}>
           <div id="modal-window" className="update">
             <button
-              class="close-button"
+              className="close-button"
               onClick={() => {
                 setUpdate(false);
               }}
@@ -372,7 +372,7 @@ function PlacementModal({
         <div className={`${showModal ? "" : "hidden"} ${modalType}`}>
           <div id="modal-window" className="editing-window">
             <button
-              class="close-button"
+              className="close-button"
               onClick={() => {
                 setEditing(false);
               }}

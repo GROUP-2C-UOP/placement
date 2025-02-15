@@ -1,18 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-class CustomUser(AbstractUser):
-    email = models.EmailField(unique=True)
-
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name']
-
-    def __str__(self):
-        return self.email
-
-class Placement(models.Model):
-
-    STATUS_CHOICES = [
+STATUS_CHOICES = [
     ('applied', 'Applied'),
     ('phone_interview', 'Phone Interview'),
     ('face_to_face_interview', 'Face to Face Interview'),
@@ -23,6 +12,16 @@ class Placement(models.Model):
     ('withdrawn', 'Withdrawn'),
 ]
 
+class CustomUser(AbstractUser):
+    email = models.EmailField(unique=True)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['first_name', 'last_name']
+
+    def __str__(self):
+        return self.email
+
+class Placement(models.Model):
     company = models.CharField(max_length=100)
     role = models.CharField(max_length=100)
     salary = models.FloatField(null=True)
@@ -40,3 +39,14 @@ class Placement(models.Model):
 
     def __str__(self):
         return f"{self.role} at {self.company}"
+
+
+class Notifications(models.Model):
+    company = models.CharField(max_length=100)
+    role = models.CharField(max_length=100)
+    days = models.IntegerField()
+    status = models.CharField(max_length=22, choices=STATUS_CHOICES)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.status} for {self.company} in {self.days}"
