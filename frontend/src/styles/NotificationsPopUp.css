@@ -1,0 +1,10 @@
+#notification-cont {
+    position: fixed;
+    top: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 36vw;
+    height: 25vh;
+    background-color: aqua;
+    z-index: 10000;
+}

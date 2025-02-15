@@ -46,6 +46,8 @@ class Notifications(models.Model):
     role = models.CharField(max_length=100)
     days = models.IntegerField()
     status = models.CharField(max_length=22, choices=STATUS_CHOICES)
+    shown = models.BooleanField(default=False)
+    read = models.BooleanField(default=False)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 
     def __str__(self):

@@ -24,7 +24,9 @@ class PlacementListCreate(generics.ListCreateAPIView):
                     company=placement.company,
                     role=placement.role,
                     days=deadline_days,
-                    status=placement.status
+                    status=placement.status,
+                    shown=False,
+                    read=False
                 )
 
         return placements
