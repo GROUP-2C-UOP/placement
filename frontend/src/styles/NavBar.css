@@ -53,3 +53,17 @@
   filter: invert(1);
 }
 
+#got-notis {
+  z-index: 100000;
+  position: absolute;
+  font-size: 4.5rem;
+  color: rgb(247, 70, 70);
+  border-radius: 100px;
+right: 6.5%;
+bottom: 30%;
+pointer-events: none;
+}
+
+#got-notis:hover {
+  cursor: pointer;
+}

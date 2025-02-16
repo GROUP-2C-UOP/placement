@@ -56,11 +56,14 @@ function NotificationsPopUp({
   return (
     <div id="notification-cont">
       <div id="notification-content-cont">
-        <div id="noti-title"><h2>Notification</h2></div>
+        <div id="noti-title">
+          <h2>Notification</h2>
+        </div>
         <div id="text-cont">
           {!type && (
             <p>
-              Your {statusLabels[status]} with {company} for {role} is due in {days} days.
+              Your {statusLabels[status]} with {company} for {role} is due in{" "}
+              {days} days.
             </p>
           )}
           {type && <p>Multiple placement notifications.</p>}

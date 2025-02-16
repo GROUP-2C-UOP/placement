@@ -101,3 +101,23 @@ button:hover{
   position: relative;
   margin-bottom: -3px;
 }
+
+
+body::-webkit-scrollbar {
+  width: 8px; 
+}
+
+body::-webkit-scrollbar-track {
+  background: #e0e0e0; 
+  border-radius: 10px; 
+}
+
+body::-webkit-scrollbar-thumb {
+  background: #4a90e2; 
+  border-radius: 10px; 
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background: #357ab7; 
+}
+

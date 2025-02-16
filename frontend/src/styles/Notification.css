@@ -1,7 +1,19 @@
 #single-noti-cont {
-    width: 200px;
+    width: 25vw;
     height: 5vh;
     background-color: white;
-    
+    padding: 5px;
     border-top: solid 1px grey;
+    display: flex;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
 }
+
+#delete {
+  width: 26px;
+  height: auto;
+  background: none;
+  border: none;
+}
+
