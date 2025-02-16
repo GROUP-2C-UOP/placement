@@ -34,10 +34,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/register" element={<RegisterAndLogout />} />
-          <div className="App">
-            <h1>User Profile</h1>
-            <Profile userId={1} /> {/* Replace 1 with the actual user ID */}
-          </div>
+          <Route path="/profile/:userId" element={<Profile />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>
