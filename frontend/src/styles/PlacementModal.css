@@ -82,10 +82,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  color: white;
+  color: #2600ff;
   font-weight: bold;
   height: auto;
-  background-color: #2600ff;
+  background-color: white;
   padding: 8px 12px;
   width: 100px;
   border-radius: 8px;
@@ -95,7 +95,7 @@
 
 #update-button:hover {
   cursor: pointer;
-  background-color: rgb(31, 7, 166);
+  background-color: rgb(192, 187, 217);
 }
 
 .close-button img {
