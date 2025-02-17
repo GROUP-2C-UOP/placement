@@ -1,9 +1,9 @@
 .placement-container-home {
   width: 90vw;
   margin: 10px auto;
-  padding: 15px;
+  padding: 10px;
   background-color: rgb(9, 9, 160);
-  border-radius: 50px;
+  border-radius: 10px;
 }
 
 .placement-container-dashboard {
@@ -90,8 +90,8 @@ thead {
 }
 
 .table-row th {
-  white-space: nowrap;  /* Prevents text from wrapping */
-  overflow: hidden;  /* Hides overflowing text */
-  text-overflow: ellipsis;  /* Adds "..." at the end */
+  white-space: nowrap;   
+  overflow: hidden;   
+  text-overflow: ellipsis;  
    
 }
