@@ -54,9 +54,8 @@ function PlacementModal({
     { label: "Face to Face Interview", value: "face_to_face_interview" },
     { label: "Assessment", value: "assessment" },
     { label: "Rejected", value: "rejected" },
-    { label: "Offer Made", value: "offer_made" },
-    { label: "Hired", value: "hired" },
     { label: "Withdrawn", value: "withdrawn" },
+    { label: "Offer Made", value: "offer_made" },
   ];
 
   const updatedData = {
@@ -97,6 +96,23 @@ function PlacementModal({
     }
   }, [editing]);
 
+  const [fadeOut, setFadeOut] = useState(false);
+  const [fadeOutUpdate, setFadeOutUpdate] = useState(false);
+  const handleClose = () => {
+    setFadeOut(true);
+    setTimeout(() => {
+      closeModal();
+      setShowModal(false);
+    }, 100);
+  };
+
+  const handleUpdateClose = () => {
+    setFadeOutUpdate(true);
+    setTimeout(() => {
+      setUpdate(false);
+    }, 100);
+  };
+
   const check = () => {
     let formData = new FormData();
 
@@ -119,9 +135,9 @@ function PlacementModal({
       })
       .then((res) => {
         if (res.status === 200 || res.status === 204) {
-          alert("Placement Updated");
+          console.log("Placement Updated");
           getPlacements();
-          setShowModal(false);
+          handleClose();
           resetForm();
         } else alert("Something went wrong, try again.");
       })
@@ -144,12 +160,14 @@ function PlacementModal({
   return (
     <div>
       {!editing && (
-        <div className={`${showModal ? "" : "hidden"} ${modalType}`}>
+        <div className={`${modalType} ${fadeOut ? "fade-out" : ""}`}>
           <div
             id="modal-window"
-            className={isDashboard ? "dashboard-modal-window" : ""}
+            className={`${fadeOut ? "fade-out" : ""} ${
+              isDashboard ? "dashboard-modal-window" : ""
+            }`}
           >
-            <button className="close-button" onClick={closeModal}>
+            <button className="close-button" onClick={handleClose}>
               <img src="src/assets/close.svg" />
             </button>
             {!isDashboard && (
@@ -287,6 +305,7 @@ function PlacementModal({
                   id="update-button"
                   onClick={() => {
                     setUpdate(true);
+                    setFadeOutUpdate(false);
                   }}
                 >
                   Update
@@ -297,12 +316,16 @@ function PlacementModal({
         </div>
       )}
       {update && (
-        <div className={`${showModal ? "" : "hidden"} ${modalType}`}>
+        <div
+          className={`${modalType} ${fadeOut ? "fade-out-update" : ""} ${
+            fadeOutUpdate ? "fade-out-update" : ""
+          }`}
+        >
           <div id="modal-window" className="update">
             <button
               className="close-button"
               onClick={() => {
-                setUpdate(false);
+                handleUpdateClose();
               }}
             >
               <img src="src/assets/close.svg" />
@@ -369,7 +392,7 @@ function PlacementModal({
         </div>
       )}
       {editing && (
-        <div className={`${showModal ? "" : "hidden"} ${modalType}`}>
+        <div className={`${modalType} ${fadeOut ? "fade-out-update" : ""}`}>
           <div id="modal-window" className="editing-window">
             <button
               className="close-button"
@@ -564,7 +587,9 @@ function PlacementModal({
           }
           method={editing ? "edit" : "delete"}
           type={"Placement"}
-          onClose={() => setConfirmation(false)}
+          onClose={() => {
+            setConfirmation(false);
+          }}
           setEditing={setEditing}
         />
       )}

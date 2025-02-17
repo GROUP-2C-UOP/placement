@@ -7,6 +7,7 @@
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(5px);
   z-index: 999;
+  animation: backgroundFadeIn 0.2s ease-out forwards;
 }
 
 .dashboard-modal-screen {
@@ -18,6 +19,7 @@
   z-index: 999;
   color: white;
   backdrop-filter: blur(2px);
+  animation: backgroundFadeIn 0.2s ease-out forwards;
 }
 
 #modal-window {
@@ -36,6 +38,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  animation: fadeInModal 0.2s ease-in-out forwards;
 }
 
 .dashboard-modal-window {
@@ -205,4 +208,58 @@ textarea {
 
 #applicationLink {
   width: 80%;
+}
+
+#modal-window.fade-out {
+  animation: fadeOutModal 0.2s ease-out forwards;
+}
+
+.placement-modal-screen.fade-out {
+ animation: backgroundFadeOut 0.2s ease-out forwards;
+}
+
+.placement-modal-screen.fade-out-update {
+  animation: backgroundFadeOut 0.1s ease-out forwards;
+ }
+
+@keyframes backgroundFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes backgroundFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+
+@keyframes fadeInModal {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.93); 
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+
+@keyframes fadeOutModal {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1); 
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.95);
+  }
 }

@@ -96,7 +96,9 @@ function PlacementsPage() {
   const placementsInProg = () => {
     const pip = placements.filter(
       (placement) =>
-        placement.status !== "rejected" && placement.status !== "offer_made"
+        placement.status !== "rejected" &&
+        placement.status !== "withdrawn" &&
+        placement.status !== "offer_made"
     );
     setPlacementsInProgress(pip);
   };
@@ -105,6 +107,7 @@ function PlacementsPage() {
     const pip = placements.filter(
       (placement) =>
         placement.status !== "rejected" &&
+        placement.status !== "withdrawn" &&
         placement.status !== "offer_made" &&
         filterRoles.includes(placement.role)
     );
@@ -113,7 +116,8 @@ function PlacementsPage() {
 
   const placementsRej = () => {
     const rej = placements.filter(
-      (placement) => placement.status === "rejected"
+      (placement) =>
+        placement.status === "rejected" || placement.status === "withdrawn"
     );
     setPlacementsRejected(rej);
   };
@@ -130,7 +134,7 @@ function PlacementsPage() {
       .delete(`/api/placements/delete/${id}/`)
       .then((res) => {
         if (res.status === 204) {
-          alert("Placement deleted successfully");
+          console.log("Placement deleted successfully");
         } else alert("Error deleting placement");
         getPlacements();
       })
@@ -172,7 +176,7 @@ function PlacementsPage() {
       })
       .then((res) => {
         if (res.status === 201) {
-          alert("Placement created successfully");
+          console.log("Placement created successfully");
           setShowAddModal(false);
           setShowAddButton(true);
           getPlacements();

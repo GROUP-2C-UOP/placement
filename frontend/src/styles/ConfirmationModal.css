@@ -1,38 +1,116 @@
 #overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(5px);
-    z-index: 1999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  #m-container {
-    width: 36vw;
-    background-color: rgb(200, 200, 234);
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    z-index: 1100;
-  }
-  
-  #q p {
-    font-size: 18px;
-    color: #333;
-    margin-bottom: 20px;
-  }
-  
-  #b {
-    display: flex;
-    justify-content: space-evenly;
-    gap: 20px;
-  }
-  
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  z-index: 1999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: backgroundFadeIn 0.2s ease-out forwards;
+}
 
+#m-container {
+  width: 25vw;
+  height: 15vh;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  z-index: 1100;
+  animation: fadeInConfirmation 0.2s ease-out forwards;
+}
 
-  
+#overlay.fade-out {
+  animation: backgroundFadeOut 0.2s ease-out forwards;
+}
+
+#m-container.fade-out {
+  animation: fadeOutConfirmation 0.2s ease-out forwards;
+}
+
+#q p {
+  font-size: 20px;
+  color: #007bff;
+  margin-bottom: 20px;
+}
+
+#b {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 20px;
+}
+
+.conf-buttons {
+  padding: 10px;
+  width: 7vw;
+  border: none;
+  border-radius: 3px;
+  color: white;
+  transition: background-color 0.3s ease, transform 0.2s ease
+}
+
+#conf {
+  background-color: rgb(0, 55, 255);
+}
+
+#dec {
+  background-color: red;
+}
+
+#conf:hover {
+  background-color: #1427cc;
+  transform: scale(1.05);
+}
+
+#dec:hover {
+  background: #e63c3c;
+  transform: scale(1.05);
+}
+
+@keyframes fadeInConfirmation {
+  from {
+    opacity: 0;
+    transform: scale(0.93);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeOutConfirmation {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+@keyframes backgroundFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes backgroundFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}

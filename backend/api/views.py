@@ -73,7 +73,7 @@ class NotificationListCreate(generics.ListCreateAPIView):
             if placement.next_stage_deadline:
                 deadline_days = (placement.next_stage_deadline - date.today()).days
 
-                if deadline_days <= 3 and placement.status not in ["applied", "offer_made"]:
+                if deadline_days <= 3 and placement.status not in ["applied", "offer_made", "rejected", "withdrawn"]:
                     existing_notification = Notifications.objects.filter(
                         user=user,
                         placement=placement,
