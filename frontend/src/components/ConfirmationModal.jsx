@@ -1,27 +1,38 @@
-import "../styles/ConfirmationModal.css"
+import "../styles/ConfirmationModal.css";
+import { useState } from "react";
 
 function ConfirmationModal({ func, method, type, onClose, setEditing }) {
+  const [fadeOutConfirmation, setFadeOutConfirmation] = useState(false);
+
+  const closeConf = () => {
+    setFadeOutConfirmation(true);
+    setTimeout(() => {
+      onClose();
+    }, 100);
+  };
+
   const handleConfirm = () => {
     if (func) {
       func();
-      onClose()
-    }
-    if (method === "edit"){
-        setEditing(false)
+      closeConf();
     }
   };
 
   return (
-    <div id="overlay">
-      <div id="m-container">
+    <div id="overlay" className={`${fadeOutConfirmation ? "fade-out" : ""}`}>
+      <div id="m-container" className={`${fadeOutConfirmation ? "fade-out" : ""}`}>
         <div id="q">
           <p>
             Are you sure you want to {method} this {type}?
           </p>
         </div>
         <div id="b">
-          <button className="conf-buttons" onClick={handleConfirm}>Confirm</button>
-          <button className="conf-buttons" onClick={onClose}>Cancel</button>
+          <button className="conf-buttons" id="conf" onClick={handleConfirm}>
+            Confirm
+          </button>
+          <button className="conf-buttons" id="dec" onClick={closeConf}>
+            Cancel
+          </button>
         </div>
       </div>
     </div>

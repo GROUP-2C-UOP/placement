@@ -8,7 +8,6 @@ STATUS_CHOICES = [
     ('assessment', 'Assessment'),
     ('rejected', 'Rejected'),
     ('offer_made', 'Offer Made'),
-    ('hired', 'Hired'),
     ('withdrawn', 'Withdrawn'),
 ]
 

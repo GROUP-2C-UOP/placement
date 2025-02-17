@@ -24,6 +24,10 @@
   animation: fadeOut 0.2s ease-out forwards;
 }
 
+.add-placement.fade-out-save {
+  animation: fadeOut 0.2s ease-out forwards;
+}
+
 #title {
   margin-bottom: -5px;
 }

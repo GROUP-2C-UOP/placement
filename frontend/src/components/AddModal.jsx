@@ -37,9 +37,8 @@ function AddModal({
     { label: "Face to Face Interview", value: "face_to_face_interview" },
     { label: "Assessment", value: "assessment" },
     { label: "Rejected", value: "rejected" },
-    { label: "Offer Made", value: "offer_made" },
-    { label: "Hired", value: "hired" },
     { label: "Withdrawn", value: "withdrawn" },
+    { label: "Offer Made", value: "offer_made" },
   ];
 
   const resetForm = () => {
@@ -62,26 +61,31 @@ function AddModal({
     resetForm();
   }, []);
 
+  const [fadeOutSave, setFadeOutSave] = useState(false);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    createPlacement(e);
+    setFadeOutSave(true);
+    setTimeout(() => {
+      createPlacement(e);
 
-    console.log("Company:", company);
-    console.log("Role:", role);
-    console.log("Salary:", salary);
-    console.log("Starting Date:", startingDate);
-    console.log("Duration:", duration);
-    console.log("Deadline:", deadline);
-    console.log("Application Link:", applicationLink);
-    console.log("Date Applied:", dateApplied);
-    console.log("Status:", status);
-    console.log("CV:", cv ? cv.name : "No file uploaded");
-    console.log(
-      "Cover Letter:",
-      coverLetter ? coverLetter.name : "No file uploaded"
-    );
-    console.log("Contact:", contact);
-    console.log("Description:", description);
+      console.log("Company:", company);
+      console.log("Role:", role);
+      console.log("Salary:", salary);
+      console.log("Starting Date:", startingDate);
+      console.log("Duration:", duration);
+      console.log("Deadline:", deadline);
+      console.log("Application Link:", applicationLink);
+      console.log("Date Applied:", dateApplied);
+      console.log("Status:", status);
+      console.log("CV:", cv ? cv.name : "No file uploaded");
+      console.log(
+        "Cover Letter:",
+        coverLetter ? coverLetter.name : "No file uploaded"
+      );
+      console.log("Contact:", contact);
+      console.log("Description:", description);
+    }, 100);
   };
 
   const [fadeOut, setFadeOut] = useState(false);
@@ -94,7 +98,7 @@ function AddModal({
 
   return (
     <div id="add-container">
-      <div className={`add-placement ${fadeOut ? "fade-out" : ""}`}>
+      <div className={`add-placement ${fadeOut ? "fade-out" : ""} ${fadeOutSave ? "fade-out-save" : ""}`}>
         <h2 id="title">Add Placement</h2>
         <p>(Fields marked with * are required)</p>
         <button id="close-modal" className="close-button" onClick={handleClose}>
