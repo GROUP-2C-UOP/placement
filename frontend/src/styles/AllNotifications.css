@@ -1,4 +1,4 @@
-#cont {
+.all-notification-cont {
   width: 27vw;
   max-height: 40vh;
   background-color: #ffffff;
@@ -11,6 +11,10 @@
   padding: 15px;
   overflow: hidden;
   animation: fadeInNotification 0.3s ease-out forwards;
+}
+
+.all-notification-cont.fade-out {
+  animation: fadeOutNotification 0.2s ease-out forwards;
 }
 
 #button-container {
@@ -91,10 +95,10 @@ p {
 @keyframes fadeOutNotification {
   from {
     opacity: 1;
-    transform: translate(-10%, -10%);
+    transform: translate(0%, 0%);
   }
   to {
     opacity: 0;
-    transform: translate(-50%, -55%);
+    transform: translate(0%, -10%);
   }
 }
