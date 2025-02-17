@@ -1,6 +1,6 @@
 import "../styles/AllNotifications.css";
 import Notification from "./Notification";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function AllNotifications({
   setShowAllNotifications,
@@ -11,14 +11,23 @@ function AllNotifications({
     getNotifications();
   }, []);
 
+  const [fadeOut, setFadeOut] = useState(false);
+
+  const handleClose = () => {
+    setFadeOut(true);
+    setTimeout(() => {
+      setShowAllNotifications(false);
+    }, 200);
+  };
+
   return (
-    <div id="cont">
+    <div className={`all-notification-cont ${fadeOut ? "fade-out" : ""}`}>
       <div id="button-container">
         <h3>Notifications</h3>
         <button
           id="close"
           onClick={() => {
-            setShowAllNotifications(false);
+            handleClose();
           }}
         >
           <img src="src/assets/close.svg" />
