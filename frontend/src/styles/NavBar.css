@@ -6,7 +6,6 @@
   position: fixed;
   background-color: navy;
   z-index: 998;
-  
 }
 
 #title-container {
@@ -37,14 +36,14 @@
   transform: scale(0.1);
 }
 
-#header-container a { 
-  text-decoration: none; 
+#header-container a {
+  text-decoration: none;
 }
 
 #noti-button {
   background: none;
   border: none;
-  margin-top: 8px;  
+  margin-top: 8px;
 }
 
 #noti-button img {
@@ -59,11 +58,37 @@
   font-size: 4.5rem;
   color: rgb(247, 70, 70);
   border-radius: 100px;
-right: 6.5%;
-bottom: 30%;
-pointer-events: none;
+  right: 6.5%;
+  bottom: 30%;
+  pointer-events: none;
 }
 
 #got-notis:hover {
   cursor: pointer;
+}
+
+@keyframes bellSwing {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-15deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  75% {
+    transform: rotate(15deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+#noti-button {
+  transform-origin: top center;
+}
+
+#noti-button:hover {
+  animation: bellSwing 0.5s ease-in-out forwards;
 }
