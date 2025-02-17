@@ -15,11 +15,27 @@ function Notification({ notification, getNotifications }) {
       });
   };
 
+  const formatDateTime = (rawDateTime) => {
+    const date = new Date(rawDateTime);
+    return date.toLocaleString("en-GB", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true,
+    }).replace(",", " -");
+};
+
   return (
     <div id="single-noti-cont">
-      <div>
-        {statusLabels[notification.status]} for {notification.company} due in{" "}
-        {notification.days} days
+      <div id="noti-text-cont">
+        <div>
+          {statusLabels[notification.status]} for {notification.company} due in{" "}
+          {notification.days} days
+        </div>
+        <div id="created">{formatDateTime(notification.created)}</div>
       </div>
       <div id="button-cont">
         <button
