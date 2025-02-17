@@ -16,8 +16,8 @@ function NavBar() {
   useEffect(() => { //when showAllNotifcations changes
     function handleClickOutside(event) { 
       if (
-        notificationsRef.current && //if the current div is present
-        !notificationsRef.current.contains(event.target) //and the current div (notifications div) doesn't contains the event target
+        notificationsRef.current && //if the referenced div (all notifications component) is present
+        !notificationsRef.current.contains(event.target) //and doesn't contains the event target (the click)
       ) {
         setShowAllNotifications(false); //set showAllNotifications to false
       }

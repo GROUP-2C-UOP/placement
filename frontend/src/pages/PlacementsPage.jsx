@@ -8,9 +8,9 @@ import NotificationsPopUp from "../components/NotificationPopUp";
 import AllNotifications from "../components/AllNotifications";
 import Notification from "../components/Notification";
 
-import "../styles/Home.css";
+import "../styles/PlacementsPage.css";
 
-function Home() {
+function PlacementsPage() {
   const [placements, setPlacements] = useState([]);
   const [placementsInProgress, setPlacementsInProgress] = useState([]);
   const [filteredPlacementsInProgress, setFilteredPlacementsInProgress] =
@@ -702,4 +702,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default PlacementsPage;
