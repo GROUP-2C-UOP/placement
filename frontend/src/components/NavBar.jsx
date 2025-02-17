@@ -1,17 +1,36 @@
 import "../styles/NavBar.css";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import AllNotifications from "./AllNotifications";
 import api from "../api";
 
 function NavBar() {
+  const [showAllNotifications, setShowAllNotifications] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const notificationsRef = useRef(null);
+
   useEffect(() => {
     getNotifications();
   }, []);
 
-  const [showAllNotificions, setShowAllNotifications] = useState(false);
-  const [notifications, setNotifications] = useState([]);
+  useEffect(() => { //when showAllNotifcations changes
+    function handleClickOutside(event) { 
+      if (
+        notificationsRef.current && //if the current div is present
+        !notificationsRef.current.contains(event.target) //and the current div (notifications div) doesn't contains the event target
+      ) {
+        setShowAllNotifications(false); //set showAllNotifications to false
+      }
+    }
 
+    if (showAllNotifications) { //when showAllNotifications changes if showAllNotifications is true an event listener is added which 
+      document.addEventListener("mousedown", handleClickOutside); //waits for mousedown event and on mousedown runs the handleClickOutside function
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside); // remove the event listener
+    };
+  }, [showAllNotifications]);
 
   const getNotifications = () => {
     api
@@ -30,7 +49,7 @@ function NavBar() {
     <div>
       <div id="navbar-container">
         <div id="title-container">
-          <img src="../src/assets/react.svg"></img>
+          <img src="../src/assets/react.svg" alt="logo"></img>
           Career Compass
         </div>
         <div id="header-container">
@@ -41,23 +60,22 @@ function NavBar() {
           <a href="#">Profile</a>
           <button
             id="noti-button"
-            onClick={() => {
-              setShowAllNotifications(true);
-            }}
+            onClick={() => setShowAllNotifications(true)}
           >
-            <img src="src/assets/noti.svg" />
+            <img src="src/assets/noti.svg" alt="notifications" />
           </button>
-          {notifications.length > 0 && (
-        <div id="got-notis">.</div>
-      )}
+          {notifications.length > 0 && <div id="got-notis">.</div>}
         </div>
       </div>
-      {showAllNotificions && (
-        <AllNotifications
-          setShowAllNotifications={setShowAllNotifications}
-          notifications={notifications}
-          getNotifications={getNotifications}
-        ></AllNotifications>
+
+      {showAllNotifications && (
+        <div ref={notificationsRef}> {/* wrap AllNotifications in a div with ref */}
+          <AllNotifications
+            setShowAllNotifications={setShowAllNotifications}
+            notifications={notifications}
+            getNotifications={getNotifications}
+          />
+        </div>
       )}
     </div>
   );

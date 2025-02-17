@@ -76,9 +76,11 @@ class NotificationListCreate(generics.ListCreateAPIView):
                 if deadline_days <= 3 and placement.status not in ["applied", "offer_made"]:
                     existing_notification = Notifications.objects.filter(
                         user=user,
+                        placement=placement,
                         company=placement.company,
                         role=placement.role,
                         status=placement.status,
+                        description=placement.description,
                         days=deadline_days,
                         shown=True
                     ).first()
@@ -86,8 +88,10 @@ class NotificationListCreate(generics.ListCreateAPIView):
                     if not existing_notification:
                         Notifications.objects.create(
                             user=user,
+                            placement=placement,
                             company=placement.company,
                             role=placement.role,
+                            description=placement.description,
                             days=deadline_days,
                             status=placement.status,
                             shown=False,
