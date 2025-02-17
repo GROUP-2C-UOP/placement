@@ -6,7 +6,7 @@ import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Layout from "./components/Layout";
-import Profile from "./components/Profile";
+import Profile from "./pages/Profile";
 
 function Logout() {
   localStorage.clear();
@@ -34,7 +34,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/register" element={<RegisterAndLogout />} />
-          <Route path="/profile/:userId" element={<Profile />} />
+          <Route path="/profile/:id" element={<Profile />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>

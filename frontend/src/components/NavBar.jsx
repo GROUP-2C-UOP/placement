@@ -13,7 +13,6 @@ function NavBar() {
         <a href="#">Deadlines</a>
         <a href="#">To-Do</a>
         <a href="#">Statistics</a>
-        <a href="#">Profile</a>
         <Link to="/profile/1">Profile</Link>
       </div>
     </div>

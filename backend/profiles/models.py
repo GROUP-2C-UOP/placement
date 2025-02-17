@@ -8,7 +8,7 @@ class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE) 
     location = models.CharField(max_length=100, blank=True) 
     application_count = Placement.objects.count() # THIS IS ONLY DISPLAYING THE PLACEMENT COUNT -> 
-                                                  # RETURN AND ADD A STRING MESSAGE DESCRIBING WHAT COUNT DOES
+                                                  # ADD A STRING MESSAGE IN FRONTEND DESCRIBING WHAT COUNT DOES
     created_at = models.DateTimeField(auto_now_add=True) 
     updated_at = models.DateTimeField(auto_now=True) 
 
