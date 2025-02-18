@@ -15,6 +15,7 @@ function FilterModal({
   }
 
   const [selectedRoles, setSelectedRoles] = useState(new Set());
+  const [fadeOutFilter, setFadeOutFilter] = useState(false);
 
   const handleRoleChange = (role) => {
     const newSelectedRoles = new Set(selectedRoles);
@@ -30,23 +31,39 @@ function FilterModal({
     if (selectedRoles.size === 0) {
       alert("Please select at least one role.");
     } else {
-      setFilterRoles([...selectedRoles]);
-      setIsFiltered(true);
-      setShowFilter(false);
+      setFadeOutFilter(true);
+      setTimeout(() => {
+        setFilterRoles([...selectedRoles]);
+        setIsFiltered(true);
+        setShowFilter(false);
+      }, 100);
     }
   };
 
+  const handleCloseFilter = () => {
+    setFadeOutFilter(true);
+    setTimeout(() => {
+      setShowFilter(false);
+    }, 100);
+  };
+
   const handleClearFilter = () => {
-    setSelectedRoles(new Set());
-    setFilterRoles([]);
-    setIsFiltered(false);
-    setShowFilter(false);
+    setFadeOutFilter(true);
+    setTimeout(() => {
+      setSelectedRoles(new Set());
+      setFilterRoles([]);
+      setIsFiltered(false);
+      setShowFilter(false);
+    }, 100);
   };
 
   return (
-    <div id="overlay">
-      <div id="filter-modal-window">
-        <button className="close-button" onClick={() => setShowFilter(false)}>
+    <div id="overlay" className={fadeOutFilter ? "fade-out-filter" : ""}>
+      <div
+        id="filter-modal-window"
+        className={fadeOutFilter ? "fade-out-filter" : ""}
+      >
+        <button className="close-button" onClick={handleCloseFilter}>
           <img src="src/assets/close.svg" alt="Close" />
         </button>
         <button className="clear-filter" onClick={handleClearFilter}>

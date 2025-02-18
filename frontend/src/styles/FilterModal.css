@@ -29,6 +29,14 @@
   align-items: center;
 }
 
+#filter-modal-window.fade-out-filter {
+  animation: backgroundFadeOut 0.1s ease-out forwards;
+}
+
+#overlay.fade-out-filter {
+  animation: backgroundFadeOut 0.1s ease-out forwards;
+}
+
 #roles {
   text-align: center;
   width: 100%;
@@ -48,7 +56,16 @@
 }
 
 .clear-filter img {
-    width: 25px;
-    height: auto;
-    filter: invert(1);
+  width: 25px;
+  height: auto;
+  filter: invert(1);
+}
+
+@keyframes backgroundFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
