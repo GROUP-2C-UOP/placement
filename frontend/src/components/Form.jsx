@@ -26,7 +26,7 @@ function Form({ route, method }) {
         payload.last_name = nameParts.slice(1).join(" ");
       }
       if (method === "login") {
-        payload.remember_me = rememberMe
+        payload.remember_me = rememberMe;
       }
 
       const res = await api.post(route, payload);
@@ -45,65 +45,191 @@ function Form({ route, method }) {
     }
   };
 
-  return (
-    <>
-      <h1 className="form-title">Career Compass</h1>
-      <form onSubmit={handleSubmit} className="form-container">
-        <h2 className="type">{typename}</h2>
-        {method === "register" && (
+  //   return (
+  //     <>
+  //       <h1 className="form-title">Career Compass</h1>
+  //       <form onSubmit={handleSubmit} className="form-container">
+  //         <h2 className="type">{typename}</h2>
+  //         {method === "register" && (
+  //           <input
+  //             className="form-input"
+  //             type="text"
+  //             value={name}
+  //             onChange={(e) => setName(e.target.value)}
+  //             placeholder="Full Name"
+  //             required
+  //           />
+  //         )}
+  //         <input
+  //           className="form-input"
+  //           type="email"
+  //           value={email}
+  //           onChange={(e) => setEmail(e.target.value)}
+  //           placeholder="Email"
+  //           required
+  //         />
+  //         <input
+  //           className="form-input"
+  //           type="password"
+  //           value={password}
+  //           onChange={(e) => setPassword(e.target.value)}
+  //           placeholder="Password"
+  //           required
+  //         />
+  //         <button className="form-button" type="submit">
+  //           {typename}
+  //         </button>
+  //         {method === "login" && (
+  //           <>
+  //           <div id="remember-checkbox">
+  //             <label id="remember-label" htmlFor="rememberMe">Remember Me?</label>
+  //           <input
+  //             className="form-input"
+  //             type="checkbox"
+  //             checked={rememberMe}
+  //             onChange={() => setRememberMe(!rememberMe)}
+  //           />
+  //           </div>
+  //           <div id="register-container">
+  //           <p>Don't have an account?</p>
+  //           <p className="clickable" onClick={() => navigate("/register")}><u>Register</u></p>
+  //           </div>
+  //           </>
+  //         )}
+  //         <div className="edge"></div>
+  //         <div className="shaper1"></div>
+  //         <div className="shaper2"></div>
+  //       </form>
+  //     </>
+  //   );
+  // }
+
+  {
+    /* <form onSubmit={handleSubmit} className="form-container">
+           <h2 className="type">{typename}</h2>
+           {method === "register" && (
+            <input
+              className="form-input"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Full Name"
+              required
+            />
+          )}
           <input
             className="form-input"
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Full Name"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
             required
           />
-        )}
-        <input
-          className="form-input"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
-          required
-        />
-        <input
-          className="form-input"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-          required
-        />
-        <button className="form-button" type="submit">
-          {typename}
-        </button>
-        {method === "login" && (
-          <>
-          <div id="remember-checkbox">
-            <label id="remember-label" htmlFor="rememberMe">Remember Me?</label>
           <input
             className="form-input"
-            type="checkbox"
-            checked={rememberMe}
-            onChange={() => setRememberMe(!rememberMe)}
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+            required
           />
+          <button className="form-button" type="submit">
+            {typename}
+          </button>
+          {method === "login" && (
+            <>
+            <div id="remember-checkbox">
+              <label id="remember-label" htmlFor="rememberMe">Remember Me?</label>
+            <input
+              className="form-input"
+              type="checkbox"
+              checked={rememberMe}
+              onChange={() => setRememberMe(!rememberMe)}
+            />
+            </div>
+            <div id="register-container">
+            <p>Don't have an account?</p>
+            <p className="clickable" onClick={() => navigate("/register")}><u>Register</u></p>
+            </div>
+            </>
+          )}
+          <div className="edge"></div>
+          <div className="shaper1"></div>
+          <div className="shaper2"></div>
+        </form> */
+  }
+
+  return (
+    <div id="cont">
+      <div id="login-container">
+        <div id="title">
+          <h2 id="welcomer">Welcome To</h2>
+          <h1 id="namer"><img src="../src/assets/react.svg"></img>Career Compass</h1>
+        </div>
+        <form onSubmit={handleSubmit} className="form-container">
+          <div id="credentials-container">
+            {method === "register" && (
+              <>
+                <label htmlFor="name">Full Name</label>
+                <input
+                  className="form-input"
+                  type="text"
+                  name="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
+              </>
+            )}
+            <label htmlFor="email">Username</label>
+            <input
+              className="form-input"
+              id="email-input"
+              type="email"
+              name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <label htmlFor="password">Password</label>
+            <input
+              className="form-input"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
           </div>
-          <div id="register-container">
-          <p>Don't have an account?</p>
-          <p className="clickable" onClick={() => navigate("/register")}><u>Register</u></p>
+          {method === "login" && (
+            <div id="remember-me-button">
+              <input
+                id="chkbx"
+                type="checkbox"
+                checked={rememberMe}
+                onChange={() => setRememberMe(!rememberMe)}
+              />{" "}
+              <label id="remember-label" htmlFor="chkbx">Remember Me</label>
+            </div>
+          )}
+          <div id="but-cont">
+            <button id={typename === "Login" ? "log-but" : "reg-but"} className="form-button" type="submit">
+              {typename === "Login" ? "SIGN IN" : "REGISTER"}
+            </button>
           </div>
-          <div id="forgot-password">
-          <p className="clickable" onClick={() => alert("TO BE DONE")} ><u>Forgot Password?</u></p>
-          </div>
-          </>
-        )}
-        <div className="edge"></div>
-        <div className="shaper1"></div>
-        <div className="shaper2"></div>
-      </form>
-    </>
+          {method === "login" && (
+            <div id="reg-container">
+              <p>Don't have an account?</p>
+              <p className="clickable" onClick={() => navigate("/register")}>
+                <u>Register</u>
+              </p>
+            </div>
+          )}
+        </form>
+      </div>
+      <div id="slash">
+          <p>d</p>
+        </div>
+    </div>
   );
 }
 
