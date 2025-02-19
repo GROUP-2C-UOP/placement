@@ -81,7 +81,6 @@ class NotificationListCreate(generics.ListCreateAPIView):
                         role=placement.role,
                         status=placement.status,
                         description=placement.description,
-                        days=deadline_days,
                         shown=True
                     ).first()
 

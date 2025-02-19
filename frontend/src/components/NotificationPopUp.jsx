@@ -1,6 +1,7 @@
 import "../styles/NotificationsPopUp.css";
 import api from "../api";
 import { statusLabels } from "../constants";
+import { useState } from "react";
 
 function NotificationsPopUp({
   setShowSingleNoti,
@@ -13,13 +14,18 @@ function NotificationsPopUp({
   status,
   type,
 }) {
+  const [fadeOutPopUp, setFadeOutPopUp] = useState(false);
+
   const closeNoti = () => {
-    if (type) {
-      setShowNoti(false);
-    } else {
-      setShowSingleNoti(false);
-    }
-    updateNotiShown();
+    setFadeOutPopUp(true);
+    setTimeout(() => {
+      if (type) {
+        setShowNoti(false);
+      } else {
+        setShowSingleNoti(false);
+      }
+      updateNotiShown();
+    }, 200);
   };
 
   const updateNotiShown = () => {
@@ -54,7 +60,7 @@ function NotificationsPopUp({
   };
 
   return (
-    <div id="notification-cont">
+    <div id="notification-cont" className={fadeOutPopUp ? "fade-out-pop-up" : ""}>
       <div id="notification-content-cont">
         <div id="noti-title">
           <h2>Notification</h2>
