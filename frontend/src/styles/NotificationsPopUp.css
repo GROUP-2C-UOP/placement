@@ -13,6 +13,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    animation: fadeInPopUp 0.4s ease-out forwards;
+}
+
+#notification-cont.fade-out-pop-up {
+    animation: fadeOutPopUp 0.2s ease-out forwards;
 }
 
 #notification-content-cont {
@@ -52,4 +57,24 @@
     background-color: #0056b3;
 }
 
-
+@keyframes fadeInPopUp {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -10%);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, 0%);
+    }
+  }
+  
+  @keyframes fadeOutPopUp {
+    from {
+      opacity: 1;
+      transform: translate(-50%, 0%);
+    }
+    to {
+      opacity: 0;
+      transform: translate(-50%, -10%);
+    }
+  }
