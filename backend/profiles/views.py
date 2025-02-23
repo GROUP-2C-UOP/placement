@@ -8,6 +8,7 @@ from rest_framework.response import Response
 class ProfileDetailView(generics.RetrieveAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
+    lookup_field = 'pk'
 
 # api_view(['GET'])
 # def profile_list(request):
