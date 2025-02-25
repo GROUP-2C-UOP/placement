@@ -4,7 +4,7 @@
   top: 0;
   left: 0;
   position: fixed;
-  background-color: navy;
+  background-color: rgb(255, 255, 255);
   z-index: 998;
 }
 
