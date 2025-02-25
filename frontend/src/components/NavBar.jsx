@@ -55,9 +55,9 @@ function NavBar() {
         <div id="header-container">
           <Link to="/">Dashboard</Link>
           <Link to="/placements">Placements</Link>
-          <a href="#">To-Do</a>
-          <a href="#">Statistics</a>
-          <a href="#">Profile</a>
+          <Link to="/statistics">Statistics</Link>
+          <Link to="/todo">To-Do</Link>
+          <Link to="/profile">Profile</Link>
           <button
             id="noti-button"
             onClick={() => setShowAllNotifications(true)}

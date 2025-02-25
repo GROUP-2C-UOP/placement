@@ -7,6 +7,9 @@ import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Layout from "./components/Layout";
 import Dashboard from "./pages/Dashboard";
+import Statistics from "./pages/Statistics";
+import ToDo from "./pages/ToDo";  
+import Profile from "./pages/Profile";
 
 function Logout() {
   localStorage.clear();
@@ -38,6 +41,36 @@ function App() {
             <ProtectedRoute>
               <Layout>
                 <Dashboard />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/statistics"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <Statistics />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/todo"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <ToDo />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <Profile />
               </Layout>
             </ProtectedRoute>
           }
