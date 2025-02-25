@@ -5,9 +5,7 @@ from rest_framework.response import Response
 from .serializers import UserSerializers, PlacementSerializers, NotificationSerializers
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Placement, CustomUser, Notifications
-from datetime import date, timedelta
-from django.http import JsonResponse
-
+from datetime import date
 
 class PlacementListCreate(generics.ListCreateAPIView):
     serializer_class = PlacementSerializers
