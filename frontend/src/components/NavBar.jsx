@@ -13,8 +13,9 @@ function NavBar() {
     getNotifications();
   }, []);
 
-  useEffect(() => { //when showAllNotifcations changes
-    function handleClickOutside(event) { 
+  useEffect(() => {
+    //when showAllNotifcations changes
+    function handleClickOutside(event) {
       if (
         notificationsRef.current && //if the referenced div (all notifications component) is present
         !notificationsRef.current.contains(event.target) //and doesn't contains the event target (the click)
@@ -23,7 +24,8 @@ function NavBar() {
       }
     }
 
-    if (showAllNotifications) { //when showAllNotifications changes if showAllNotifications is true an event listener is added which 
+    if (showAllNotifications) {
+      //when showAllNotifications changes if showAllNotifications is true an event listener is added which
       document.addEventListener("mousedown", handleClickOutside); //waits for mousedown event and on mousedown runs the handleClickOutside function
     }
 
@@ -57,7 +59,7 @@ function NavBar() {
           <Link to="/placements">Placements</Link>
           <Link to="/statistics">Statistics</Link>
           <Link to="/todo">To-Do</Link>
-          <Link to="/profile">Profile</Link>
+          <Link to="/profile/1">Profile</Link>
           <button
             id="noti-button"
             onClick={() => setShowAllNotifications(true)}
@@ -69,7 +71,9 @@ function NavBar() {
       </div>
 
       {showAllNotifications && (
-        <div ref={notificationsRef}> {/* wrap AllNotifications in a div with ref */}
+        <div ref={notificationsRef}>
+          {" "}
+          {/* wrap AllNotifications in a div with ref */}
           <AllNotifications
             setShowAllNotifications={setShowAllNotifications}
             notifications={notifications}
