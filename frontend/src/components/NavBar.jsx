@@ -57,8 +57,8 @@ function NavBar() {
         <div id="header-container">
           <Link to="/">Dashboard</Link>
           <Link to="/placements">Placements</Link>
-          <Link to="/statistics">Statistics</Link>
           <Link to="/todo">To-Do</Link>
+          <Link to="/statistics">Statistics</Link>
           <Link to="/profile/1">Profile</Link>
           <button
             id="noti-button"
