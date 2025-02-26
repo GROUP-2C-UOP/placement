@@ -1,101 +1,123 @@
-.form-container {
-    display: flex;
-    flex-direction: column;
-    margin-top: 10vh;
-    padding: 20px;
-    border-radius: 50px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    background-color: #395088;
-    height: 80vh;
-    width: 70vw;
-    position: absolute;
-    left: 50%;
-    top: 40%;
-    transform: translate(-50%, -50%);
-  }
-  
-  .form-input {
-    width: 30%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 12px;
-    box-sizing: border-box;
-  }
-  
-  .form-button {
-    width: 15%;
-    padding: 10px;
-    margin: 20px 0;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
-    margin-left: 80px;
-  }
-  
-  .form-button:hover {
-    background-color: #0056b3;
-  }
+body {
+  background-color: #0f044c;
+}
 
-  body {
-    background-color: #0f044c;
-  }
+#cont {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  color: white;
+}
 
-  .edge {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 692px;
-    height: 700px; 
-    background-image: url("../assets/react.svg");
-    background-size: cover;
-    background-position: center;
-    clip-path: polygon(100% 0%, 0% 50%, 100% 100%); 
-    pointer-events: none;
-    background-color: white;
-    border-radius: 54px;
+#slash {
+  background-color: white;
+  content: "";
+  width: 110vh;
+  height: 125vw;
+  transform: translate(115%, -50%) rotate(35deg);
+  position: absolute;
+  overflow: hidden;
+  z-index: -1;
+}
+
+#slash::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../assets/compass.svg");
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  transform: translate(-14%, -2%) rotate(-35deg);
+  overflow: hidden;
+
+}
+
+#slash p {
+  color: white;
+}
+
+#welcomer {
+  font-size: 29px;
+  margin-bottom: -10px;
+}
+
+#namer {
+  font-size: 48px;
+}
+
+#login-container {
+  width: fit-content;
+  transform: translate(50%, 20%);
+}
+
+#credentials-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+#remember-me-button {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+#remember-label {
+  font-size: 12px;
+}
+
+#but-cont {
+  display: flex;
+  justify-content: center;
+}
+
+.form-button {
+  background-color: #1a2383;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  transition: background-color 0.2s ease-out;
+}
+
+.form-button:hover {
+  background-color: #0056b3;
+} 
+
+#log-but {
+  padding: 14px 80px;
+}
+
+#reg-but {
+  padding: 10px 40px;
+  margin-top: 10px;
+}
+
+#reg-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 10px;
+}
+
+.form-input {
+  padding: 10px;
+  border-radius: 12px;
+  box-sizing: border-box;
 }
 
 
-  .type {
-    margin-top: 150px;
-    color: white;
-  }
+#chkbx {
+  display: none;
+}
 
-  .form-title {
-    position: absolute;
-    left: 250px;
-    top: 100px;
-    font-size: 50px;
-    color: white;
-    z-index: 1000;
-  }
-
-  #remember-label {
-    color: white;
-
-  }
-
-  #remember-checkbox {
-    display: flex;
-    flex-direction: row;   
-    width: 250px;
-    justify-content: space-evenly;
-    align-items: center;
-  }
-
-  #register-container {
-    display: flex;
-    flex-direction: row;   
-    width: 250px;
-    justify-content: space-evenly;
-    color: white;
-  }
-
- .clickable :hover {
+#remember-label {
+  display: flex;
+  align-items: center;
   cursor: pointer;
   color: purple;
  }

@@ -16,21 +16,21 @@ a[href] {
 
 #progress-headers {
   align-items: center;
-  background-color: rgb(26, 26, 92);
+  background-color: rgb(16, 16, 136);
   display: grid;
   grid-template-columns: repeat(5, 1fr);
 }
 
 #rejected-headers {
   align-items: center;
-  background-color: rgb(26, 26, 92);
+  background-color: rgb(16, 16, 136);
   display: grid;
   grid-template-columns: repeat(3, 1fr);
 }
 
 #accepted-headers {
   align-items: center;
-  background-color: rgb(26, 26, 92);
+  background-color: rgb(16, 16, 136);
   display: grid;
   grid-template-columns: repeat(4, 1fr);
 }
@@ -44,11 +44,11 @@ table {
 }
 
 .header-containerrr {
-  width: 90vw;
-  margin: 10px auto;
+  width: 89.5vw;
+  margin: 0px auto;
   padding: 15px;
-  background-color: rgb(26, 26, 92);
-  border-radius: 10px;
+  background-color: rgb(16, 16, 136);
+  border-radius: 10px 10px 0px 0px;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
@@ -129,6 +129,14 @@ body::-webkit-scrollbar-thumb:hover {
   background: #357ab7;
 }
 
-.main-headers:hover{
+.main-headers:hover {
   color: rgb(158, 158, 198);
+}
+
+.placement-type {
+  width: fit-content;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  overflow: hidden;
+  margin: auto;
 }

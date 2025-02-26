@@ -1,9 +1,14 @@
 .placement-container-home {
   width: 90vw;
-  margin: 10px auto;
+  /* margin: 10px auto; */
   padding: 10px;
-  background-color: rgb(9, 9, 160);
-  border-radius: 10px;
+  background-color: rgb(255, 255, 255);
+  color: rgb(9, 9, 160);
+  border-bottom: solid 1px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0px auto;
 }
 
 .placement-container-dashboard {
@@ -18,7 +23,7 @@
 
 .placement-container-home:hover,
 .placement-container-dashboard:hover {
-  background-color: blue;
+  background-color: rgb(142, 142, 207);
   transition: background-color 0.3s ease;
 }
 
@@ -65,9 +70,6 @@ table {
   grid-template-columns: repeat(4, 1fr);
 }
 
-.icons {
-  filter: invert(1);
-}
 
 thead {
   align-items: center;

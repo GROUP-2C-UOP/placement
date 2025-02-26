@@ -371,7 +371,7 @@ function PlacementsPage() {
             </thead>
           </table>
         </div>
-        <div className="placement-type">
+        <div className="placement-type pro">
           {!isFiltered &&
             placementsInProgress.map((placement) => (
               <Placement
@@ -453,7 +453,6 @@ function PlacementsPage() {
         <h2 className="placement-subtitle">
           <span>🔴</span>Rejected<span>🔴</span>
         </h2>
-        <div className="placement-type"></div>
         <div className="header-containerrr">
           <table>
             <thead id="rejected-headers">
@@ -495,7 +494,7 @@ function PlacementsPage() {
             </thead>
           </table>
         </div>
-        <div className="placement-type">
+        <div className="placement-type rej">
           {placementsRejected.map((placement) => (
             <Placement
               placementType={"rejected"}
@@ -537,7 +536,7 @@ function PlacementsPage() {
         <h2 className="placement-subtitle">
           <span>🟢</span>Accepted<span>🟢</span>
         </h2>
-        <div className="placement-type"></div>
+        <div className="placement-type acc"></div>
         <div className="header-containerrr">
           <table>
             <thead id="accepted-headers">
