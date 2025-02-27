@@ -5,9 +5,7 @@ from rest_framework.response import Response
 from .serializers import UserSerializers, PlacementSerializers, NotificationSerializers
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Placement, CustomUser, Notifications
-from datetime import date, timedelta
-from django.http import JsonResponse
-
+from datetime import date
 
 class PlacementListCreate(generics.ListCreateAPIView):
     serializer_class = PlacementSerializers
@@ -73,7 +71,7 @@ class NotificationListCreate(generics.ListCreateAPIView):
             if placement.next_stage_deadline:
                 deadline_days = (placement.next_stage_deadline - date.today()).days
 
-                if deadline_days <= 3 and placement.status not in ["applied", "offer_made", "rejected", "withdrawn"]:
+                if 0 < deadline_days <= 3 and placement.status not in ["applied", "offer_made", "rejected", "withdrawn"]:
                     existing_notification = Notifications.objects.filter(
                         user=user,
                         placement=placement,

@@ -1,6 +1,101 @@
+/* .form-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10vh;
+  padding: 20px;
+  border-radius: 50px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #395088;
+  height: 80vh;
+  width: 70vw;
+  position: absolute;
+  left: 50%;
+  top: 40%;
+  transform: translate(-50%, -50%);
+}
+
+.form-input {
+  width: 30%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  box-sizing: border-box;
+}
+
+.form-button {
+  width: 15%;
+  padding: 10px;
+  margin: 20px 0;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  margin-left: 80px;
+}
+
+*/
+
 body {
   background-color: #0f044c;
 }
+/* 
+.type {
+  margin-top: 150px;
+  color: white;
+}
+
+.form-title {
+  position: absolute;
+  left: 250px;
+  top: 100px;
+  font-size: 50px;
+  color: white;
+  z-index: 1000;
+}
+
+#remember-label {
+  color: white;
+}
+
+#remember-checkbox {
+  display: flex;
+  flex-direction: row;
+  width: 250px;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+#register-container {
+  display: flex;
+  flex-direction: row;
+  width: 250px;
+  justify-content: space-evenly;
+  color: white;
+}
+
+
+
+#forgot-password {
+  margin-left: 20px;
+} */
+
+/* .edge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 692px;
+  height: 700px; 
+  background-image: url("../assets/react.svg");
+  background-size: cover;
+  background-position: center;
+  clip-path: polygon(100% 0%, 0% 50%, 100% 100%); 
+  pointer-events: none;
+  background-color: white;
+  border-radius: 54px;
+} */
 
 #cont {
   width: 100vw;
@@ -119,13 +214,29 @@ body {
   display: flex;
   align-items: center;
   cursor: pointer;
-  color: purple;
- }
+  font-size: 14px;
+  gap: 10px; 
+}
 
- .clickable {
+#remember-label::before {
+  content: "";
+  width: 14px; 
+  height: 14px;
+  background-color: white;
+  border-radius: 50%; 
+  display: inline-block;
+  transition: background-color 0.1s ease-out;
+}
+
+#chkbx:checked + #remember-label::before{
+  background-color: #1f2dc4;
+}
+
+.clickable {
   color: white;
- }
-
- #forgot-password {
-  margin-left: 20px;
- }
+  transition: color 0.2s ease-out;
+}
+.clickable:hover {
+  cursor: pointer;
+  color: rgb(164, 159, 173);
+}

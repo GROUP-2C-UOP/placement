@@ -4,7 +4,7 @@
   top: 0;
   left: 0;
   position: fixed;
-  background-color: white;
+  background-color: navy;
   z-index: 998;
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
 }
@@ -18,7 +18,7 @@
   justify-content: center;
   display: flex;
   font-size: 2.5rem;
-  color: navy;
+  color: white;
 }
 
 #header-container {
@@ -39,7 +39,7 @@
 
 #header-container a {
   text-decoration: none;
-  color: navy;
+  color: white;
 }
 
 #noti-button {
@@ -51,7 +51,7 @@
 #noti-button img {
   width: 20px;
   height: auto;
-  /* filter: invert(1); */
+  filter: invert(1);
 }
 
 #got-notis {
