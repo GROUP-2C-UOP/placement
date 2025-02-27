@@ -60,6 +60,7 @@ function NavBar() {
           <Link to="/todo">To-Do</Link>
           <Link to="/statistics">Statistics</Link>
           <Link to="/profile/1">Profile</Link>
+          <Link to="/account">Prof</Link>
           <button
             id="noti-button"
             onClick={() => setShowAllNotifications(true)}

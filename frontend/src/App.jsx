@@ -10,6 +10,7 @@ import Dashboard from "./pages/Dashboard";
 import Statistics from "./pages/Statistics";
 import ToDo from "./pages/ToDo";
 import Profile from "./pages/Profile";
+import Account from "./pages/Account";
 
 function Logout() {
   localStorage.clear();
@@ -71,6 +72,16 @@ function App() {
             <ProtectedRoute>
               <Layout>
                 <Profile />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/account"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <Account />
               </Layout>
             </ProtectedRoute>
           }
