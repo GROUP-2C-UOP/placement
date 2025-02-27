@@ -55,11 +55,50 @@ class GetUserName(generics.RetrieveAPIView):
     def get_serializer_class(self):
         class UserNameSerializer(UserSerializers):
             class Meta(UserSerializers.Meta):
-                fields = ["first_name"]
+                fields = ["first_name", "last_name"]
 
         return UserNameSerializer
     
+class GetEmail(generics.RetrieveAPIView):
+    serializer_class = UserSerializers
+    permission_classes = [IsAuthenticated]
 
+    def get_object(self):
+        return self.request.user
+    
+    def get_serializer_class(self):
+        class EmailSerializer(UserSerializers):
+            class Meta(UserSerializers.Meta):
+                fields = ["email"]
+        return EmailSerializer
+    
+class PasswordUpdate(generics.UpdateAPIView):
+    serializer_class = UserSerializers
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+    
+    def patch(self, request, *args, **kwargs): #this class has param of updateAPIView so the code knows to automatically trigger this patch function
+        user = self.get_object()
+        new_password = request.data.get('password')
+
+        if new_password:
+            # hash the new password and update it
+            user.set_password(new_password)
+            user.save()
+            return Response({"message": "Password updated successfully"}, status=status.HTTP_200_OK)
+        return Response({"message": "Password not provided"}, status=status.HTTP_400_BAD_REQUEST)
+    
+class UserUpdate(generics.UpdateAPIView):
+    serializer_class = UserSerializers
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+    
+
+    
 class NotificationListCreate(generics.ListCreateAPIView):
     serializer_class = NotificationSerializers
     permission_classes = [IsAuthenticated]

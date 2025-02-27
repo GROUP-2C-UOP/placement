@@ -9,5 +9,8 @@ urlpatterns = [
     path("notifications/delete/<int:pk>/", views.NotificationDelete.as_view(), name="notification-delete"),
     path("notifications/bulkupdate/", views.NotificationBulkUpdate.as_view(), name="notifications-bulk-update"),
     path("notifications/update/<int:pk>/", views.NotificationUpdate.as_view(), name="notification-update"),
-    path("user/getname/", views.GetUserName.as_view(), name="user-name")
+    path("account/name/", views.GetUserName.as_view(), name="user-name"),
+    path("account/email/", views.GetEmail.as_view(), name="get-email"),
+    path("account/password/update/", views.PasswordUpdate.as_view(), name="update-password"),
+    path("account/update/", views.UserUpdate.as_view(), name="update-name"),
 ]

@@ -17,7 +17,7 @@ function Dashboard() {
 
   const getUser = () => {
     api
-      .get("/api/user/getname/")
+      .get("/api/account/name/")
       .then((res) => res.data)
       .then((data) => {
         const firstName =
