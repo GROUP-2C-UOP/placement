@@ -42,51 +42,27 @@ const Account = () => {
       .catch((err) => alert(err));
   };
 
-  const changeFirstName = () => {
-    console.log(newFirstName);
+  const updateField = (field, value) => {
+    console.log(value);
     api
-      .patch(`/api/account/update/`, { first_name: newFirstName })
+      .patch(`/api/account/update/`, { [field]: value })
       .then((res) => {
         if (res.status === 200 || res.status === 204) {
-          console.log("fname Updated");
-        } else alert("Something went wrong, try again.");
+          console.log(`${field} Updated`);
+        } else {
+          alert("Something went wrong, try again.");
+        }
       })
       .catch((error) => {
         console.error("Update failed", error);
         alert("Failed, check console");
       });
   };
-
-  const changeLastName = () => {
-    console.log(newLastName);
-    api
-      .patch(`/api/account/update/`, { last_name: newLastName })
-      .then((res) => {
-        if (res.status === 200 || res.status === 204) {
-          console.log("lname Updated");
-        } else alert("Something went wrong, try again.");
-      })
-      .catch((error) => {
-        console.error("Update failed", error);
-        alert("Failed, check console");
-      });
-  };
-
-  const changeEmail = () => {
-    console.log(newEmail);
-    api
-      .patch(`/api/account/update/`, { email: newEmail })
-      .then((res) => {
-        if (res.status === 200 || res.status === 204) {
-          console.log("email Updated");
-        } else alert("Something went wrong, try again.");
-      })
-      .catch((error) => {
-        console.error("Update failed", error);
-        alert("Failed, check console");
-      });
-  };
-
+  
+  const changeFirstName = () => updateField('first_name', newFirstName);
+  const changeLastName = () => updateField('last_name', newLastName);
+  const changeEmail = () => updateField('email', newEmail);
+  
   const changePassword = () => {
     console.log(newPassword);
     api
