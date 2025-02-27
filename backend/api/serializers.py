@@ -13,18 +13,11 @@ class UserSerializers(serializers.ModelSerializer):
         extra_kwargs = {"password": {"write_only": True}}
 
     def create(self, validated_data):
-        first_name = validated_data.pop("first_name", "")
-        last_name = validated_data.pop("last_name", "")
-        email = validated_data.pop("email")
+        email = validated_data.pop("email")  # extract email to set as username
+        validated_data["username"] = email  
 
-        validated_data['username'] = email
+        return CustomUser.objects.create_user(email=email, **validated_data)
 
-        user = CustomUser.objects.create_user(email=email, first_name=first_name, last_name=last_name, **validated_data)
-        user.first_name = first_name
-        user.last_name = last_name
-
-        return user
-    
 class PlacementSerializers(serializers.ModelSerializer):
     class Meta:
         model = Placement

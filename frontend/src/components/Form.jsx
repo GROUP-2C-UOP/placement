@@ -45,120 +45,6 @@ function Form({ route, method }) {
     }
   };
 
-  //   return (
-  //     <>
-  //       <h1 className="form-title">Career Compass</h1>
-  //       <form onSubmit={handleSubmit} className="form-container">
-  //         <h2 className="type">{typename}</h2>
-  //         {method === "register" && (
-  //           <input
-  //             className="form-input"
-  //             type="text"
-  //             value={name}
-  //             onChange={(e) => setName(e.target.value)}
-  //             placeholder="Full Name"
-  //             required
-  //           />
-  //         )}
-  //         <input
-  //           className="form-input"
-  //           type="email"
-  //           value={email}
-  //           onChange={(e) => setEmail(e.target.value)}
-  //           placeholder="Email"
-  //           required
-  //         />
-  //         <input
-  //           className="form-input"
-  //           type="password"
-  //           value={password}
-  //           onChange={(e) => setPassword(e.target.value)}
-  //           placeholder="Password"
-  //           required
-  //         />
-  //         <button className="form-button" type="submit">
-  //           {typename}
-  //         </button>
-  //         {method === "login" && (
-  //           <>
-  //           <div id="remember-checkbox">
-  //             <label id="remember-label" htmlFor="rememberMe">Remember Me?</label>
-  //           <input
-  //             className="form-input"
-  //             type="checkbox"
-  //             checked={rememberMe}
-  //             onChange={() => setRememberMe(!rememberMe)}
-  //           />
-  //           </div>
-  //           <div id="register-container">
-  //           <p>Don't have an account?</p>
-  //           <p className="clickable" onClick={() => navigate("/register")}><u>Register</u></p>
-  //           </div>
-  //           </>
-  //         )}
-  //         <div className="edge"></div>
-  //         <div className="shaper1"></div>
-  //         <div className="shaper2"></div>
-  //       </form>
-  //     </>
-  //   );
-  // }
-
-  {
-    /* <form onSubmit={handleSubmit} className="form-container">
-           <h2 className="type">{typename}</h2>
-           {method === "register" && (
-            <input
-              className="form-input"
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Full Name"
-              required
-            />
-          )}
-          <input
-            className="form-input"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
-            required
-          />
-          <input
-            className="form-input"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-            required
-          />
-          <button className="form-button" type="submit">
-            {typename}
-          </button>
-          {method === "login" && (
-            <>
-            <div id="remember-checkbox">
-              <label id="remember-label" htmlFor="rememberMe">Remember Me?</label>
-            <input
-              className="form-input"
-              type="checkbox"
-              checked={rememberMe}
-              onChange={() => setRememberMe(!rememberMe)}
-            />
-            </div>
-            <div id="register-container">
-            <p>Don't have an account?</p>
-            <p className="clickable" onClick={() => navigate("/register")}><u>Register</u></p>
-            </div>
-            </>
-          )}
-          <div className="edge"></div>
-          <div className="shaper1"></div>
-          <div className="shaper2"></div>
-        </form> */
-  }
-
   return (
     <div id="cont">
       <div id="login-container">
@@ -181,7 +67,7 @@ function Form({ route, method }) {
                 />
               </>
             )}
-            <label htmlFor="email">Username</label>
+            <label htmlFor="email">Email</label>
             <input
               className="form-input"
               id="email-input"
