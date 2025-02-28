@@ -13,6 +13,7 @@ STATUS_CHOICES = [
 
 class CustomUser(AbstractUser):
     email = models.EmailField(unique=True)
+    profile_picture = models.ImageField(upload_to="profiles/", null=True, blank=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']

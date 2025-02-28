@@ -1,8 +1,9 @@
-import { getMargin } from "react-range/lib/utils";
 import api from "../api";
 import { useState, useEffect } from "react";
+import "../styles/Account.css";
 
 const Account = () => {
+  const [profile, setProfile] = useState(null);
   const [name, setName] = useState(null);
   const [email, setEmail] = useState(null);
   const [newPassword, setNewPassword] = useState("");
@@ -13,7 +14,19 @@ const Account = () => {
   useEffect(() => {
     getName();
     getEmail();
+    getProfilePicture();
   }, []);
+
+  const getProfilePicture = () => {
+    api
+      .get("/api/account/picture/")
+      .then((res) => res.data)
+      .then((data) => {
+        setProfile(data);
+        console.log(data);
+      })
+      .catch((err) => alert(err));
+  };
 
   const getName = () => {
     api
@@ -58,11 +71,11 @@ const Account = () => {
         alert("Failed, check console");
       });
   };
-  
-  const changeFirstName = () => updateField('first_name', newFirstName);
-  const changeLastName = () => updateField('last_name', newLastName);
-  const changeEmail = () => updateField('email', newEmail);
-  
+
+  const changeFirstName = () => updateField("first_name", newFirstName);
+  const changeLastName = () => updateField("last_name", newLastName);
+  const changeEmail = () => updateField("email", newEmail);
+
   const changePassword = () => {
     console.log(newPassword);
     api
@@ -78,6 +91,27 @@ const Account = () => {
       });
   };
 
+  const changeProfilePicture = (file) => {
+    const formData = new FormData();
+    formData.append("profile_picture", file);
+
+    api
+      .patch(`/api/account/update/`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then((res) => {
+        if (res.status === 200 || res.status === 204) {
+          console.log("Profile Picture Updated");
+          setProfile(file);
+          getProfilePicture();
+        } else alert("Something went wrong, try again.");
+      })
+      .catch((error) => {
+        console.error("Update failed", error);
+        alert("Failed, check console");
+      });
+  };
+
   const changeNotificationDuration = () => {
     f;
   };
@@ -85,8 +119,19 @@ const Account = () => {
   return (
     <div>
       <h1 id="profile-header">Account</h1>
-      {/* <img src="src/assets/prof.svg" /> */}
-      {/* <button>Change Profile</button> */}
+      <div id="profile-container">
+        <img src={profile ? profile.profile_picture : "src/assets/prof.svg"} />
+      </div>
+      <label htmlFor="prof-input" id="prof-button">
+        {" "}
+        {/*hide profile input and use the label to act as a button. "htmlfor" makes it so when the label is clicked it will have the same functionality of input */}
+        Upload CV
+      </label>
+      <input
+        type="file"
+        id="prof-input"
+        onChange={(e) => changeProfilePicture(e.target.files[0])}
+      />
       <p id="name">{name}</p>
       <input
         type="text"

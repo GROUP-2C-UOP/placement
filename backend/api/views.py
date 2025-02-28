@@ -45,6 +45,21 @@ class PlacementUpdate(generics.UpdateAPIView):
         user = self.request.user
         return Placement.objects.filter(user=user)
     
+class GetProfilePicture(generics.RetrieveAPIView):
+    serializer_class = UserSerializers
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+    
+    def get_serializer_class(self):
+        class ProfilePictureSerializer(UserSerializers):
+            class Meta(UserSerializers.Meta):
+                fields = ["profile_picture"]
+
+        return ProfilePictureSerializer
+    
+    
 class GetUserName(generics.RetrieveAPIView):
     serializer_class = UserSerializers
     permission_classes = [IsAuthenticated]
@@ -96,8 +111,6 @@ class UserUpdate(generics.UpdateAPIView):
 
     def get_object(self):
         return self.request.user
-    
-
     
 class NotificationListCreate(generics.ListCreateAPIView):
     serializer_class = NotificationSerializers

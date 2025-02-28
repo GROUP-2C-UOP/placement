@@ -7,9 +7,10 @@ import time
 
 
 class UserSerializers(serializers.ModelSerializer):
+    profile_picture = serializers.ImageField(required=False) #dont make prof pic required on creation of user
     class Meta:
         model = CustomUser
-        fields = ["id", "email", "password", "first_name", "last_name"]
+        fields = ["id", "email", "password", "first_name", "last_name", "profile_picture"]
         extra_kwargs = {"password": {"write_only": True}}
 
     def create(self, validated_data):
