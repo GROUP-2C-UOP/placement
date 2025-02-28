@@ -20,6 +20,14 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.email
+    
+class UserPreferences(models.Model):
+    notification_enabled = models.BooleanField(default=False)
+    notification_time = models.IntegerField(null=True, default=None)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Preferences for {self.user.username}"
 
 class Placement(models.Model):
     company = models.CharField(max_length=100)

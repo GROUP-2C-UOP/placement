@@ -171,11 +171,12 @@ const Account = () => {
       <button onClick={changePassword}>
         {/* <img src="src/assets/edit.svg" /> */}submit
       </button>
+      <p id="notification">Notifications On?</p>
+      <label htmlFor="notification-enabled">Turn on notification</label>
+      <input type="checkbox" id="notification-enabled" />
       <p id="notification">Change Notification Timing?</p>
-      <button>
-        kk
-        {/* <img src="src/assets/prof.svg" /> */}
-      </button>
+      <label htmlFor="notification-time">Days Before Deadline</label>
+      <input type="range" name="notification-time" />
     </div>
   );
 };
