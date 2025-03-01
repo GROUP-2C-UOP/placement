@@ -194,10 +194,6 @@ textarea {
   height: 45vh !important;
 }
 
-.editing-window {
-  height: 80vh !important;
-}
-
 .detailU {
   text-align: center;
   display: flex;
@@ -208,6 +204,9 @@ textarea {
 
 #applicationLink {
   width: 80%;
+}
+.shorten {
+  margin-bottom: -40px;
 }
 
 #modal-window.fade-out {

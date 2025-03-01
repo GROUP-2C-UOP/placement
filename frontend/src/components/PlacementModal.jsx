@@ -157,6 +157,21 @@ function PlacementModal({
     }
   }, [showModal, placement.description, placement.status, placement.deadline]);
 
+  const [cvName, setCvName] = useState("Choose CV");
+  const [coverLetterName, setCoverLetterName] = useState("Choose Cover Letter");
+
+  const handleCvChange = (e) => {
+    const file = e.target.files[0];
+    setCv(file);
+    setCvName(file ? file.name : "Choose CV");
+  };
+
+  const handleCoverLetterChange = (e) => {
+    const file = e.target.files[0];
+    setCoverLetter(file);
+    setCoverLetterName(file ? file.name : "Choose Cover Letter");
+  };
+
   return (
     <div>
       {!editing && (
@@ -483,7 +498,7 @@ function PlacementModal({
 
                 <input
                   type="url"
-                  id="applicationLink"
+                  id="applicationEditLink"
                   className="input-field"
                   name="applicationLink"
                   placeholder={
@@ -509,11 +524,15 @@ function PlacementModal({
                   </div>
                 )}
                 <br />
+                <label htmlFor="cv" className="label-button shorten">
+                  {cvName}
+                </label>
                 <input
                   type="file"
                   id="cv"
+                  className="hide"
                   name="cv"
-                  onChange={(e) => setCv(e.target.files[0])}
+                  onChange={handleCvChange}
                 />
               </div>
               <div className="detailU">
@@ -530,12 +549,16 @@ function PlacementModal({
                   </div>
                 )}
                 <br />
-                <input
-                  type="file"
-                  id="coverLetter"
-                  name="coverLetter"
-                  onChange={(e) => setCoverLetter(e.target.files[0])}
-                />
+                <label htmlFor="coverLetter" className="label-button shorten">
+                {coverLetterName}
+              </label>
+              <input
+                type="file"
+                id="coverLetter"
+                className="hide"
+                name="coverLetter"
+                onChange={handleCoverLetterChange}
+              />
               </div>
               <div className="detailU">
                 <label>Contact:</label>
