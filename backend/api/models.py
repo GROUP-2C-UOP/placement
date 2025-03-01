@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 STATUS_CHOICES = [
     ('applied', 'Applied'),
@@ -23,11 +25,21 @@ class CustomUser(AbstractUser):
     
 class UserPreferences(models.Model):
     notification_enabled = models.BooleanField(default=False)
-    notification_time = models.IntegerField(null=True, default=None)
+    notification_time = models.IntegerField(default=None)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"Preferences for {self.user.username}"
+    
+@receiver(post_save, sender=CustomUser) #when a customuser instance is saved in the db the function below runs
+def create_user_preferences(sender, instance, created, **kwargs):
+    """parameters: 
+        sender = custom user that sent signal to trigger function 
+        instance = object that was saved, custom user
+        created = boolean flag to tell if custom user was created
+        """
+    if created: # if user is new
+        UserPreferences.objects.create(user=instance) #create user preferences model which is linked to newly created custom user
 
 class Placement(models.Model):
     company = models.CharField(max_length=100)

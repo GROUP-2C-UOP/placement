@@ -2,9 +2,9 @@ from django.shortcuts import render
 from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import UserSerializers, PlacementSerializers, NotificationSerializers
+from .serializers import UserSerializers, PlacementSerializers, NotificationSerializers, UserPreferencesSerializers
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .models import Placement, CustomUser, Notifications
+from .models import Placement, CustomUser, Notifications, UserPreferences
 from datetime import date
 
 class PlacementListCreate(generics.ListCreateAPIView):
@@ -86,6 +86,26 @@ class GetEmail(generics.RetrieveAPIView):
             class Meta(UserSerializers.Meta):
                 fields = ["email"]
         return EmailSerializer
+    
+class GetNotificationStatus(generics.RetrieveAPIView):
+    serializer_class = UserPreferencesSerializers
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return UserPreferences.objects.get(user=self.request.user)
+    
+    def get_serializer_class(self):
+        class StatusSerializer(UserPreferencesSerializers):
+            class Meta(UserPreferencesSerializers.Meta):
+                fields = ["notification_enabled"]
+        return StatusSerializer
+    
+class NotificationStatusUpdate(generics.UpdateAPIView):
+    serializer_class = UserPreferencesSerializers
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
     
 class PasswordUpdate(generics.UpdateAPIView):
     serializer_class = UserSerializers

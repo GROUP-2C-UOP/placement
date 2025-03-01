@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Placement, CustomUser, Notifications
+from .models import Placement, CustomUser, Notifications, UserPreferences
 from rest_framework_simplejwt.tokens import RefreshToken
 from datetime import timedelta
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -56,6 +56,11 @@ class NotificationSerializers(serializers.ModelSerializer):
                   "user"]
         extra_kwargs = {"user": {"read_only": True}}
         
+
+class UserPreferencesSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = UserPreferences
+        fields = ["notification_enabled", "notification_time"]
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):

@@ -10,11 +10,13 @@ const Account = () => {
   const [newFirstName, setNewFirstName] = useState("");
   const [newLastName, setNewLastName] = useState("");
   const [newEmail, setNewEmail] = useState("");
+  const [notificationStatus, setNotificationStatus] = useState(false);
 
   useEffect(() => {
     getName();
     getEmail();
     getProfilePicture();
+    getNotificationStatus();
   }, []);
 
   const getProfilePicture = () => {
@@ -22,7 +24,8 @@ const Account = () => {
       .get("/api/account/picture/")
       .then((res) => res.data)
       .then((data) => {
-        setProfile(data);
+        const profilePic = data.profile_picture;
+        setProfile(profilePic);
         console.log(data);
       })
       .catch((err) => alert(err));
@@ -55,10 +58,22 @@ const Account = () => {
       .catch((err) => alert(err));
   };
 
-  const updateField = (field, value) => {
+  const getNotificationStatus = () => {
+    api
+      .get(`/api/account/notification/status/`)
+      .then((res) => res.data)
+      .then((data) => {
+        const status = data.notification_enabled;
+        setNotificationStatus(status);
+        console.log(data);
+      })
+      .catch((err) => alert(err));
+  };
+
+  const updateField = (field, value, url) => {
     console.log(value);
     api
-      .patch(`/api/account/update/`, { [field]: value })
+      .patch(url, { [field]: value })
       .then((res) => {
         if (res.status === 200 || res.status === 204) {
           console.log(`${field} Updated`);
@@ -72,9 +87,25 @@ const Account = () => {
       });
   };
 
-  const changeFirstName = () => updateField("first_name", newFirstName);
-  const changeLastName = () => updateField("last_name", newLastName);
-  const changeEmail = () => updateField("email", newEmail);
+  const changeFirstName = () =>
+    updateField("first_name", newFirstName, `/api/account/update/`);
+  const changeLastName = () =>
+    updateField("last_name", newLastName, `/api/account/update/`);
+  const changeEmail = () =>
+    updateField("email", newEmail, `/api/account/update/`);
+
+  const changeNotificationStatus = () => {
+    setNotificationStatus((prevStatus) => { //pass notificationstatus state as prevstatus as it is about to be changed (done automatically by react)
+      const newStatus = !prevStatus; // newStatus is inverse of previous
+      updateField(  //call updatefield function to set notification enabled with new status as new value
+        "notification_enabled",
+        newStatus,
+        `/api/account/notification/update/status/`
+      );
+      console.log("Updated notification status:", newStatus);
+      return newStatus; // return new status so that it is also set as the notification status in reacts use state
+    });
+  };
 
   const changePassword = () => {
     console.log(newPassword);
@@ -173,10 +204,15 @@ const Account = () => {
       </button>
       <p id="notification">Notifications On?</p>
       <label htmlFor="notification-enabled">Turn on notification</label>
-      <input type="checkbox" id="notification-enabled" />
+      <input
+        type="checkbox"
+        id="notification-enabled"
+        checked={notificationStatus}
+        onChange={changeNotificationStatus}
+      />
       <p id="notification">Change Notification Timing?</p>
       <label htmlFor="notification-time">Days Before Deadline</label>
-      <input type="range" name="notification-time" />
+      <input type="number" name="notification-time" id="notification-time"/>
     </div>
   );
 };
