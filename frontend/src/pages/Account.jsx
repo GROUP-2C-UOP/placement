@@ -166,10 +166,6 @@ const Account = () => {
       });
   };
 
-  const changeNotificationDuration = () => {
-    f;
-  };
-
   return (
     <div>
       <h1 id="profile-header">Account</h1>

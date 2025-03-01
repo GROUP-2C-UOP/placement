@@ -13,9 +13,9 @@
   margin-right: auto;
   border-radius: 10px;
   margin-bottom: 30px;
-  position: absolute; 
-  top: 45%; 
-  left: 50%; 
+  position: absolute;
+  top: 45%;
+  left: 50%;
   transform: translate(-50%, -50%);
   animation: fadeIn 0.3s ease-out forwards;
 }
@@ -47,28 +47,28 @@ input {
   z-index: 999;
   margin-top: -10px;
   height: 100%;
+  padding: 15px;
 }
 
 #close-modal {
-    position: absolute;
-    right: 30px;
-    top: 20px;
-    z-index: 1000;
+  position: absolute;
+  right: 30px;
+  top: 20px;
+  z-index: 1000;
 }
 
-#close-modal:hover{
+#close-modal:hover {
   cursor: pointer;
 }
 
-#add-placement-button{
-    margin-bottom: 10px;
+#add-placement-button {
+  margin-bottom: 10px;
 }
 
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); 
-  row-gap: 2rem; 
-  
+  grid-template-columns: repeat(3, 1fr);
+  row-gap: 2rem;
   justify-items: center;
 }
 
@@ -95,7 +95,7 @@ input {
 .save-button {
   background: none;
   border: none;
-  margin-top: 8px;  
+  margin-top: 8px;
 }
 
 .save-button img {
@@ -116,7 +116,6 @@ input {
   width: 70%;
 }
 
-
 label {
   font-size: 0.9rem;
   font-weight: bold;
@@ -131,6 +130,38 @@ textarea {
   border-radius: 6px;
   border: none;
   outline: none;
+}
+
+.label-button {
+  display: inline-block;
+  padding: 3px 8px;
+  background-color: white; 
+  color: #333; 
+  border-radius: 5px;
+  font-size: 14px;
+  text-align: center;
+  cursor: pointer;
+  font-family: Arial, sans-serif;
+  font-weight: 100;
+  transition: all 0.1s ease-in-out;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.label-button:hover {
+  background-color: #d1cdcd; 
+}
+
+.label-button:active {
+  background-color: rgb(169, 169, 169); 
+}
+
+.hide {
+  visibility: hidden;
+}
+
+#applicationLink {
+  width: 100%;
 }
 
 @keyframes fadeIn {

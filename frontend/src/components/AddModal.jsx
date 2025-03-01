@@ -96,15 +96,34 @@ function AddModal({
     }, 100);
   };
 
+  const [cvName, setCvName] = useState("Choose CV");
+  const [coverLetterName, setCoverLetterName] = useState("Choose Cover Letter");
+
+  const handleCvChange = (e) => {
+    const file = e.target.files[0];
+    setCv(file);
+    setCvName(file ? file.name : "Choose CV");
+  };
+
+  const handleCoverLetterChange = (e) => {
+    const file = e.target.files[0];
+    setCoverLetter(file);
+    setCoverLetterName(file ? file.name : "Choose Cover Letter");
+  };
+
   return (
     <div id="add-container">
-      <div className={`add-placement ${fadeOut ? "fade-out" : ""} ${fadeOutSave ? "fade-out-save" : ""}`}>
+      <div
+        className={`add-placement ${fadeOut ? "fade-out" : ""} ${
+          fadeOutSave ? "fade-out-save" : ""
+        }`}
+      >
         <h2 id="title">Add Placement</h2>
         <p>(Fields marked with * are required)</p>
         <button id="close-modal" className="close-button" onClick={handleClose}>
           <img src="src/assets/close.svg" />
         </button>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} id="add-placement-form">
           <div className="grid-container">
             <div className="input-field">
               <label htmlFor="company">Company*</label>
@@ -218,20 +237,28 @@ function AddModal({
             </div>
             <div className="input-field">
               <label htmlFor="cv">CV</label>
+              <label htmlFor="cv" className="label-button">
+                {cvName}
+              </label>
               <input
                 type="file"
                 id="cv"
+                className="hide"
                 name="cv"
-                onChange={(e) => setCv(e.target.files[0])}
+                onChange={handleCvChange}
               />
             </div>
             <div className="input-field">
               <label htmlFor="coverLetter">Cover Letter</label>
+              <label htmlFor="coverLetter" className="label-button">
+                {coverLetterName}
+              </label>
               <input
                 type="file"
                 id="coverLetter"
+                className="hide"
                 name="coverLetter"
-                onChange={(e) => setCoverLetter(e.target.files[0])}
+                onChange={handleCoverLetterChange}
               />
             </div>
           </div>
