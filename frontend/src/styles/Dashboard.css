@@ -129,5 +129,6 @@
   background-color: rgb(7, 7, 173);
 }
 
-
-  
+.no-select {
+  user-select: none;
+}

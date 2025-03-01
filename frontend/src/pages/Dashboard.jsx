@@ -99,7 +99,7 @@ function Dashboard() {
               <div id="bottom">
                 {placements.length === 0 && (
                   <Link to="/placements">
-                    <button id="add">
+                    <button id="add" className="no-select">
                       <img src="src/assets/add.svg" />
                     </button>
                   </Link>

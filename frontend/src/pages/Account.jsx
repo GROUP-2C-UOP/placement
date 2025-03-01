@@ -66,7 +66,7 @@ const Account = () => {
       .then((data) => {
         const status = data.notification_enabled;
         setNotificationStatus(status);
-        console.log(data);
+        console.log(status);
       })
       .catch((err) => alert(err));
   };

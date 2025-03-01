@@ -40,6 +40,7 @@ function PlacementsPage() {
   const [showNoti, setShowNoti] = useState(false);
   const [showSingleNoti, setShowSingleNoti] = useState(false);
   const [singleNotification, setSingleNotification] = useState(null);
+  const [notificationsOn, setNotificationsOn] = useState("");
 
   const [sortProgressPlacements, setSortProgressPlacements] = useState({
     key: null,
@@ -59,8 +60,12 @@ function PlacementsPage() {
   }, []);
 
   useEffect(() => {
-    getNotifications(); //called twice due to strictmode -- makes two notifications. strict mode needs to be disabled in main.jsx
+    getNotificationStatus(); 
   }, []);
+
+  useEffect(() => {
+    getNotifications(); //called twice due to strictmode -- makes two notifications. strict mode needs to be disabled in main.jsx
+  }, [notificationsOn]);
 
   useEffect(() => {
     getNotifications();
@@ -187,32 +192,46 @@ function PlacementsPage() {
       .catch((err) => alert(err));
   };
 
-  const getNotifications = () => {
+  const getNotificationStatus = () => {
     api
-      .get("/api/notifications/")
+      .get(`/api/account/notification/status/`)
       .then((res) => res.data)
       .then((data) => {
-        setNotifications(data);
-
-        const filteredNotifications = data.filter(
-          (notification) => !notification.shown
-        );
-        setToShowNotifications(filteredNotifications);
-
+        const status = data.notification_enabled;
+        setNotificationsOn(status);
         console.log(data);
-        console.log(`to show notifications`, filteredNotifications);
-
-        if (filteredNotifications.length > 1) {
-          setSingleNotification(null);
-          setShowSingleNoti(false);
-          setShowNoti(true);
-        } else if (filteredNotifications.length === 1) {
-          setSingleNotification(filteredNotifications[0]);
-          setShowSingleNoti(true);
-          setShowNoti(false);
-        }
       })
       .catch((err) => alert(err));
+  };
+
+  const getNotifications = () => {
+    if (notificationsOn) {
+      api
+        .get("/api/notifications/")
+        .then((res) => res.data)
+        .then((data) => {
+          setNotifications(data);
+
+          const filteredNotifications = data.filter(
+            (notification) => !notification.shown
+          );
+          setToShowNotifications(filteredNotifications);
+
+          console.log(data);
+          console.log(`to show notifications`, filteredNotifications);
+
+          if (filteredNotifications.length > 1) {
+            setSingleNotification(null);
+            setShowSingleNoti(false);
+            setShowNoti(true);
+          } else if (filteredNotifications.length === 1) {
+            setSingleNotification(filteredNotifications[0]);
+            setShowSingleNoti(true);
+            setShowNoti(false);
+          }
+        })
+        .catch((err) => alert(err));
+    }
   };
 
   const sortByHeader = (header, type) => {
@@ -302,7 +321,11 @@ function PlacementsPage() {
         <h1 className="placement-title">Placements</h1>
         <h2 className="placement-subtitle">
           In Progress
-          <button id="filter-button" onClick={() => setShowFilter(true)}>
+          <button
+            id="filter-button"
+            className="no-select"
+            onClick={() => setShowFilter(true)}
+          >
             <img src="/src/assets/filter.svg"></img>
           </button>
         </h2>
@@ -311,7 +334,7 @@ function PlacementsPage() {
             <thead id="progress-headers">
               <tr className="single-row">
                 <th
-                  className="main-headers"
+                  className="main-headers no-select"
                   onClick={() => sortByHeader("company", "progress")}
                 >
                   Company
@@ -322,7 +345,7 @@ function PlacementsPage() {
                     : ""}
                 </th>
                 <th
-                  className="main-headers"
+                  className="main-headers no-select"
                   onClick={() => sortByHeader("role", "progress")}
                 >
                   Role{" "}
@@ -333,7 +356,7 @@ function PlacementsPage() {
                     : ""}
                 </th>
                 <th
-                  className="main-headers"
+                  className="main-headers no-select"
                   onClick={() => sortByHeader("status", "progress")}
                 >
                   Status
@@ -344,7 +367,7 @@ function PlacementsPage() {
                     : ""}
                 </th>
                 <th
-                  className="main-headers"
+                  className="main-headers no-select"
                   onClick={() =>
                     sortByHeader("next_stage_deadline", "progress")
                   }
@@ -357,7 +380,7 @@ function PlacementsPage() {
                     : ""}
                 </th>
                 <th
-                  className="main-headers"
+                  className="main-headers no-select"
                   onClick={() => sortByHeader("description", "progress")}
                 >
                   Notes{" "}
@@ -458,7 +481,7 @@ function PlacementsPage() {
             <thead id="rejected-headers">
               <tr className="single-row">
                 <th
-                  className="main-headers"
+                  className="main-headers no-select"
                   onClick={() => sortByHeader("company", "rejected")}
                 >
                   Company
@@ -469,7 +492,7 @@ function PlacementsPage() {
                     : ""}
                 </th>
                 <th
-                  className="main-headers"
+                  className="main-headers no-select"
                   onClick={() => sortByHeader("role", "rejected")}
                 >
                   Role
@@ -480,7 +503,7 @@ function PlacementsPage() {
                     : ""}
                 </th>
                 <th
-                  className="main-headers"
+                  className="main-headers no-select"
                   onClick={() => sortByHeader("description", "rejected")}
                 >
                   Feedback
@@ -542,7 +565,7 @@ function PlacementsPage() {
             <thead id="accepted-headers">
               <tr className="single-row">
                 <th
-                  className="main-headers"
+                  className="main-headers no-select"
                   onClick={() => sortByHeader("company", "accepted")}
                 >
                   Company{" "}
@@ -553,7 +576,7 @@ function PlacementsPage() {
                     : ""}
                 </th>
                 <th
-                  className="main-headers"
+                  className="main-headers no-select"
                   onClick={() => sortByHeader("role", "accepted")}
                 >
                   Role{" "}
@@ -564,7 +587,7 @@ function PlacementsPage() {
                     : ""}
                 </th>
                 <th
-                  className="main-headers"
+                  className="main-headers no-select"
                   onClick={() => sortByHeader("starting_date", "accepted")}
                 >
                   Starting{" "}
@@ -575,7 +598,7 @@ function PlacementsPage() {
                     : ""}
                 </th>
                 <th
-                  className="main-headers"
+                  className="main-headers no-select"
                   onClick={() => sortByHeader("description", "accepted")}
                 >
                   Notes{" "}
@@ -667,6 +690,7 @@ function PlacementsPage() {
       {showAddButton && (
         <button
           id="add-button"
+          className="no-select"
           onClick={() => {
             setShowAddModal(true);
             setShowAddButton(false);

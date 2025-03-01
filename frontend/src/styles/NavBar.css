@@ -89,8 +89,10 @@
 
 #noti-button {
   transform-origin: top center;
+  user-select: none;
 }
 
 #noti-button:hover {
   animation: bellSwing 0.5s ease-in-out forwards;
 }
+

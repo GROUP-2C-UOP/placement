@@ -2,6 +2,10 @@ body {
   overflow-x: hidden;
 }
 
+.no-select {
+  user-select: none;
+}
+
 .cont {
   color: white;
 }

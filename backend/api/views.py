@@ -105,7 +105,7 @@ class NotificationSettingsUpdate(generics.UpdateAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
-        return self.request.user
+        return UserPreferences.objects.get(user=self.request.user)
     
 class PasswordUpdate(generics.UpdateAPIView):
     serializer_class = UserSerializers
