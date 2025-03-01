@@ -25,7 +25,7 @@ class CustomUser(AbstractUser):
     
 class UserPreferences(models.Model):
     notification_enabled = models.BooleanField(default=False)
-    notification_time = models.IntegerField(default=None)
+    notification_time = models.IntegerField(default=3)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 
     def __str__(self):

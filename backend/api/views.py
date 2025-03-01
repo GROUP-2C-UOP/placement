@@ -100,6 +100,19 @@ class GetNotificationStatus(generics.RetrieveAPIView):
                 fields = ["notification_enabled"]
         return StatusSerializer
     
+class GetNotificationTime(generics.RetrieveAPIView):
+    serializer_class = UserPreferencesSerializers
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return UserPreferences.objects.get(user=self.request.user)
+    
+    def get_serializer_class(self):
+        class TimeSerializer(UserPreferencesSerializers):
+            class Meta(UserPreferencesSerializers.Meta):
+                fields = ["notification_time"]
+        return TimeSerializer
+    
 class NotificationSettingsUpdate(generics.UpdateAPIView):
     serializer_class = UserPreferencesSerializers
     permission_classes = [IsAuthenticated]
@@ -137,13 +150,19 @@ class NotificationListCreate(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def create_notifications(self, user):
+        try:
+            user_preferences = UserPreferences.objects.get(user=user)
+            notification_time = user_preferences.notification_time  
+        except UserPreferences.DoesNotExist:
+            notification_time = 3
+
         placements = Placement.objects.filter(user=user)
 
         for placement in placements:
             if placement.next_stage_deadline:
                 deadline_days = (placement.next_stage_deadline - date.today()).days
 
-                if 0 < deadline_days <= 3 and placement.status not in ["applied", "offer_made", "rejected", "withdrawn"]:
+                if 0 < deadline_days <= notification_time and placement.status not in ["applied", "offer_made", "rejected", "withdrawn"]:
                     existing_notification = Notifications.objects.filter(
                         user=user,
                         placement=placement,

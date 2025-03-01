@@ -15,5 +15,6 @@ urlpatterns = [
     path("account/password/update/", views.PasswordUpdate.as_view(), name="update-password"),
     path("account/update/", views.UserUpdate.as_view(), name="update-details"),
     path("account/notification/status/", views.GetNotificationStatus.as_view(), name="get-status"),
+    path("account/notification/time/", views.GetNotificationTime.as_view(), name="get-time"),
     path("account/notification/update/", views.NotificationSettingsUpdate.as_view(), name="update-notification-settings")
 ]

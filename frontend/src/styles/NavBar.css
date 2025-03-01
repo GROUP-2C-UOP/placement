@@ -60,7 +60,7 @@
   font-size: 4.5rem;
   color: rgb(247, 70, 70);
   border-radius: 100px;
-  right: 6.5%;
+  right: 23%;
   bottom: 30%;
   pointer-events: none;
 }
@@ -96,3 +96,15 @@
   animation: bellSwing 0.5s ease-in-out forwards;
 }
 
+#profile-picture-header {
+  width: 45px; 
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover; 
+  border: 3px solid #ddd; 
+  transition: transform 0.2s ease-in-out;
+}
+
+#profile-picture-header:hover {
+  transform: scale(1.1);
+}

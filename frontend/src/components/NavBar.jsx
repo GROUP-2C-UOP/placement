@@ -7,10 +7,12 @@ import api from "../api";
 function NavBar() {
   const [showAllNotifications, setShowAllNotifications] = useState(false);
   const [notifications, setNotifications] = useState([]);
+  const [profile, setProfile] = useState("")
   const notificationsRef = useRef(null);
 
   useEffect(() => {
     getNotifications();
+    getProfilePicture();
   }, []);
 
   useEffect(() => {
@@ -47,6 +49,18 @@ function NavBar() {
       .catch((err) => alert(err));
   };
 
+  const getProfilePicture = () => {
+    api
+      .get("/api/account/picture/")
+      .then((res) => res.data)
+      .then((data) => {
+        const profilePic = data.profile_picture;
+        setProfile(profilePic);
+        console.log(profilePic);
+      })
+      .catch((err) => alert(err));
+  };
+
   return (
     <div>
       <div id="navbar-container">
@@ -59,14 +73,13 @@ function NavBar() {
           <Link to="/placements">Placements</Link>
           <Link to="/todo">To-Do</Link>
           <Link to="/statistics">Statistics</Link>
-          <Link to="/profile/1">Profile</Link>
-          <Link to="/account">Prof</Link>
           <button
             id="noti-button"
             onClick={() => setShowAllNotifications(true)}
           >
             <img src="src/assets/noti.svg" alt="notifications" />
           </button>
+          <Link to="/account"><img src={profile || "src/assets/prof.svg"} id="profile-picture-header" className="no-select" /></Link>
           {notifications.length > 0 && <div id="got-notis">.</div>}
         </div>
       </div>

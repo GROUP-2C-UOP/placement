@@ -1,6 +1,8 @@
 import api from "../api";
 import { useState, useEffect } from "react";
 import "../styles/Account.css";
+import NavBar from "../components/NavBar";
+import { Link } from "react-router";
 
 const Account = () => {
   const [profile, setProfile] = useState("");
@@ -18,6 +20,7 @@ const Account = () => {
     getName();
     getEmail();
     getNotificationStatus();
+    getNotificationTime();
   }, []);
 
   const getProfilePicture = () => {
@@ -71,6 +74,16 @@ const Account = () => {
       .catch((err) => alert(err));
   };
 
+  const getNotificationTime = () => {
+    api
+      .get(`/api/account/notification/time/`)
+      .then((res) => res.data)
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => alert(err));
+  };
+
   const updateField = (field, value, url) => {
     console.log(value);
     api
@@ -110,7 +123,12 @@ const Account = () => {
     });
   };
 
-  const changeNotificationTime = () => updateField("notification_time", notificationTime, `/api/account/notification/update/`)
+  const changeNotificationTime = () =>
+    updateField(
+      "notification_time",
+      notificationTime,
+      `/api/account/notification/update/`
+    );
 
   const changePassword = () => {
     console.log(newPassword);
@@ -156,7 +174,7 @@ const Account = () => {
     <div>
       <h1 id="profile-header">Account</h1>
       <div id="profile-container">
-      <img src={profile || "src/assets/prof.svg"} alt="Profile" />
+        <img src={profile || "src/assets/prof.svg"} alt="Profile" />
       </div>
       <label htmlFor="prof-input" id="prof-button" className="no-select">
         {" "}
@@ -222,11 +240,21 @@ const Account = () => {
         name="notification-time"
         id="notification-time"
         onChange={(e) => setNotificationTime(e.target.value)}
+        onBlur={(e) => {
+          let value = parseInt(e.target.value, 10) || 1;
+          if (value < 1) value = 1;
+          if (value > 7) value = 7;
+          setNotificationTime(value);
+        }}
         value={notificationTime}
         min="1"
         max="7"
       />
+
       <button onClick={changeNotificationTime}>submit</button>
+      <Link to="/logout">
+        <button>Logout</button>
+      </Link>
     </div>
   );
 };
