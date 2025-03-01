@@ -100,7 +100,7 @@ class GetNotificationStatus(generics.RetrieveAPIView):
                 fields = ["notification_enabled"]
         return StatusSerializer
     
-class NotificationStatusUpdate(generics.UpdateAPIView):
+class NotificationSettingsUpdate(generics.UpdateAPIView):
     serializer_class = UserPreferencesSerializers
     permission_classes = [IsAuthenticated]
 

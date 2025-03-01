@@ -11,6 +11,7 @@ const Account = () => {
   const [newLastName, setNewLastName] = useState("");
   const [newEmail, setNewEmail] = useState("");
   const [notificationStatus, setNotificationStatus] = useState(false);
+  const [notificationTime, setNotificationTime] = useState("");
 
   useEffect(() => {
     getName();
@@ -95,17 +96,21 @@ const Account = () => {
     updateField("email", newEmail, `/api/account/update/`);
 
   const changeNotificationStatus = () => {
-    setNotificationStatus((prevStatus) => { //pass notificationstatus state as prevstatus as it is about to be changed (done automatically by react)
+    setNotificationStatus((prevStatus) => {
+      //pass notificationstatus state as prevstatus as it is about to be changed (done automatically by react)
       const newStatus = !prevStatus; // newStatus is inverse of previous
-      updateField(  //call updatefield function to set notification enabled with new status as new value
+      updateField(
+        //call updatefield function to set notification enabled with new status as new value
         "notification_enabled",
         newStatus,
-        `/api/account/notification/update/status/`
+        `/api/account/notification/update/`
       );
       console.log("Updated notification status:", newStatus);
       return newStatus; // return new status so that it is also set as the notification status in reacts use state
     });
   };
+
+  const changeNotificationTime = () => updateField("notification_time", notificationTime, `/api/account/notification/update/`)
 
   const changePassword = () => {
     console.log(newPassword);
@@ -212,7 +217,16 @@ const Account = () => {
       />
       <p id="notification">Change Notification Timing?</p>
       <label htmlFor="notification-time">Days Before Deadline</label>
-      <input type="number" name="notification-time" id="notification-time"/>
+      <input
+        type="number"
+        name="notification-time"
+        id="notification-time"
+        onChange={(e) => setNotificationTime(e.target.value)}
+        value={notificationTime}
+        min="1"
+        max="7"
+      />
+      <button onClick={changeNotificationTime}>submit</button>
     </div>
   );
 };

@@ -13,7 +13,7 @@ urlpatterns = [
     path("account/name/", views.GetUserName.as_view(), name="user-name"),
     path("account/email/", views.GetEmail.as_view(), name="get-email"),
     path("account/password/update/", views.PasswordUpdate.as_view(), name="update-password"),
-    path("account/update/", views.UserUpdate.as_view(), name="update-name"),
+    path("account/update/", views.UserUpdate.as_view(), name="update-details"),
     path("account/notification/status/", views.GetNotificationStatus.as_view(), name="get-status"),
-    path("account/notification/update/status/", views.NotificationStatusUpdate.as_view(), name="status-update")
+    path("account/notification/update/", views.NotificationSettingsUpdate.as_view(), name="update-notification-settings")
 ]
