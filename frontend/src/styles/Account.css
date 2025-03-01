@@ -28,3 +28,7 @@
 #prof-button:hover {
   background-color: darkblue;
 }
+
+.no-select {
+    user-select: none;
+}

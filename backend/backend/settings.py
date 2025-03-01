@@ -47,8 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'api',
-    'corsheaders',
-    'profiles'
+    'corsheaders'
 ]
 
 AUTH_USER_MODEL = 'api.CustomUser'

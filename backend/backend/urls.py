@@ -12,6 +12,5 @@ urlpatterns = [
      path('api/token/', TokenObtainPairView.as_view(serializer_class=CustomTokenObtainPairSerializer), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='refresh'),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('api/', include('api.urls')), 
-    path('api/', include('profiles.urls')),
+    path('api/', include('api.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

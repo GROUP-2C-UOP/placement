@@ -9,7 +9,6 @@ import Layout from "./components/Layout";
 import Dashboard from "./pages/Dashboard";
 import Statistics from "./pages/Statistics";
 import ToDo from "./pages/ToDo";
-import Profile from "./pages/Profile";
 import Account from "./pages/Account";
 
 function Logout() {
@@ -67,16 +66,6 @@ function App() {
           }
         />
         <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <Layout>
-                <Profile />
-              </Layout>
-            </ProtectedRoute>
-          }
-        />
-        <Route
           path="/account"
           element={
             <ProtectedRoute>
@@ -89,7 +78,6 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/register" element={<RegisterAndLogout />} />
-        <Route path="/profile/:id" element={<Profile />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

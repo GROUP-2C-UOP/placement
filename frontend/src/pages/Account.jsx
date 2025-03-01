@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import "../styles/Account.css";
 
 const Account = () => {
-  const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState("");
   const [name, setName] = useState(null);
   const [email, setEmail] = useState(null);
   const [newPassword, setNewPassword] = useState("");
@@ -14,9 +14,9 @@ const Account = () => {
   const [notificationTime, setNotificationTime] = useState("");
 
   useEffect(() => {
+    getProfilePicture();
     getName();
     getEmail();
-    getProfilePicture();
     getNotificationStatus();
   }, []);
 
@@ -27,7 +27,7 @@ const Account = () => {
       .then((data) => {
         const profilePic = data.profile_picture;
         setProfile(profilePic);
-        console.log(data);
+        console.log(profilePic);
       })
       .catch((err) => alert(err));
   };
@@ -156,12 +156,12 @@ const Account = () => {
     <div>
       <h1 id="profile-header">Account</h1>
       <div id="profile-container">
-        <img src={profile ? profile.profile_picture : "src/assets/prof.svg"} />
+      <img src={profile || "src/assets/prof.svg"} alt="Profile" />
       </div>
-      <label htmlFor="prof-input" id="prof-button">
+      <label htmlFor="prof-input" id="prof-button" className="no-select">
         {" "}
         {/*hide profile input and use the label to act as a button. "htmlfor" makes it so when the label is clicked it will have the same functionality of input */}
-        Upload CV
+        Change Profile Picture
       </label>
       <input
         type="file"
