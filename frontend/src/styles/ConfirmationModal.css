@@ -75,6 +75,11 @@
   transform: scale(1.05);
 }
 
+#sub {
+  color: grey !important;
+  font-size: 0.8rem !important;
+}
+
 @keyframes fadeInConfirmation {
   from {
     opacity: 0;

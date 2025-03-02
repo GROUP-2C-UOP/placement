@@ -24,6 +24,8 @@
   border-radius: 5px;
   cursor: pointer;
   text-align: center;
+  margin-bottom: 20px;
+  margin-top: 10px;
 }
 #prof-button:hover {
   background-color: darkblue;
@@ -61,3 +63,11 @@
   justify-items: center;
 }
 
+.profile-part {
+  color: white;
+  font-size: 1.4rem;
+}
+
+.profile-input {
+  text-align: center;
+}
