@@ -3,10 +3,12 @@ import { useState, useEffect } from "react";
 import "../styles/Account.css";
 import NavBar from "../components/NavBar";
 import { Link } from "react-router";
+import ConfirmationModal from "../components/ConfirmationModal";
 
 const Account = () => {
   const [profile, setProfile] = useState("");
   const [name, setName] = useState(null);
+  const [newName, setNewName] = useState("");
   const [email, setEmail] = useState(null);
   const [newPassword, setNewPassword] = useState("");
   const [newFirstName, setNewFirstName] = useState("");
@@ -14,6 +16,7 @@ const Account = () => {
   const [newEmail, setNewEmail] = useState("");
   const [notificationStatus, setNotificationStatus] = useState(false);
   const [notificationTime, setNotificationTime] = useState("");
+  const [showEmailModal, setShowEmailModal] = useState(false);
 
   useEffect(() => {
     getProfileDetails();
@@ -32,8 +35,10 @@ const Account = () => {
           .toLowerCase()
           .replace(/\b\w/g, (char) => char.toUpperCase()); // capitalize first letter of each word
         setName(name);
+        setNewName(name);
 
         setEmail(data.email);
+        setNewEmail(data.email)
       })
       .catch((err) => alert(err));
   };
@@ -117,10 +122,18 @@ const Account = () => {
       });
   };
 
-  const changeFirstName = () =>
-    updateField("first_name", newFirstName, `/api/account/update/`, getName);
-  const changeLastName = () =>
-    updateField("last_name", newLastName, `/api/account/update/`, getName);
+  const changeName = () => {
+    const nameToUse = newName || "User";
+
+    const nameParts = nameToUse.split(" "); // split str into parts by space
+    const firstName = nameParts[0]; // first part is the first name
+    const lastName = nameParts.slice(1).join(" ") || ""; // everything else is the last name
+
+    updateField("first_name", firstName, `/api/account/update/`, () => {
+      updateField("last_name", lastName, `/api/account/update/`, getName);
+    });
+  };
+
   const changeEmail = () =>
     updateField("email", newEmail, `/api/account/update/`, getEmail);
 
@@ -138,6 +151,19 @@ const Account = () => {
       console.log("Updated notification status:", newStatus);
       return newStatus; // return new status so that it is also set as the notification status in reacts use state
     });
+  };
+
+  const handleEmailBlur = () => {
+    // Check if the input is valid using the built-in HTML5 email validation
+    const emailInput = document.getElementById("email-input")
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    if (emailPattern.test(newEmail)) {
+      setShowEmailModal(true); // Show modal if email is valid
+    } else {
+      alert("Please enter an email")
+      setShowEmailModal(false);
+    }
   };
 
   const changeNotificationTime = () =>
@@ -189,7 +215,7 @@ const Account = () => {
       <h1 id="profile-header">{name ? name.split(" ")[0] : ""}'s Account</h1>
       <hr />
       <div id="profile-details-container">
-        <h1 id="profile-subheader">Profile</h1>
+        <h1 className="profile-subheader">Profile</h1>
         <div id="four-grid">
           <div id="pic-container">
             <div id="profile-container">
@@ -207,40 +233,30 @@ const Account = () => {
             />
           </div>
           <div id="name-container">
-            <p id="name">{name}</p>
+            <p className="profile-part">Name</p>
             <input
               type="text"
-              name="first-name"
-              value={newFirstName}
-              onChange={(e) => setNewFirstName(e.target.value)}
+              name="name"
+              className="profile-input"
+              value={newName}
+              onChange={(e) => setNewName(e.target.value)}
+              onBlur={changeName}
             />
-            <button onClick={changeFirstName}>
-              {/* <img src="src/assets/edit.svg" /> */}Submit
-            </button>
-            <input
-              type="text"
-              name="last-name"
-              value={newLastName}
-              onChange={(e) => setNewLastName(e.target.value)}
-            />
-            <button onClick={changeLastName}>
-              {/* <img src="src/assets/edit.svg" /> */}Submit
-            </button>
           </div>
           <div id="email-container">
-            <p id="email">{email}</p>
+            <p className="profile-part">Email</p>
             <input
               type="email"
               name="email"
+              id="email-input"
+              className="profile-input"
               value={newEmail}
               onChange={(e) => setNewEmail(e.target.value)}
+              onBlur={() => handleEmailBlur()}
             />
-            <button onClick={changeEmail}>
-              {/* <img src="src/assets/edit.svg" /> */}Submit
-            </button>
           </div>
           <div id="password-container">
-            <p id="password">Change Password?</p>
+            <p className="profile-part">Change Password?</p>
             <input
               type="password"
               name="password"
@@ -255,6 +271,7 @@ const Account = () => {
       </div>
       <hr />
       <div id="notification-details-container">
+        <h1 className="profile-subheader">Notifications</h1>
         <p id="notification">Notifications On?</p>
         <label htmlFor="notification-enabled">Turn on notification</label>
         <input
@@ -287,6 +304,15 @@ const Account = () => {
       <Link to="/logout">
         <button>Logout</button>
       </Link>
+      {showEmailModal && (
+        <ConfirmationModal
+          func={changeEmail}
+          method={"change"}
+          type={"email"}
+          message={"You will sign in with this email from now on"}
+          onClose={() => {setShowEmailModal(false); setNewEmail(email)}}
+        ></ConfirmationModal>
+      )}
     </div>
   );
 };
