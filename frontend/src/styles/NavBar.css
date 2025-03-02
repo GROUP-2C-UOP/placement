@@ -6,7 +6,7 @@
   position: fixed;
   background-color: navy;
   z-index: 998;
-  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+  box-shadow: 3px 2px 3px rgba(0, 0, 0, 0.5);
 }
 
 #title-container {

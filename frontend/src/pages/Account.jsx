@@ -16,12 +16,27 @@ const Account = () => {
   const [notificationTime, setNotificationTime] = useState("");
 
   useEffect(() => {
-    getProfilePicture();
-    getName();
-    getEmail();
+    getProfileDetails();
     getNotificationStatus();
     getNotificationTime();
   }, []);
+
+  const getProfileDetails = () => {
+    api
+      .get("/api/account/details/")
+      .then((res) => res.data)
+      .then((data) => {
+        setProfile(data.profile_picture);
+
+        const name = `${data.first_name} ${data.last_name}`
+          .toLowerCase()
+          .replace(/\b\w/g, (char) => char.toUpperCase()); // capitalize first letter of each word
+        setName(name);
+
+        setEmail(data.email);
+      })
+      .catch((err) => alert(err));
+  };
 
   const getProfilePicture = () => {
     api
@@ -84,13 +99,14 @@ const Account = () => {
       .catch((err) => alert(err));
   };
 
-  const updateField = (field, value, url) => {
+  const updateField = (field, value, url, refresh) => {
     console.log(value);
     api
       .patch(url, { [field]: value })
       .then((res) => {
         if (res.status === 200 || res.status === 204) {
           console.log(`${field} Updated`);
+          refresh();
         } else {
           alert("Something went wrong, try again.");
         }
@@ -102,11 +118,11 @@ const Account = () => {
   };
 
   const changeFirstName = () =>
-    updateField("first_name", newFirstName, `/api/account/update/`);
+    updateField("first_name", newFirstName, `/api/account/update/`, getName);
   const changeLastName = () =>
-    updateField("last_name", newLastName, `/api/account/update/`);
+    updateField("last_name", newLastName, `/api/account/update/`, getName);
   const changeEmail = () =>
-    updateField("email", newEmail, `/api/account/update/`);
+    updateField("email", newEmail, `/api/account/update/`, getEmail);
 
   const changeNotificationStatus = () => {
     setNotificationStatus((prevStatus) => {
@@ -116,7 +132,8 @@ const Account = () => {
         //call updatefield function to set notification enabled with new status as new value
         "notification_enabled",
         newStatus,
-        `/api/account/notification/update/`
+        `/api/account/notification/update/`,
+        getNotificationStatus
       );
       console.log("Updated notification status:", newStatus);
       return newStatus; // return new status so that it is also set as the notification status in reacts use state
@@ -127,7 +144,8 @@ const Account = () => {
     updateField(
       "notification_time",
       notificationTime,
-      `/api/account/notification/update/`
+      `/api/account/notification/update/`,
+      getNotificationTime
     );
 
   const changePassword = () => {
@@ -167,87 +185,105 @@ const Account = () => {
   };
 
   return (
-    <div>
-      <h1 id="profile-header">Account</h1>
-      <div id="profile-container">
-        <img src={profile || "src/assets/prof.svg"} alt="Profile" />
+    <div id="profile-general-container">
+      <h1 id="profile-header">{name ? name.split(" ")[0] : ""}'s Account</h1>
+      <hr />
+      <div id="profile-details-container">
+        <h1 id="profile-subheader">Profile</h1>
+        <div id="four-grid">
+          <div id="pic-container">
+            <div id="profile-container">
+              <img src={profile || "src/assets/prof.svg"} />
+            </div>
+            <label htmlFor="prof-input" id="prof-button" className="no-select">
+              {" "}
+              {/*hide profile input and use the label to act as a button. "htmlfor" makes it so when the label is clicked it will have the same functionality of input */}
+              Change Profile
+            </label>
+            <input
+              type="file"
+              id="prof-input"
+              onChange={(e) => changeProfilePicture(e.target.files[0])}
+            />
+          </div>
+          <div id="name-container">
+            <p id="name">{name}</p>
+            <input
+              type="text"
+              name="first-name"
+              value={newFirstName}
+              onChange={(e) => setNewFirstName(e.target.value)}
+            />
+            <button onClick={changeFirstName}>
+              {/* <img src="src/assets/edit.svg" /> */}Submit
+            </button>
+            <input
+              type="text"
+              name="last-name"
+              value={newLastName}
+              onChange={(e) => setNewLastName(e.target.value)}
+            />
+            <button onClick={changeLastName}>
+              {/* <img src="src/assets/edit.svg" /> */}Submit
+            </button>
+          </div>
+          <div id="email-container">
+            <p id="email">{email}</p>
+            <input
+              type="email"
+              name="email"
+              value={newEmail}
+              onChange={(e) => setNewEmail(e.target.value)}
+            />
+            <button onClick={changeEmail}>
+              {/* <img src="src/assets/edit.svg" /> */}Submit
+            </button>
+          </div>
+          <div id="password-container">
+            <p id="password">Change Password?</p>
+            <input
+              type="password"
+              name="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+            <button onClick={changePassword}>
+              {/* <img src="src/assets/edit.svg" /> */}submit
+            </button>
+          </div>
+        </div>
       </div>
-      <label htmlFor="prof-input" id="prof-button" className="no-select">
-        {" "}
-        {/*hide profile input and use the label to act as a button. "htmlfor" makes it so when the label is clicked it will have the same functionality of input */}
-        Change Profile Picture
-      </label>
-      <input
-        type="file"
-        id="prof-input"
-        onChange={(e) => changeProfilePicture(e.target.files[0])}
-      />
-      <p id="name">{name}</p>
-      <input
-        type="text"
-        name="first-name"
-        value={newFirstName}
-        onChange={(e) => setNewFirstName(e.target.value)}
-      />
-      <button onClick={changeFirstName}>
-        {/* <img src="src/assets/edit.svg" /> */}Submit
-      </button>
-      <input
-        type="text"
-        name="last-name"
-        value={newLastName}
-        onChange={(e) => setNewLastName(e.target.value)}
-      />
-      <button onClick={changeLastName}>
-        {/* <img src="src/assets/edit.svg" /> */}Submit
-      </button>
-      <p id="email">{email}</p>
-      <input
-        type="email"
-        name="email"
-        value={newEmail}
-        onChange={(e) => setNewEmail(e.target.value)}
-      />
-      <button onClick={changeEmail}>
-        {/* <img src="src/assets/edit.svg" /> */}Submit
-      </button>
-      <p id="password">Change Password?</p>
-      <input
-        type="password"
-        name="password"
-        value={newPassword}
-        onChange={(e) => setNewPassword(e.target.value)}
-      />
-      <button onClick={changePassword}>
-        {/* <img src="src/assets/edit.svg" /> */}submit
-      </button>
-      <p id="notification">Notifications On?</p>
-      <label htmlFor="notification-enabled">Turn on notification</label>
-      <input
-        type="checkbox"
-        id="notification-enabled"
-        checked={notificationStatus}
-        onChange={changeNotificationStatus}
-      />
-      <p id="notification">Change Notification Timing?</p>
-      <label htmlFor="notification-time">Days Before Deadline</label>
-      <input
-        type="number"
-        name="notification-time"
-        id="notification-time"
-        onChange={(e) => setNotificationTime(e.target.value)}
-        onBlur={(e) => {
-          let value = parseInt(e.target.value, 10) || 1;
-          if (value < 1) value = 1;
-          if (value > 7) value = 7;
-          setNotificationTime(value);
-        }}
-        value={notificationTime}
-        min="1"
-        max="7"
-      />
+      <hr />
+      <div id="notification-details-container">
+        <p id="notification">Notifications On?</p>
+        <label htmlFor="notification-enabled">Turn on notification</label>
+        <input
+          type="checkbox"
+          id="notification-enabled"
+          checked={notificationStatus}
+          onChange={changeNotificationStatus}
+        />
+        <p id="notification">Change Notification Timing?</p>
+        <label htmlFor="notification-time">Days Before Deadline</label>
+        <input
+          type="number"
+          name="notification-time"
+          id="notification-time"
+          onChange={(e) => setNotificationTime(e.target.value)}
+          onBlur={(e) => {
+            let value = parseInt(e.target.value, 10) || 1;
+            if (value < 1) value = 1;
+            if (value > 7) value = 7;
+            setNotificationTime(value);
+          }}
+          value={notificationTime}
+          min="1"
+          max="7"
+        />
 
-      <button onClick={changeNotificationTime}>submit</button>
+        <button onClick={changeNotificationTime}>submit</button>
+      </div>
+      <hr />
       <Link to="/logout">
         <button>Logout</button>
       </Link>
