@@ -32,3 +32,32 @@
 .no-select {
     user-select: none;
 }
+
+#profile-general-container {
+  width: 90vw; 
+  margin: 0 auto; 
+  padding: 20px; 
+  color: white;
+}
+
+#profile-header {
+  color: white;
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+  margin-top: 2rem;
+}
+
+#pic-container {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  align-items: center;
+}
+
+#four-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
+  justify-items: center;
+}
+

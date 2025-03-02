@@ -45,6 +45,13 @@ class PlacementUpdate(generics.UpdateAPIView):
         user = self.request.user
         return Placement.objects.filter(user=user)
     
+class GetUserDetails(generics.RetrieveAPIView):
+    serializer_class = UserSerializers
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+    
 class GetProfilePicture(generics.RetrieveAPIView):
     serializer_class = UserSerializers
     permission_classes = [IsAuthenticated]
