@@ -192,17 +192,29 @@ function AddModal({
                 id="salary"
                 name="salary"
                 onChange={(e) => setSalary(e.target.value)}
+                onBlur={(e) => {
+                  let value = parseInt(e.target.value, 10);
+                  if (isNaN(value) || value < 0) value = "";
+                  setSalary(value);
+                }}
                 value={salary}
+                min="0"
               />
             </div>
             <div className="input-field">
-              <label htmlFor="duration">Duration</label>
+              <label htmlFor="duration">Duration (Months)</label>
               <input
                 type="number"
                 id="duration"
                 name="duration"
                 onChange={(e) => setDuration(e.target.value)}
+                onBlur={(e) => {
+                  let value = parseInt(e.target.value, 10);
+                  if (isNaN(value) || value < 0) value = "";
+                  setSalary(value);
+                }}
                 value={duration}
+                min="0"
               />
             </div>
             <div className="input-field">
