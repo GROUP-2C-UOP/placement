@@ -17,6 +17,7 @@ const Account = () => {
   const [notificationStatus, setNotificationStatus] = useState(false);
   const [notificationTime, setNotificationTime] = useState("");
   const [showEmailModal, setShowEmailModal] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
 
   useEffect(() => {
     getProfileDetails();
@@ -38,7 +39,7 @@ const Account = () => {
         setNewName(name);
 
         setEmail(data.email);
-        setNewEmail(data.email)
+        setNewEmail(data.email);
       })
       .catch((err) => alert(err));
   };
@@ -154,17 +155,22 @@ const Account = () => {
   };
 
   const handleEmailBlur = () => {
-    // Check if the input is valid using the built-in HTML5 email validation
-    const emailInput = document.getElementById("email-input")
+    const emailInput = document.getElementById("email-input");
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
     if (emailPattern.test(newEmail)) {
       setShowEmailModal(true); // Show modal if email is valid
     } else {
-      alert("Please enter an email")
+      alert("Please enter an email");
       setShowEmailModal(false);
     }
   };
+
+  const handlePasswordBlur = () => {
+    if (newPassword) {
+      setShowPasswordModal(true)
+    }
+  }
 
   const changeNotificationTime = () =>
     updateField(
@@ -256,16 +262,15 @@ const Account = () => {
             />
           </div>
           <div id="password-container">
-            <p className="profile-part">Change Password?</p>
+            <p className="profile-part">Change Password</p>
             <input
               type="password"
               name="password"
+              id="password-input"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
+              onBlur={() => handlePasswordBlur()}
             />
-            <button onClick={changePassword}>
-              {/* <img src="src/assets/edit.svg" /> */}submit
-            </button>
           </div>
         </div>
       </div>
@@ -310,7 +315,21 @@ const Account = () => {
           method={"change"}
           type={"email"}
           message={"You will sign in with this email from now on"}
-          onClose={() => {setShowEmailModal(false); setNewEmail(email)}}
+          onClose={() => {
+            setShowEmailModal(false);
+            setNewEmail(email);
+          }}
+        ></ConfirmationModal>
+      )}
+      {showPasswordModal && (
+        <ConfirmationModal
+          func={changePassword}
+          method={"change"}
+          type={"password"}
+          message={"You will sign in with this password from now on"}
+          onClose={() => {
+            setShowPasswordModal(false);
+          }}
         ></ConfirmationModal>
       )}
     </div>

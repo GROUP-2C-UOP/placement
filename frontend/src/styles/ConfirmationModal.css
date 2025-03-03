@@ -14,7 +14,7 @@
 }
 
 #m-container {
-  width: 25vw;
+  width: fit-content;
   height: 15vh;
   background-color: white;
   display: flex;
