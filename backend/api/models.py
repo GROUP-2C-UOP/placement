@@ -39,7 +39,7 @@ def create_user_preferences(sender, instance, created, **kwargs):
         created = boolean flag to tell if custom user was created
         """
     if created: # if user is new
-        UserPreferences.objects.create(user=instance) #create user preferences model which is linked to newly created custom user
+        UserPreferences.objects.create(user=instance, notification_time = 3) #create user preferences model which is linked to newly created custom user
 
 class Placement(models.Model):
     company = models.CharField(max_length=100)

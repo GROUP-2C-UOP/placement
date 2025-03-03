@@ -15,7 +15,7 @@ const Account = () => {
   const [newLastName, setNewLastName] = useState("");
   const [newEmail, setNewEmail] = useState("");
   const [notificationStatus, setNotificationStatus] = useState(false);
-  const [notificationTime, setNotificationTime] = useState("");
+  const [notificationTime, setNotificationTime] = useState(3);
   const [showEmailModal, setShowEmailModal] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
 
@@ -101,6 +101,7 @@ const Account = () => {
       .then((res) => res.data)
       .then((data) => {
         console.log(data);
+        setNotificationTime(data.notification_time);
       })
       .catch((err) => alert(err));
   };
@@ -124,7 +125,7 @@ const Account = () => {
   };
 
   const changeName = () => {
-    const nameToUse = newName || "User";
+    const nameToUse = newName.trim() || "User";
 
     const nameParts = nameToUse.split(" "); // split str into parts by space
     const firstName = nameParts[0]; // first part is the first name
@@ -168,17 +169,24 @@ const Account = () => {
 
   const handlePasswordBlur = () => {
     if (newPassword) {
-      setShowPasswordModal(true)
+      setShowPasswordModal(true);
     }
-  }
+  };
 
-  const changeNotificationTime = () =>
+  const changeNotificationTime = (empty) => {
+    let time
+    if (empty) {
+      time = 1;
+    } else {
+      time = notificationTime;
+    }
     updateField(
       "notification_time",
-      notificationTime,
-      `/api/account/notification/update/`,
+      time,
+      "/api/account/notification/update/",
       getNotificationTime
     );
+  };
 
   const changePassword = () => {
     console.log(newPassword);
@@ -277,37 +285,54 @@ const Account = () => {
       <hr />
       <div id="notification-details-container">
         <h1 className="profile-subheader">Notifications</h1>
-        <p id="notification">Notifications On?</p>
-        <label htmlFor="notification-enabled">Turn on notification</label>
-        <input
-          type="checkbox"
-          id="notification-enabled"
-          checked={notificationStatus}
-          onChange={changeNotificationStatus}
-        />
-        <p id="notification">Change Notification Timing?</p>
-        <label htmlFor="notification-time">Days Before Deadline</label>
-        <input
-          type="number"
-          name="notification-time"
-          id="notification-time"
-          onChange={(e) => setNotificationTime(e.target.value)}
-          onBlur={(e) => {
-            let value = parseInt(e.target.value, 10) || 1;
-            if (value < 1) value = 1;
-            if (value > 7) value = 7;
-            setNotificationTime(value);
-          }}
-          value={notificationTime}
-          min="1"
-          max="7"
-        />
+        <div id="two-grid">
+          <div id="turn-notis">
+            <p id="notification" className="profile-part">
+              Get Notified
+            </p>
 
-        <button onClick={changeNotificationTime}>submit</button>
+            <div className="switch" onClick={changeNotificationStatus}>
+              <div className={`slider ${notificationStatus ? "on" : "off"}`}>
+                {notificationStatus ? "ON" : "OFF"}
+              </div>
+            </div>
+          </div>
+
+          <div id="change-time">
+            <p id="notification" className="profile-part">
+              Notification Timing
+            </p>
+            <label htmlFor="notification-time" id="notify-sentence">
+              Get Notified{" "}
+              <input
+                type="number"
+                name="notification-time"
+                id="notification-time"
+                onChange={(e) => setNotificationTime(e.target.value)}
+                onBlur={(e) => {
+                  console.log(e.target.value);
+                  let value = parseInt(e.target.value, 10);
+                  console.log(value);
+                  if (!isNaN(value)) {
+                    if (value < 1) value = 1;
+                    if (value > 7) value = 7;
+
+                    setNotificationTime(value);
+                    changeNotificationTime(false);
+                  } else {changeNotificationTime(true)}
+                }}
+                value={notificationTime}
+                min="1"
+                max="7"
+              />
+              {} Days Before the Deadline{" "}
+            </label>
+          </div>
+        </div>
       </div>
       <hr />
       <Link to="/logout">
-        <button>Logout</button>
+        <button id="logout">LOGOUT</button>
       </Link>
       {showEmailModal && (
         <ConfirmationModal
@@ -329,6 +354,7 @@ const Account = () => {
           message={"You will sign in with this password from now on"}
           onClose={() => {
             setShowPasswordModal(false);
+            setNewPassword("");
           }}
         ></ConfirmationModal>
       )}
