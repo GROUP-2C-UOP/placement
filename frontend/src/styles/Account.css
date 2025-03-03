@@ -96,7 +96,7 @@
   cursor: pointer;
   transition: background-color 0.3s;
   background-color: white;
-  border: 2px solid grey;
+  border: 2px solid ;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -165,4 +165,10 @@
 
 #password-input {
   text-align: center;
+}
+
+hr {
+  height: 3px;
+  background-color: white;
+  border-radius: 10px;
 }
