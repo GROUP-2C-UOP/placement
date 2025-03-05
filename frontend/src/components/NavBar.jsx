@@ -7,7 +7,7 @@ import api from "../api";
 function NavBar() {
   const [showAllNotifications, setShowAllNotifications] = useState(false);
   const [notifications, setNotifications] = useState([]);
-  const [profile, setProfile] = useState("")
+  const [profile, setProfile] = useState("");
   const notificationsRef = useRef(null);
 
   useEffect(() => {
@@ -65,8 +65,8 @@ function NavBar() {
     <div>
       <div id="navbar-container">
         <div id="title-container">
-          <img src="../src/assets/react.svg" alt="logo"></img>
-          Career Compass
+          <Link to="/" className="no-underline"><img src="../src/assets/react.svg" alt="logo"></img>
+          Career Compass</Link>
         </div>
         <div id="header-container">
           <Link to="/">Dashboard</Link>
@@ -79,7 +79,13 @@ function NavBar() {
           >
             <img src="src/assets/noti.svg" alt="notifications" />
           </button>
-          <Link to="/account"><img src={profile || "src/assets/prof.svg"} id="profile-picture-header" className="no-select" /></Link>
+          <Link to="/account" className="no-hover">
+            <img
+              src={profile || "src/assets/prof.svg"}
+              id="profile-picture-header"
+              className="no-select"
+            />
+          </Link>
           {notifications.length > 0 && <div id="got-notis">.</div>}
         </div>
       </div>
