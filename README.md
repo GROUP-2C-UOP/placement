@@ -97,3 +97,7 @@ Please make a branch named after the feature you're working on and after it's be
 
 ### Issue Tracking
 As you run into new issues add these into our backlog within Jira to then tackle in the next week.
+
+# Contributors
+Basit
+Steven
