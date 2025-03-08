@@ -149,3 +149,11 @@ body::-webkit-scrollbar-thumb:hover {
 #al {
   right: 50%;
 }
+
+#ac {
+  text-decoration: underline 6px rgb(0, 213, 0);
+}
+
+#re {
+  text-decoration: underline 6px red;
+}

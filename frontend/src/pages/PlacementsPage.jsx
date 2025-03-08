@@ -474,7 +474,7 @@ function PlacementsPage() {
         </div>
 
         <h2 className="placement-subtitle">
-          <span>🔴</span>Rejected<span>🔴</span>
+        <span id="re">Rejected</span>
         </h2>
         <div className="header-containerrr">
           <table>
@@ -557,7 +557,7 @@ function PlacementsPage() {
           ))}
         </div>
         <h2 className="placement-subtitle">
-          <span>🟢</span>Accepted<span>🟢</span>
+          <span id="ac">Accepted</span>
         </h2>
         <div className="placement-type acc"></div>
         <div className="header-containerrr">
