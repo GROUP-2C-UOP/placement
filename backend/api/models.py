@@ -39,6 +39,16 @@ class Placement(models.Model):
     def __str__(self):
         return f"{self.role} at {self.company}"
 
+class ToDoApplication(models.Model):
+    company = models.CharField(max_length=100)
+    role = models.CharField(max_length=100)
+    deadline = models.DateField(null=True, blank=True)
+    placement_link = models.URLField(null=True, blank=True)
+    notes = models.TextField(null=True, blank=True)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.role} at {self.company} (To-Do)"
 
 class Notifications(models.Model):
     company = models.CharField(max_length=100)
@@ -54,3 +64,4 @@ class Notifications(models.Model):
 
     def __str__(self):
         return f"{self.status} for {self.company} in {self.days}"
+
