@@ -37,10 +37,6 @@
   text-align: center;
 }
 
-#logo {
-  transform: scale(0.1);
-}
-
 #header-container a {
   position: relative;
   text-decoration: none;
