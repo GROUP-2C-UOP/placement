@@ -44,24 +44,9 @@ function AddModal({
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    e.preventDefault();
 
     createPlacement(e);
-
-    console.log({
-      company,
-      role,
-      salary,
-      startingDate,
-      duration,
-      deadline,
-      applicationLink,
-      dateApplied,
-      status,
-      cv,
-      coverLetter,
-      contact,
-      description,
-    });
 
     setCompany("");
     setRole("");

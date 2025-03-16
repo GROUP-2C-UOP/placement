@@ -1,36 +1,71 @@
-body, html {
-    overflow: hidden;
-}
-
-
-#container {
-    width: 100vw;
-    height: 100vh;      
-}
 
 #main-container {
-    width: 90vw;
-    height: 70vh;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -35%);
-    background-color: navy;
-    border-radius: 30px;
+  width: 90vw;
+  height: 70vh;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -35%);
+  background-color: navy;
+  border-radius: 30px;
+  display: flex;
+  justify-content: center;
 }
 
 #welcome {
-    position: absolute;
-    top: 12%;
-    left: 5%;
-    font-size: 3rem;
-    color: white;
+  position: absolute;
+  top: 12%;
+  left: 5%;
+  font-size: 3rem;
+  color: white;
 }
 
 #dashboard {
-    position: absolute;
-    top: 20%;
-    right: 7%;
-    font-size: 2rem;
-    color: white;
+  position: absolute;
+  top: 20%;
+  right: 7%;
+  font-size: 2rem;
+  color: white;
 }
+
+#div-container {
+  position: absolute;
+  width: 97.5%;
+  height: 85%;
+  bottom: 3%;
+  display: flex;
+  flex-direction: row;
+}
+
+#placement-container {
+  background-color: rgb(19, 19, 226);
+  height: 100%;
+  width: 60%;
+  border-radius: 20px;
+}
+
+#todo-container {
+  background-color: rgb(19, 19, 226);
+  height: 100%;
+  width: 39%;
+  position: absolute;
+  right: 0;
+  border-radius: 20px;
+}
+
+#deadlines-header {
+  font-size: 1.8rem;
+  color: white;
+  position: absolute;
+  left: 24%;
+  top: 3%;
+}
+
+#applications-header {
+    font-size: 1.8rem;
+    color: white;
+    position: absolute;
+    right: 12%;
+    top: 3%;
+  }
+  
