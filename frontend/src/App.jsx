@@ -8,7 +8,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Layout from "./components/Layout";
 import Dashboard from "./pages/Dashboard";
 import Statistics from "./pages/Statistics";
-import ToDo from "./pages/ToDo";
+import ToDoPage from "./pages/ToDoPage";
 import Account from "./pages/Account";
 
 function Logout() {
@@ -60,7 +60,7 @@ function App() {
           element={
             <ProtectedRoute>
               <Layout>
-                <ToDo />
+                <ToDoPage />
               </Layout>
             </ProtectedRoute>
           }
