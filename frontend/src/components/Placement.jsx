@@ -186,7 +186,7 @@ function Placement({
             setDeadline={setDeadline}
             applicationLink={applicationLink}
             setApplicationLink={setApplicationLink}
-            dateApplied={dateApplied}
+            pplied={dateApplied}
             setDateApplied={setDateApplied}
             status={status}
             setStatus={setStatus}

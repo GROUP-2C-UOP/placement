@@ -5,6 +5,7 @@ import { statusLabels } from "../constants";
 import AddModal from "../components/AddModal";
 import FilterModal from "../components/FilterModal";
 import NotificationsPopUp from "../components/NotificationPopUp";
+import ToDo from "../components/ToDo";
 
 function ToDoPage() {
   const [toDos, SetToDos] = useState([]);
@@ -25,15 +26,15 @@ function ToDoPage() {
   const [description, setDescription] = useState("");
 
   useEffect(() => {
-    getToDos()
-  }, [])
+    getToDos();
+  }, []);
 
   const getToDos = () => {
     api
       .get("/api/todos/")
       .then((res) => res.data)
       .then((data) => {
-        console.log(data);
+        SetToDos(data);
       })
 
       .catch((err) => alert(err));
@@ -76,7 +77,7 @@ function ToDoPage() {
           console.log("TODO created successfully");
           setShowAddModal(false);
           setShowAddButton(true);
-          getToDos()
+          getToDos();
         } else {
           alert("Error creating todo");
         }
@@ -97,6 +98,11 @@ function ToDoPage() {
       >
         <img src="src/assets/add.svg" />
       </button>
+      
+      {toDos.map((todo) => (
+        <ToDo todo={todo} key={todo.id} />
+      ))}
+
       {showAddModal && (
         <AddModal
           company={company}
