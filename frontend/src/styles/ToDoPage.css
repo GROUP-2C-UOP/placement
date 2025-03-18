@@ -1,0 +1,26 @@
+#todo-title {
+    color: white;
+    font-size: 50px;
+}
+
+#to-dos-container {
+    background-color: #141E61;
+    width: 90vw;
+   margin: auto;
+   padding: 10px;
+   border-radius: 20px;
+   height: fit-content;
+}
+
+#todo-header-container {
+    color: white;
+    font-size: 1.5rem;
+    width: 80%;
+}
+
+#idk {
+    width: 80%;
+    margin-left: 13.3%;
+    table-layout: fixed;
+    padding: 10px;
+}

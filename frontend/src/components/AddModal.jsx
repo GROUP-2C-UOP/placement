@@ -181,8 +181,21 @@ function AddModal({
             </div>
             </>
             )}
-            
-            <div className="input-field">
+            {type === "todo" && (
+              <div className="input-field">
+              <label htmlFor="deadline">Deadline*</label>
+              <input
+                type="date"
+                id="deadline"
+                name="deadline"
+                onChange={(e) => setDeadline(e.target.value)}
+                value={deadline}
+                required
+              />
+            </div>
+            )}
+            {type === "placememt" && (
+              <div className="input-field">
               <label htmlFor="deadline">Deadline for Status</label>
               <input
                 type="date"
@@ -192,6 +205,8 @@ function AddModal({
                 value={deadline}
               />
             </div>
+            )}
+            
             <div className="input-field">
               <label htmlFor="salary">Salary</label>
               <input

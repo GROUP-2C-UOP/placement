@@ -6,6 +6,7 @@ import AddModal from "../components/AddModal";
 import FilterModal from "../components/FilterModal";
 import NotificationsPopUp from "../components/NotificationPopUp";
 import ToDo from "../components/ToDo";
+import "../styles/ToDoPage.css";
 
 function ToDoPage() {
   const [toDos, SetToDos] = useState([]);
@@ -87,7 +88,7 @@ function ToDoPage() {
 
   return (
     <div>
-      <h1>TO DO</h1>
+      <h1 id="todo-title">To Do</h1>
       <button
         id="add-button"
         className="no-select"
@@ -98,47 +99,58 @@ function ToDoPage() {
       >
         <img src="src/assets/add.svg" />
       </button>
-      
-      {toDos.map((todo) => (
-        <ToDo todo={todo} key={todo.id} />
-      ))}
+      <div id="to-dos-container">
+        <table id="idk">
+          <thead id="todo-header-container">
+            <tr>
+              <th>Company</th>
+              <th>Role</th>
+              <th>Deadline</th>
+              <th>Notes </th>
+            </tr>
+          </thead>
+        </table>
+        {toDos.map((todo) => (
+          <ToDo todo={todo} key={todo.id} />
+        ))}
 
-      {showAddModal && (
-        <AddModal
-          company={company}
-          setCompany={setCompany}
-          role={role}
-          setRole={setRole}
-          salary={salary}
-          setSalary={setSalary}
-          startingDate={startingDate}
-          setStartingDate={setStartingDate}
-          duration={duration}
-          setDuration={setDuration}
-          deadline={deadline}
-          setDeadline={setDeadline}
-          applicationLink={applicationLink}
-          setApplicationLink={setApplicationLink}
-          dateApplied={dateApplied}
-          setDateApplied={setDateApplied}
-          status={status}
-          setStatus={setStatus}
-          cv={cv}
-          setCv={setCv}
-          coverLetter={coverLetter}
-          setCoverLetter={setCoverLetter}
-          contact={contact}
-          setContact={setContact}
-          description={description}
-          setDescription={setDescription}
-          create={createToDo}
-          toClose={() => {
-            setShowAddModal(false);
-            setShowAddButton(true);
-          }}
-          type="todo"
-        ></AddModal>
-      )}
+        {showAddModal && (
+          <AddModal
+            company={company}
+            setCompany={setCompany}
+            role={role}
+            setRole={setRole}
+            salary={salary}
+            setSalary={setSalary}
+            startingDate={startingDate}
+            setStartingDate={setStartingDate}
+            duration={duration}
+            setDuration={setDuration}
+            deadline={deadline}
+            setDeadline={setDeadline}
+            applicationLink={applicationLink}
+            setApplicationLink={setApplicationLink}
+            dateApplied={dateApplied}
+            setDateApplied={setDateApplied}
+            status={status}
+            setStatus={setStatus}
+            cv={cv}
+            setCv={setCv}
+            coverLetter={coverLetter}
+            setCoverLetter={setCoverLetter}
+            contact={contact}
+            setContact={setContact}
+            description={description}
+            setDescription={setDescription}
+            create={createToDo}
+            toClose={() => {
+              setShowAddModal(false);
+              setShowAddButton(true);
+            }}
+            type="todo"
+          ></AddModal>
+        )}
+      </div>
     </div>
   );
 }

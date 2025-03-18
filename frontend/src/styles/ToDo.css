@@ -1,0 +1,52 @@
+.gen-cont {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.checkoff-container {
+    border-radius: 100px;
+    background-color: white;
+    width: 40px;
+    height: 40px;
+    margin-left: 50px;
+    margin-bottom: 20px;
+}
+
+.todo-container-home {
+width: 80%;
+  padding: 10px;
+  background-color: rgb(255, 255, 255);
+  color: rgb(9, 9, 160);
+  border-radius: 10px;
+  margin-bottom: 20px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0px auto;
+}
+
+table {
+  width: 100%;
+}
+
+th {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+tr {
+  background-color: white;
+  display: contents;
+}
+
+thead {
+  align-items: center;
+  justify-content: center;
+}
+
+.to-do-home-spacing {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
