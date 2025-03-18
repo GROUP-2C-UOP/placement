@@ -136,7 +136,7 @@ function ToDoPage() {
             setShowAddModal(false);
             setShowAddButton(true);
           }}
-          type="placement"
+          type="todo"
         ></AddModal>
       )}
     </div>

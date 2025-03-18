@@ -4,9 +4,20 @@ function ToDo({ todo }) {
   return (
     <div>
       <input type="checkbox" />
-      <p>{todo.company}</p>
-      <p>{todo.role}</p>
-      <p>{todo.next_stage_deadline}</p>
+      <table>
+        <thead>
+            <tr>
+                <th>{todo.company}</th>
+                <th>{todo.role}</th>
+                <th>{todo.next_stage_deadline}</th>
+                <th className="task-description">
+                  {todo.description === "null"
+                    ? ""
+                    : todo.description}
+                </th>
+            </tr>
+        </thead>
+      </table>
     </div>
   );
 }

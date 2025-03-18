@@ -51,11 +51,6 @@ class ToDoSerializers(serializers.ModelSerializer):
                   "duration",
                    "next_stage_deadline",
                    "placement_link",
-                   "status",
-                   "cv",
-                   "cover_letter",
-                   "contact",
-                   "date_applied",
                    "description",
                   "user"]
         extra_kwargs = {"user": {"read_only": True}}

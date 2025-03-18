@@ -30,6 +30,7 @@ function AddModal({
   setDescription,
   create,
   toClose,
+  type,
 }) {
   const statusDropdown = [
     { label: "Applied", value: "applied" },
@@ -111,6 +112,7 @@ function AddModal({
     setCoverLetterName(file ? file.name : "Choose Cover Letter");
   };
 
+
   return (
     <div id="add-container">
       <div
@@ -147,7 +149,9 @@ function AddModal({
                 value={role}
               />
             </div>
-            <div className="input-field">
+            {type === "placement" && (
+              <>
+              <div className="input-field">
               <label htmlFor="dateApplied">Date Applied*</label>
               <input
                 type="date"
@@ -175,6 +179,9 @@ function AddModal({
                 ))}
               </select>
             </div>
+            </>
+            )}
+            
             <div className="input-field">
               <label htmlFor="deadline">Deadline for Status</label>
               <input
@@ -237,7 +244,9 @@ function AddModal({
                 value={applicationLink}
               />
             </div>
-            <div className="input-field">
+            {type === "placement" && (
+              <>
+              <div className="input-field">
               <label htmlFor="contact">Their Contact</label>
               <input
                 type="text"
@@ -273,6 +282,9 @@ function AddModal({
                 onChange={handleCoverLetterChange}
               />
             </div>
+            </>
+            )
+          }
           </div>
           <div id="desc-cont">
             <label htmlFor="description">Note</label>
