@@ -2,9 +2,9 @@ from django.shortcuts import render
 from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import UserSerializers, PlacementSerializers, NotificationSerializers, UserPreferencesSerializers
+from .serializers import UserSerializers, PlacementSerializers, ToDoSerializers, NotificationSerializers, UserPreferencesSerializers
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .models import Placement, CustomUser, Notifications, UserPreferences
+from .models import Placement, ToDo, CustomUser, Notifications, UserPreferences
 from datetime import date
 
 class PlacementListCreate(generics.ListCreateAPIView):
@@ -44,6 +44,22 @@ class PlacementUpdate(generics.UpdateAPIView):
     def get_queryset(self):
         user = self.request.user
         return Placement.objects.filter(user=user)
+    
+class ToDoListCreate(generics.ListCreateAPIView):
+    serializer_class = ToDoSerializers
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        todos = ToDo.objects.filter(user=user)
+
+        return todos
+    
+    def perform_create(self, serializer):
+        if serializer.is_valid():
+            serializer.save(user=self.request.user)
+        else:
+            print(serializer.errors)
     
 class GetUserDetails(generics.RetrieveAPIView):
     serializer_class = UserSerializers

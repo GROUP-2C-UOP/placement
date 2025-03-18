@@ -28,7 +28,7 @@ function AddModal({
   setContact,
   description,
   setDescription,
-  createPlacement,
+  create,
   toClose,
 }) {
   const statusDropdown = [
@@ -67,7 +67,7 @@ function AddModal({
     e.preventDefault();
     setFadeOutSave(true);
     setTimeout(() => {
-      createPlacement(e);
+      create(e);
 
       console.log("Company:", company);
       console.log("Role:", role);

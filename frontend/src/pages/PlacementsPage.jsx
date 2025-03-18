@@ -680,11 +680,12 @@ function PlacementsPage() {
           setContact={setContact}
           description={description}
           setDescription={setDescription}
-          createPlacement={createPlacement}
+          create={createPlacement}
           toClose={() => {
             setShowAddModal(false);
             setShowAddButton(true);
           }}
+          type="placement"
         ></AddModal>
       )}
       {showAddButton && (

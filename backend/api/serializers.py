@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Placement, CustomUser, Notifications, UserPreferences
+from .models import Placement, ToDo, CustomUser, Notifications, UserPreferences
 from rest_framework_simplejwt.tokens import RefreshToken
 from datetime import timedelta
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -22,6 +22,27 @@ class UserSerializers(serializers.ModelSerializer):
 class PlacementSerializers(serializers.ModelSerializer):
     class Meta:
         model = Placement
+        fields = ["id", 
+                  "company", 
+                  "role", 
+                  "salary", 
+                  "starting_date", 
+                  "duration",
+                   "next_stage_deadline",
+                   "placement_link",
+                   "status",
+                   "cv",
+                   "cover_letter",
+                   "contact",
+                   "date_applied",
+                   "description",
+                  "user"]
+        extra_kwargs = {"user": {"read_only": True}}
+
+
+class ToDoSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = ToDo
         fields = ["id", 
                   "company", 
                   "role", 

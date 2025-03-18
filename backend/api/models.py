@@ -76,7 +76,7 @@ class Notifications(models.Model):
     def __str__(self):
         return f"{self.status} for {self.company} in {self.days}"
     
-class ToDoApplications(models.Model):
+class ToDo(models.Model):
     company = models.CharField(max_length=100)
     role = models.CharField(max_length=100)
     salary = models.FloatField(null=True)
