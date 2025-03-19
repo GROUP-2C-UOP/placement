@@ -39,6 +39,7 @@ function PlacementModal({
   isDashboard,
   setDescription,
   setShowModal,
+  type,
 }) {
   const [editing, setEditing] = useState(false);
   const [confirmation, setConfirmation] = useState(false);
@@ -115,14 +116,16 @@ function PlacementModal({
 
   const check = () => {
     let formData = new FormData();
-
+  
     for (const field in updatedData) {
-      if (updatedData[field] !== "") {
+      if (updatedData[field] !== "" && updatedData[field] !== null && updatedData[field] !== undefined) {
         formData.append(field, updatedData[field]);
       }
     }
+  
     return formData;
   };
+  
 
   const updatePlacement = (id, getPlacements, setShowModal) => {
     const modifiedFields = check();
@@ -266,67 +269,80 @@ function PlacementModal({
                   ""
                 )}
               </div>
-              <div className="detail">
-                <label>CV:</label>
-                <br />
-                {placement.cv && placement.cv !== "null" ? (
-                  <a
-                    href={placement.cv}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    View CV
-                  </a>
-                ) : (
-                  ""
-                )}
-              </div>
-              <div className="detail">
-                <label>Cover Letter:</label>
-                <br />
-                {placement.cover_letter && placement.cover_letter !== "null" ? (
-                  <a
-                    href={placement.cover_letter}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    View Cover Letter
-                  </a>
-                ) : (
-                  ""
-                )}
-              </div>
-              <div className="detail">
-                <label>Contact:</label>
-                <br />
-                {placement.contact === "null" ? "" : placement.contact || ""}
-              </div>
-              <div className="detail">
-                <label>Date Applied:</label>
-                <br />
-                {new Date(placement.date_applied).toLocaleDateString("en-GB")}
-              </div>
-              {placement.description && placement.description !== "null" && (
-                <div className="detail" id="note-on-modal">
-                  <label>Note</label>
-                  <br />
-                  {placement.description}
-                </div>
+              {type === "placement" && (
+                <>
+                  <div className="detail">
+                    <label>CV:</label>
+                    <br />
+                    {placement.cv && placement.cv !== "null" ? (
+                      <a
+                        href={placement.cv}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        View CV
+                      </a>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                  <div className="detail">
+                    <label>Cover Letter:</label>
+                    <br />
+                    {placement.cover_letter &&
+                    placement.cover_letter !== "null" ? (
+                      <a
+                        href={placement.cover_letter}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        View Cover Letter
+                      </a>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                  <div className="detail">
+                    <label>Contact:</label>
+                    <br />
+                    {placement.contact === "null"
+                      ? ""
+                      : placement.contact || ""}
+                  </div>
+                  <div className="detail">
+                    <label>Date Applied:</label>
+                    <br />
+                    {new Date(placement.date_applied).toLocaleDateString(
+                      "en-GB"
+                    )}
+                  </div>
+                  {placement.description &&
+                    placement.description !== "null" && (
+                      <div className="detail" id="note-on-modal">
+                        <label>Note</label>
+                        <br />
+                        {placement.description}
+                      </div>
+                    )}
+                </>
               )}
             </div>
-            {!isDashboard && (
-              <div id="buttons">
-                <button
-                  id="update-button"
-                  onClick={() => {
-                    setUpdate(true);
-                    setFadeOutUpdate(false);
-                  }}
-                >
-                  Update
-                </button>
-              </div>
+            {type === "placement" && (
+              <>{!isDashboard && (
+                <div id="buttons">
+                  <button
+                    id="update-button"
+                    onClick={() => {
+                      setUpdate(true);
+                      setFadeOutUpdate(false);
+                    }}
+                  >
+                    Update
+                  </button>
+                </div>
+              )}</>
             )}
+            
           </div>
         </div>
       )}
@@ -550,15 +566,15 @@ function PlacementModal({
                 )}
                 <br />
                 <label htmlFor="coverLetter" className="label-button shorten">
-                {coverLetterName}
-              </label>
-              <input
-                type="file"
-                id="coverLetter"
-                className="hide"
-                name="coverLetter"
-                onChange={handleCoverLetterChange}
-              />
+                  {coverLetterName}
+                </label>
+                <input
+                  type="file"
+                  id="coverLetter"
+                  className="hide"
+                  name="coverLetter"
+                  onChange={handleCoverLetterChange}
+                />
               </div>
               <div className="detailU">
                 <label>Contact:</label>

@@ -113,7 +113,7 @@ function ToDoPage() {
         {toDos.map((todo) => (
           <ToDo todo={todo} key={todo.id} />
         ))}
-
+        
         {showAddModal && (
           <AddModal
             company={company}

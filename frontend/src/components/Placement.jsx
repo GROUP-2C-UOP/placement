@@ -203,6 +203,7 @@ function Placement({
             getPlacements={getPlacements}
             setShowModal={setShowModal}
             isDashboard={isDashboard}
+            type = "placement"
             onDelete={() => onDelete(selectedPlacement.id)}
           />
         )}
