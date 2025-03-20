@@ -3,6 +3,8 @@ import { statusLabels } from "../constants";
 import { useState, useEffect } from "react";
 import ConfirmationModal from "./ConfirmationModal.jsx";
 import api from "../api";
+import { getAdapter } from "axios";
+import ToDo from "./ToDo.jsx";
 
 function PlacementModal({
   placement,
@@ -116,16 +118,19 @@ function PlacementModal({
 
   const check = () => {
     let formData = new FormData();
-  
+
     for (const field in updatedData) {
-      if (updatedData[field] !== "" && updatedData[field] !== null && updatedData[field] !== undefined) {
+      if (
+        updatedData[field] !== "" &&
+        updatedData[field] !== null &&
+        updatedData[field] !== undefined
+      ) {
         formData.append(field, updatedData[field]);
       }
     }
-  
+
     return formData;
   };
-  
 
   const updatePlacement = (id, getPlacements, setShowModal) => {
     const modifiedFields = check();
@@ -139,6 +144,29 @@ function PlacementModal({
       .then((res) => {
         if (res.status === 200 || res.status === 204) {
           console.log("Placement Updated");
+          getPlacements();
+          handleClose();
+          resetForm();
+        } else alert("Something went wrong, try again.");
+      })
+      .catch((error) => {
+        console.error("Update failed", error);
+        alert("Failed, check console");
+      });
+  };
+
+  const updateToDo = (id, getPlacements, setShowModal) => {
+    const modifiedFields = check();
+
+    api
+      .patch(`/api/todos/update/${id}/`, modifiedFields, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        if (res.status === 200 || res.status === 204) {
+          console.log("todo Updated");
           getPlacements();
           handleClose();
           resetForm();
@@ -249,11 +277,6 @@ function PlacementModal({
                     ) || ""}
               </div>
               <div className="detail">
-                <label>Status:</label>
-                <br />
-                {statusLabels[placement.status]}
-              </div>
-              <div className="detail">
                 <label>Application Link:</label>
                 <br />
                 {placement.placement_link &&
@@ -271,6 +294,11 @@ function PlacementModal({
               </div>
               {type === "placement" && (
                 <>
+                  <div className="detail">
+                    <label>Status:</label>
+                    <br />
+                    {statusLabels[placement.status]}
+                  </div>
                   <div className="detail">
                     <label>CV:</label>
                     <br />
@@ -316,33 +344,33 @@ function PlacementModal({
                       "en-GB"
                     )}
                   </div>
-                  {placement.description &&
-                    placement.description !== "null" && (
-                      <div className="detail" id="note-on-modal">
-                        <label>Note</label>
-                        <br />
-                        {placement.description}
-                      </div>
-                    )}
                 </>
               )}
             </div>
             {type === "placement" && (
-              <>{!isDashboard && (
-                <div id="buttons">
-                  <button
-                    id="update-button"
-                    onClick={() => {
-                      setUpdate(true);
-                      setFadeOutUpdate(false);
-                    }}
-                  >
-                    Update
-                  </button>
-                </div>
-              )}</>
+              <>
+                {!isDashboard && (
+                  <div id="buttons">
+                    <button
+                      id="update-button"
+                      onClick={() => {
+                        setUpdate(true);
+                        setFadeOutUpdate(false);
+                      }}
+                    >
+                      Update
+                    </button>
+                  </div>
+                )}
+              </>
             )}
-            
+            {placement.description && placement.description !== "null" && (
+              <div className="detail" id="note-on-modal">
+                <label>Note</label>
+                <br />
+                {placement.description}
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -526,83 +554,124 @@ function PlacementModal({
                   value={applicationLink}
                 />
               </div>
-              <div className="detailU">
-                <label>Change CV:</label>
-                {placement.cv && (
-                  <div>
-                    <a
-                      href={placement.cv}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      View existing CV
-                    </a>
+              {type === "placement" && (
+                <>
+                  <div className="detailU">
+                    <label>Change CV:</label>
+                    {placement.cv && (
+                      <div>
+                        <a
+                          href={placement.cv}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          View existing CV
+                        </a>
+                      </div>
+                    )}
+                    <br />
+                    <label htmlFor="cv" className="label-button shorten">
+                      {cvName}
+                    </label>
+                    <input
+                      type="file"
+                      id="cv"
+                      className="hide"
+                      name="cv"
+                      onChange={handleCvChange}
+                    />
                   </div>
-                )}
-                <br />
-                <label htmlFor="cv" className="label-button shorten">
-                  {cvName}
-                </label>
-                <input
-                  type="file"
-                  id="cv"
-                  className="hide"
-                  name="cv"
-                  onChange={handleCvChange}
-                />
-              </div>
-              <div className="detailU">
-                <label>Change Cover Letter:</label>
-                {placement.cover_letter && (
-                  <div>
-                    <a
-                      href={placement.cover_letter}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                  <div className="detailU">
+                    <label>Change Cover Letter:</label>
+                    {placement.cover_letter && (
+                      <div>
+                        <a
+                          href={placement.cover_letter}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          View existing Cover Letter
+                        </a>
+                      </div>
+                    )}
+                    <br />
+                    <label
+                      htmlFor="coverLetter"
+                      className="label-button shorten"
                     >
-                      View existing Cover Letter
-                    </a>
+                      {coverLetterName}
+                    </label>
+                    <input
+                      type="file"
+                      id="coverLetter"
+                      className="hide"
+                      name="coverLetter"
+                      onChange={handleCoverLetterChange}
+                    />
                   </div>
-                )}
-                <br />
-                <label htmlFor="coverLetter" className="label-button shorten">
-                  {coverLetterName}
-                </label>
-                <input
-                  type="file"
-                  id="coverLetter"
-                  className="hide"
-                  name="coverLetter"
-                  onChange={handleCoverLetterChange}
-                />
-              </div>
-              <div className="detailU">
-                <label>Contact:</label>
+                  <div className="detailU">
+                    <label>Contact:</label>
 
-                <input
-                  type="text"
-                  id="contact"
-                  className="input-field"
-                  name="contact"
-                  onChange={(e) => setContact(e.target.value)}
-                  value={contact}
-                  placeholder={
-                    placement.contact === "null" ? "" : placement.contact || ""
-                  }
-                />
-              </div>
-              <div className="detailU">
-                <label>Date Applied:</label>
-                <input
-                  type="date"
-                  id="dateApplied"
-                  className="input-field"
-                  name="dateApplied"
-                  onChange={(e) => setDateApplied(e.target.value)}
-                  value={dateApplied}
-                  placeholder={placement.date_applied}
-                />
-              </div>
+                    <input
+                      type="text"
+                      id="contact"
+                      className="input-field"
+                      name="contact"
+                      onChange={(e) => setContact(e.target.value)}
+                      value={contact}
+                      placeholder={
+                        placement.contact === "null"
+                          ? ""
+                          : placement.contact || ""
+                      }
+                    />
+                  </div>
+                  <div className="detailU">
+                    <label>Date Applied:</label>
+                    <input
+                      type="date"
+                      id="dateApplied"
+                      className="input-field"
+                      name="dateApplied"
+                      onChange={(e) => setDateApplied(e.target.value)}
+                      value={dateApplied}
+                      placeholder={placement.date_applied}
+                    />
+                  </div>
+                </>
+              )}
+              {type === "todo" && (
+                <>
+                  <div className="detailU">
+                    <label>Deadline:</label>
+                    <br />
+                    <input
+                      type="date"
+                      id="deadline"
+                      className="input-field"
+                      name="deadline"
+                      onChange={(e) => setDeadline(e.target.value)}
+                      value={deadline}
+                    />
+                  </div>
+
+                  <div className="textarea">
+                    <label>Note:</label>
+                    <br />
+                    <textarea
+                      type="text"
+                      id="description"
+                      name="description"
+                      onChange={(e) =>
+                        setDescription(
+                          e.target.value === "" ? null : e.target.value
+                        )
+                      }
+                      value={description}
+                    />
+                  </div>
+                </>
+              )}
             </div>
             <div id="buttons">
               <button
@@ -619,11 +688,17 @@ function PlacementModal({
       )}
       {confirmation && (
         <ConfirmationModal
-          func={
-            editing
-              ? () => updatePlacement(placement.id, getPlacements, setShowModal)
-              : onDelete
-          }
+          func={() => {
+            if (editing) {
+              if (type === "placement") {
+                updatePlacement(placement.id, getPlacements, setShowModal);
+              } else {
+                updateToDo(placement.id, getPlacements, setShowModal);
+              }
+            } else {
+              onDelete();
+            }
+          }}
           method={editing ? "edit" : "delete"}
           type={"Placement"}
           onClose={() => {

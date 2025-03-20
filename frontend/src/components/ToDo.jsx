@@ -3,7 +3,37 @@ import "../styles/ToDo.css";
 import PlacementModal from "./PlacementModal";
 import { icons } from "../constants";
 
-function ToDo({ todo, onDelete }) {
+function ToDo({
+  todo,
+  onDelete,
+  getToDos,
+  company,
+  setCompany,
+  role,
+  setRole,
+  salary,
+  setSalary,
+  startingDate,
+  setStartingDate,
+  duration,
+  setDuration,
+  deadline,
+  setDeadline,
+  applicationLink,
+  setApplicationLink,
+  dateApplied,
+  setDateApplied,
+  status,
+  setStatus,
+  cv,
+  setCv,
+  coverLetter,
+  setCoverLetter,
+  contact,
+  setContact,
+  description,
+  setDescription,
+}) {
   const [showModal, setShowModal] = useState(false);
   const [selectedTodo, setSelectedTodo] = useState(null);
 
@@ -50,35 +80,35 @@ function ToDo({ todo, onDelete }) {
           closeModal={closeModal}
           showModal={showModal}
           statusLabels={icons}
-          company={todo.company}
-          setCompany={() => {}}
-          role={todo.role}
-          setRole={() => {}}
-          salary={todo.salary}
-          setSalary={() => {}}
-          startingDate={todo.starting_date}
-          setStartingDate={() => {}}
-          duration={todo.duration}
-          setDuration={() => {}}
-          deadline={todo.next_stage_deadline}
-          setDeadline={() => {}}
-          applicationLink={todo.placement_link}
-          setApplicationLink={() => {}}
-          dateApplied={todo.date_applied}
-          setDateApplied={() => {}}
-          status={todo.status}
-          setStatus={() => {}}
-          cv={todo.cv}
-          setCv={() => {}}
-          coverLetter={null}
-          setCoverLetter={() => {}}
-          contact={todo.contact}
-          setContact={() => {}}
-          description={todo.description}
-          setDescription={() => {}}
+          company={company}
+          setCompany={setCompany}
+          role={role}
+          setRole={setRole}
+          salary={salary}
+          setSalary={setSalary}
+          startingDate={startingDate}
+          setStartingDate={setStartingDate}
+          duration={duration}
+          setDuration={setDuration}
+          deadline={deadline}
+          setDeadline={setDeadline}
+          applicationLink={applicationLink}
+          setApplicationLink={setApplicationLink}
+          dateApplied={dateApplied}
+          setDateApplied={setDateApplied}
+          status={status}
+          setStatus={setStatus}
+          cv={cv}
+          setCv={setCv}
+          coverLetter={coverLetter}
+          setCoverLetter={setCoverLetter}
+          contact={contact}
+          setContact={setContact}
+          description={description}
+          setDescription={setDescription}
           createPlacement={() => {}}
           toClose={closeModal}
-          getPlacements={() => {}}
+          getPlacements={getToDos}
           setShowModal={setShowModal}
           isDashboard={false}
           type="todo"

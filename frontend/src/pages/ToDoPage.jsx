@@ -93,11 +93,10 @@ function ToDoPage() {
         if (res.status === 204) {
           console.log("ToDo deleted successfully");
         } else alert("Error deleting Todo");
-        getToDos()
+        getToDos();
       })
       .catch((err) => alert(err));
   };
-
 
   return (
     <div>
@@ -124,9 +123,40 @@ function ToDoPage() {
           </thead>
         </table>
         {toDos.map((todo) => (
-          <ToDo todo={todo} key={todo.id} onDelete={deleteToDo} />
+          <ToDo
+            todo={todo}
+            key={todo.id}
+            onDelete={deleteToDo}
+            getToDos={getToDos}
+            company={company}
+            setCompany={setCompany}
+            role={role}
+            setRole={setRole}
+            salary={salary}
+            setSalary={setSalary}
+            startingDate={startingDate}
+            setStartingDate={setStartingDate}
+            duration={duration}
+            setDuration={setDuration}
+            deadline={deadline}
+            setDeadline={setDeadline}
+            applicationLink={applicationLink}
+            setApplicationLink={setApplicationLink}
+            dateApplied={dateApplied}
+            setDateApplied={setDateApplied}
+            status={status}
+            setStatus={setStatus}
+            cv={cv}
+            setCv={setCv}
+            coverLetter={coverLetter}
+            setCoverLetter={setCoverLetter}
+            contact={contact}
+            setContact={setContact}
+            description={description}
+            setDescription={setDescription}
+          />
         ))}
-        
+
         {showAddModal && (
           <AddModal
             company={company}
