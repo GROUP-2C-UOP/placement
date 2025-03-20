@@ -236,7 +236,8 @@ function PlacementModal({
                 </button>
               </>
             )}
-            <h2 id="general-title">Placement Details</h2>
+           <h2 id="general-title">{type === "placement" ? "Placement Details" : "Application Details"}</h2>
+
             <div id="modal-content" className="placement-grid">
               <div className="detail">
                 <label>Company:</label>
@@ -461,7 +462,7 @@ function PlacementModal({
             >
               <img src="src/assets/close.svg" />
             </button>
-            <h2 id="general-title">Placement Details</h2>
+            <h2 id="general-title">{type === "placement" ? "Placement Details" : "Application Details"}</h2>
             <div id="modal-content">
               <div className="detailU">
                 <label>Company:</label>

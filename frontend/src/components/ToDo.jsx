@@ -57,7 +57,7 @@ function ToDo({
   return (
     <div id="td-cont">
       <div className="gen-cont">
-        <div className="checkoff-container"></div>
+        <div className="checkoff-container" onClick={() => {alert("CHECK OFF NEEDS TO BE IMPLEMENTED")}}></div>
         <div className="todo-container-home" onClick={() => openModal(todo)}>
           <table>
             <thead className="to-do-home-spacing">

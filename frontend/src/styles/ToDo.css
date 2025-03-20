@@ -1,20 +1,24 @@
+body {
+  color: white;
+}
+
 .gen-cont {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .checkoff-container {
-    border-radius: 100px;
-    background-color: white;
-    width: 40px;
-    height: 40px;
-    margin-left: 50px;
-    margin-bottom: 20px;
+  border-radius: 100px;
+  background-color: white;
+  width: 40px;
+  height: 40px;
+  margin-left: 50px;
+  margin-bottom: 20px;
 }
 
 .todo-container-home {
-width: 80%;
+  width: 80%;
   padding: 10px;
   background-color: rgb(255, 255, 255);
   color: rgb(9, 9, 160);
@@ -24,6 +28,18 @@ width: 80%;
   justify-content: center;
   align-items: center;
   margin: 0px auto;
+}
+
+.checkoff-container:hover,
+.todo-container-home:hover {
+  background-color: rgb(142, 142, 207);
+  transition: background-color 0.3s ease-in-out;
+}
+
+.checkoff-container:hover + .todo-container-home,
+.todo-container-home:hover + .checkoff-container {
+  background-color: rgb(142, 142, 207);
+  transition: background-color 0.3s ease-in-out;
 }
 
 table {
@@ -47,6 +63,6 @@ thead {
 }
 
 .to-do-home-spacing {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
 }
