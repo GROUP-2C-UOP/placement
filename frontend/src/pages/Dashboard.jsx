@@ -1,6 +1,7 @@
 import "../styles/Dashboard.css";
 import api from "../api";
 import Placement from "../components/Placement";
+import ToDo from "../components/ToDo";
 import { statusLabels } from "../constants";
 import { useState, useEffect } from "react";
 import { Link } from "react-router";
@@ -9,10 +10,13 @@ function Dashboard() {
   useEffect(() => {
     getUser();
     getPlacements();
+    getToDos();
   }, []);
+
 
   const [name, setName] = useState("");
   const [placements, setPlacements] = useState([]);
+  const [todos, setToDos] = useState([])
   const isDashboard = true;
 
   const getUser = () => {
@@ -59,6 +63,22 @@ function Dashboard() {
       })
       .catch((err) => alert(err));
   };
+
+  const getToDos = () => {
+    api
+      .get("/api/todos/")
+      .then((res) => res.data)
+      .then((data) => {
+        setToDos(data);
+        console.log(todos)
+      })
+
+      .catch((err) => alert(err));
+  };
+
+  useEffect(() => {
+    console.log("Updated todos:", todos);
+  }, [todos]); // Runs whenever `todos` is updated
 
   return (
     <div id="container">
@@ -114,7 +134,42 @@ function Dashboard() {
               </div>
             </div>
           </div>
-          <div id="todo-container"></div>
+          <div id="todo-container">
+          <div id="placements">
+              {todos.map((todo) => (
+                <ToDo
+                  isDashboard={isDashboard}
+                  todo={todo}
+                  statusLabels={statusLabels}
+                  key={todo.id}
+                  company={todo.company}
+                  role={todo.role}
+                  salary={todo.salary}
+                  startingDate={todo.startingDate}
+                  duration={todo.duration}
+                  deadline={todo.deadline}
+                  applicationLink={todo.applicationLink}
+                  description={todo.description}
+                />
+              ))}
+              <div id="bottom">
+                {todos.length === 0 && (
+                  <Link to="/placements">
+                    <button id="add" className="no-select">
+                      <img src="src/assets/add.svg" />
+                    </button>
+                  </Link>
+                )}
+                {placements.length > 0 && (
+                  <Link to="/placements">
+                    <button id="see">
+                      <img src="src/assets/ellipses.svg" />
+                    </button>
+                  </Link>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
