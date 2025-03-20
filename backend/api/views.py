@@ -60,6 +60,22 @@ class ToDoListCreate(generics.ListCreateAPIView):
             serializer.save(user=self.request.user)
         else:
             print(serializer.errors)
+
+class ToDoDelete(generics.DestroyAPIView):
+    serializer_class = ToDoSerializers
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return ToDo.objects.filter(user=user)
+    
+class ToDoUpdate(generics.UpdateAPIView):
+    serializer_class = ToDoSerializers
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return ToDo.objects.filter(user=user)
     
 class GetUserDetails(generics.RetrieveAPIView):
     serializer_class = UserSerializers

@@ -3,7 +3,7 @@ import "../styles/ToDo.css";
 import PlacementModal from "./PlacementModal";
 import { icons } from "../constants";
 
-function ToDo({ todo }) {
+function ToDo({ todo, onDelete }) {
   const [showModal, setShowModal] = useState(false);
   const [selectedTodo, setSelectedTodo] = useState(null);
 
@@ -82,7 +82,7 @@ function ToDo({ todo }) {
           setShowModal={setShowModal}
           isDashboard={false}
           type="todo"
-          onDelete={() => {}}
+          onDelete={() => onDelete(selectedTodo.id)}
         />
       )}
     </div>

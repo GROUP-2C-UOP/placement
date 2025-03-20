@@ -86,6 +86,19 @@ function ToDoPage() {
       .catch((err) => alert(err));
   };
 
+  const deleteToDo = (id) => {
+    api
+      .delete(`/api/todos/delete/${id}/`)
+      .then((res) => {
+        if (res.status === 204) {
+          console.log("ToDo deleted successfully");
+        } else alert("Error deleting Todo");
+        getToDos()
+      })
+      .catch((err) => alert(err));
+  };
+
+
   return (
     <div>
       <h1 id="todo-title">To Do</h1>
@@ -111,7 +124,7 @@ function ToDoPage() {
           </thead>
         </table>
         {toDos.map((todo) => (
-          <ToDo todo={todo} key={todo.id} />
+          <ToDo todo={todo} key={todo.id} onDelete={deleteToDo} />
         ))}
         
         {showAddModal && (
