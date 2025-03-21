@@ -2,6 +2,7 @@ import { useState } from "react";
 import "../styles/ToDo.css";
 import PlacementModal from "./PlacementModal";
 import { icons } from "../constants";
+import AddModal from "./AddModal";
 
 function ToDo({
   todo,
@@ -36,6 +37,7 @@ function ToDo({
 }) {
   const [showModal, setShowModal] = useState(false);
   const [selectedTodo, setSelectedTodo] = useState(null);
+  const [showCheckOff, setShowCheckOff] = useState(false)
 
   const calculateRemaining = (placement) => {
     const today = new Date();
@@ -57,7 +59,7 @@ function ToDo({
   return (
     <div id="td-cont">
       <div className="gen-cont">
-        <div className="checkoff-container" onClick={() => {alert("CHECK OFF NEEDS TO BE IMPLEMENTED")}}></div>
+        <div className="checkoff-container" onClick={() => setShowCheckOff(true)}></div>
         <div className="todo-container-home" onClick={() => openModal(todo)}>
           <table>
             <thead className="to-do-home-spacing">
@@ -113,6 +115,43 @@ function ToDo({
           isDashboard={false}
           type="todo"
           onDelete={() => onDelete(selectedTodo.id)}
+        />
+      )}
+
+
+      {showCheckOff && (
+        <AddModal 
+        company={company}
+            setCompany={setCompany}
+            role={role}
+            setRole={setRole}
+            salary={salary}
+            setSalary={setSalary}
+            startingDate={startingDate}
+            setStartingDate={setStartingDate}
+            duration={duration}
+            setDuration={setDuration}
+            deadline={deadline}
+            setDeadline={setDeadline}
+            applicationLink={applicationLink}
+            setApplicationLink={setApplicationLink}
+            dateApplied={dateApplied}
+            setDateApplied={setDateApplied}
+            status={status}
+            setStatus={setStatus}
+            cv={cv}
+            setCv={setCv}
+          coverLetter={coverLetter}             
+            setCoverLetter={setCoverLetter}
+            contact={contact}
+            setContact={setContact}
+            description={description}
+            setDescription={setDescription}
+            create={createToDo}
+            toClose={() => {
+              setShowCheckOff(false);
+            }}
+            type="todo"
         />
       )}
     </div>
