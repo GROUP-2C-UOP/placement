@@ -30,17 +30,22 @@ body {
   margin: 0px auto;
 }
 
-.checkoff-container:hover,
+.checkoff-container:hover {
+  background-color: rgb(22, 255, 22); 
+  transition: background-color 0.3s ease-in-out;
+}
+
 .todo-container-home:hover {
-  background-color: rgb(142, 142, 207);
+  background-color: rgb(142, 142, 207); 
   transition: background-color 0.3s ease-in-out;
 }
 
 .checkoff-container:hover + .todo-container-home,
 .todo-container-home:hover + .checkoff-container {
-  background-color: rgb(142, 142, 207);
+  background-color: rgb(142, 142, 207); 
   transition: background-color 0.3s ease-in-out;
 }
+
 
 table {
   width: 100%;

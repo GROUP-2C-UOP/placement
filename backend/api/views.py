@@ -205,7 +205,7 @@ class NotificationListCreate(generics.ListCreateAPIView):
         for placement in placements:
             if placement.next_stage_deadline:
                 deadline_days = (placement.next_stage_deadline - date.today()).days
-                if 0 < deadline_days <= notification_time and placement.status not in ["applied", "offer_made", "rejected", "withdrawn"]:
+                if 0 <= deadline_days <= notification_time and placement.status not in ["applied", "offer_made", "rejected", "withdrawn"]:
                     existing_notification = Notifications.objects.filter(
                         user=user,
                         placement=placement,
@@ -233,7 +233,7 @@ class NotificationListCreate(generics.ListCreateAPIView):
         for todo in todos:
             if todo.next_stage_deadline:
                 deadline_days = (todo.next_stage_deadline - date.today()).days
-                if 0 < deadline_days <= notification_time:
+                if 0 <= deadline_days <= notification_time:
                     existing_notification = Notifications.objects.filter(
                         user=user,
                         todo=todo,

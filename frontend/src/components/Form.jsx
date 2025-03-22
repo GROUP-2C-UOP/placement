@@ -110,6 +110,14 @@ function Form({ route, method }) {
               </p>
             </div>
           )}
+          {method === "register" && (
+            <div id="reg-container">
+              <p>Have an account?</p>
+              <p className="clickable" onClick={() => navigate("/login")}>
+                <u>Login</u>
+              </p>
+            </div>
+          )}
         </form>
       </div>
       <div id="slash">

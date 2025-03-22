@@ -17,7 +17,8 @@ function Notification({ notification, getNotifications }) {
 
   const formatDateTime = (rawDateTime) => {
     const date = new Date(rawDateTime);
-    return date.toLocaleString("en-GB", {
+    return date
+      .toLocaleString("en-GB", {
         day: "2-digit",
         month: "2-digit",
         year: "numeric",
@@ -25,15 +26,20 @@ function Notification({ notification, getNotifications }) {
         minute: "2-digit",
         second: "2-digit",
         hour12: true,
-    }).replace(",", " -");
-};
+      })
+      .replace(",", " -");
+  };
 
   return (
     <div id="single-noti-cont">
       <div id="noti-text-cont">
         <div>
-          {statusLabels[notification.status]} for {notification.company} due in{" "}
-          {notification.days} days
+          {statusLabels[notification.status]} for {notification.company} due{" "}
+          {notification.days === 0
+            ? "today"
+            : `in ${notification.days} day${
+                notification.days === 1 ? "" : "s"
+              }`}
         </div>
         <div id="created">{formatDateTime(notification.created)}</div>
       </div>

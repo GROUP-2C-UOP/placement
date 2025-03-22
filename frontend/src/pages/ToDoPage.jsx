@@ -25,6 +25,7 @@ function ToDoPage() {
   const [coverLetter, setCoverLetter] = useState("");
   const [contact, setContact] = useState("");
   const [description, setDescription] = useState("");
+  const [sortToDo, setSortToDo] = useState({ key: null, ascending: true });
 
   useEffect(() => {
     getToDos();
@@ -98,6 +99,33 @@ function ToDoPage() {
       .catch((err) => alert(err));
   };
 
+  const sortToDoList = (header) => {
+    let isAscending = sortToDo.key === header ? !sortToDo.ascending : true;
+
+    const handleNull = (value, isAscending) => {
+      if (value === "null" || value === "" || value === null) {
+        return isAscending ? "zzzzzzz" : "";
+      }
+      return value;
+    };
+
+    const sortedToDos = [...toDos].sort((a, b) => {
+      const aValue = handleNull(a[header], isAscending);
+      const bValue = handleNull(b[header], isAscending);
+
+      if (typeof a[header] === "string") {
+        return isAscending
+          ? aValue.localeCompare(bValue)
+          : bValue.localeCompare(aValue);
+      } else {
+        return isAscending ? a[header] - b[header] : b[header] - a[header];
+      }
+    });
+
+    SetToDos(sortedToDos);
+    setSortToDo({ key: header, ascending: isAscending });
+  };
+
   return (
     <div>
       <h1 id="todo-title">To Do</h1>
@@ -115,10 +143,58 @@ function ToDoPage() {
         <table id="idk">
           <thead id="todo-header-container">
             <tr>
-              <th>Company</th>
-              <th>Role</th>
-              <th>Deadline</th>
-              <th>Notes </th>
+              <th
+                onClick={() => {
+                  sortToDoList("company");
+                }}
+                className="no-select"
+              >
+                Company{" "}
+                {sortToDo.key === "company"
+                  ? sortToDo.ascending
+                    ? "▲"
+                    : "▼"
+                  : ""}
+              </th>
+              <th
+                onClick={() => {
+                  sortToDoList("role");
+                }}
+                className="no-select"
+              >
+                Role
+                {sortToDo.key === "role"
+                  ? sortToDo.ascending
+                    ? "▲"
+                    : "▼"
+                  : ""}
+              </th>
+              <th
+                onClick={() => {
+                  sortToDoList("next_stage_deadline");
+                }}
+                className="no-select"
+              >
+                Deadline
+                {sortToDo.key === "next_stage_deadline"
+                  ? sortToDo.ascending
+                    ? "▲"
+                    : "▼"
+                  : ""}
+              </th>
+              <th
+                onClick={() => {
+                  sortToDoList("description");
+                }}
+                className="no-select"
+              >
+                Notes{" "}
+                {sortToDo.key === "description"
+                  ? sortToDo.ascending
+                    ? "▲"
+                    : "▼"
+                  : ""}{" "}
+              </th>
             </tr>
           </thead>
         </table>
