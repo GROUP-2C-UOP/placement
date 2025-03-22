@@ -2,7 +2,8 @@ import { useState } from "react";
 import "../styles/ToDo.css";
 import PlacementModal from "./PlacementModal";
 import { icons } from "../constants";
-import AddModal from "./AddModal";
+import ConfirmationModal from "./ConfirmationModal";
+import api from "../api";
 
 function ToDo({
   todo,
@@ -37,7 +38,7 @@ function ToDo({
 }) {
   const [showModal, setShowModal] = useState(false);
   const [selectedTodo, setSelectedTodo] = useState(null);
-  const [showCheckOff, setShowCheckOff] = useState(false)
+  const [showCheckOff, setShowCheckOff] = useState(false);
 
   const calculateRemaining = (placement) => {
     const today = new Date();
@@ -56,10 +57,61 @@ function ToDo({
     setShowModal(false);
   };
 
+  const createPlacement = () => {
+    const formData = new FormData();
+    const today = new Date();
+    const formattedToday = today.toISOString().split("T")[0];
+    console.log(selectedTodo.starting_date)
+    const fields = {
+      company: selectedTodo.company,
+      role: selectedTodo.role,
+      salary: selectedTodo.salary || "",
+      starting_date: selectedTodo.starting_date || "",
+      duration: selectedTodo.duration || "",
+      next_stage_deadline: "",
+      placement_link: selectedTodo.applicationLink || "",
+      date_applied: formattedToday,
+      status: "applied",
+      contact: "",
+      cv: "",
+      cover_letter: "",
+      description: selectedTodo.description || "",
+    };
+
+    for (const [key, value] of Object.entries(fields)) {
+      if (value) {
+        formData.append(key, value);
+      }
+    }
+
+    api
+      .post("/api/placements/", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        if (res.status === 201) {
+          console.log("Placement created successfully");
+          setShowModal(false);
+          getToDos(); // Refresh the list
+        } else {
+          alert("Error creating placement");
+        }
+      })
+      .catch((err) => alert(err));
+  };
+
   return (
     <div id="td-cont">
       <div className="gen-cont">
-        <div className="checkoff-container" onClick={() => setShowCheckOff(true)}></div>
+        <div
+          className="checkoff-container"
+          onClick={() => {
+            setSelectedTodo(todo);
+            setShowCheckOff(true);
+          }}
+        ></div>
         <div className="todo-container-home" onClick={() => openModal(todo)}>
           <table>
             <thead className="to-do-home-spacing">
@@ -118,40 +170,18 @@ function ToDo({
         />
       )}
 
-
       {showCheckOff && (
-        <AddModal 
-        company={company}
-            setCompany={setCompany}
-            role={role}
-            setRole={setRole}
-            salary={salary}
-            setSalary={setSalary}
-            startingDate={startingDate}
-            setStartingDate={setStartingDate}
-            duration={duration}
-            setDuration={setDuration}
-            deadline={deadline}
-            setDeadline={setDeadline}
-            applicationLink={applicationLink}
-            setApplicationLink={setApplicationLink}
-            dateApplied={dateApplied}
-            setDateApplied={setDateApplied}
-            status={status}
-            setStatus={setStatus}
-            cv={cv}
-            setCv={setCv}
-          coverLetter={coverLetter}             
-            setCoverLetter={setCoverLetter}
-            contact={contact}
-            setContact={setContact}
-            description={description}
-            setDescription={setDescription}
-            create={createToDo}
-            toClose={() => {
-              setShowCheckOff(false);
-            }}
-            type="todo"
+        <ConfirmationModal
+          func={() => {
+            createPlacement();
+            onDelete(selectedTodo.id)
+          }}
+          method={"complete"}
+          type={"Application"}
+          onClose={() => {
+            setShowCheckOff(false);
+          }}
+          setEditing={null}
         />
       )}
     </div>

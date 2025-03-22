@@ -236,7 +236,11 @@ function PlacementModal({
                 </button>
               </>
             )}
-           <h2 id="general-title">{type === "placement" ? "Placement Details" : "Application Details"}</h2>
+            <h2 id="general-title">
+              {type === "placement"
+                ? "Placement Details"
+                : "Application Details"}
+            </h2>
 
             <div id="modal-content" className="placement-grid">
               <div className="detail">
@@ -257,12 +261,13 @@ function PlacementModal({
               <div className="detail">
                 <label>Starting Date:</label>
                 <br />
-                {placement.starting_date === "null"
+                {placement.starting_date === "null" || !placement.starting_date
                   ? ""
                   : new Date(placement.starting_date).toLocaleDateString(
                       "en-GB"
-                    ) || ""}
+                    )}
               </div>
+
               <div className="detail">
                 <label>Duration:</label>
                 <br />
@@ -271,12 +276,14 @@ function PlacementModal({
               <div className="detail">
                 <label>Deadline:</label>
                 <br />
-                {placement.next_stage_deadline === "null"
+                {placement.next_stage_deadline === "null" ||
+                !placement.next_stage_deadline
                   ? ""
                   : new Date(placement.next_stage_deadline).toLocaleDateString(
                       "en-GB"
-                    ) || ""}
+                    )}
               </div>
+
               <div className="detail">
                 <label>Application Link:</label>
                 <br />
@@ -462,7 +469,11 @@ function PlacementModal({
             >
               <img src="src/assets/close.svg" />
             </button>
-            <h2 id="general-title">{type === "placement" ? "Placement Details" : "Application Details"}</h2>
+            <h2 id="general-title">
+              {type === "placement"
+                ? "Placement Details"
+                : "Application Details"}
+            </h2>
             <div id="modal-content">
               <div className="detailU">
                 <label>Company:</label>

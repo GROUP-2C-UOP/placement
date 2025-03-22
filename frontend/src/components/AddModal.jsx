@@ -179,6 +179,17 @@ function AddModal({
                 ))}
               </select>
             </div>
+            <div className="input-field">
+              <label htmlFor="deadline">Deadline</label>
+              <input
+                type="date"
+                id="deadline"
+                name="deadline"
+                onChange={(e) => setDeadline(e.target.value)}
+                value={deadline}
+                
+              />
+            </div>
             </>
             )}
             {type === "todo" && (
