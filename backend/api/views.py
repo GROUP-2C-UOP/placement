@@ -196,23 +196,27 @@ class NotificationListCreate(generics.ListCreateAPIView):
             notification_time = 3
 
         placements = Placement.objects.filter(user=user)
+        self.create_placement_notifications(user, placements, notification_time)
 
+        todos = ToDo.objects.filter(user=user)
+        self.create_todo_notifications(user, todos, notification_time)
+
+    def create_placement_notifications(self, user, placements, notification_time):
         for placement in placements:
             if placement.next_stage_deadline:
                 deadline_days = (placement.next_stage_deadline - date.today()).days
-
                 if 0 < deadline_days <= notification_time and placement.status not in ["applied", "offer_made", "rejected", "withdrawn"]:
                     existing_notification = Notifications.objects.filter(
                         user=user,
                         placement=placement,
                         company=placement.company,
                         role=placement.role,
-                        status=placement.status,
                         description=placement.description,
                         shown=True
                     ).first()
 
                     if not existing_notification:
+                        print(f"Creating placement notification for {placement.company} - {placement.role}")
                         Notifications.objects.create(
                             user=user,
                             placement=placement,
@@ -224,6 +228,34 @@ class NotificationListCreate(generics.ListCreateAPIView):
                             shown=False,
                             read=False
                         )
+
+    def create_todo_notifications(self, user, todos, notification_time):
+        for todo in todos:
+            if todo.next_stage_deadline:
+                deadline_days = (todo.next_stage_deadline - date.today()).days
+                if 0 < deadline_days <= notification_time:
+                    existing_notification = Notifications.objects.filter(
+                        user=user,
+                        todo=todo,
+                        company=todo.company,
+                        role=todo.role,
+                        description=todo.description,
+                        shown=True
+                    ).first()
+
+                    if not existing_notification:
+                        print(f"Creating todo notification for {todo.company} - {todo.role}")
+                        Notifications.objects.create(
+                            user=user,
+                            todo=todo,
+                            company=todo.company,
+                            role=todo.role,
+                            description=todo.description,
+                            days=deadline_days,
+                            shown=False,
+                            read=False
+                        )
+
 
     def get_queryset(self):
         user = self.request.user

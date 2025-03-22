@@ -24,7 +24,7 @@ class CustomUser(AbstractUser):
         return self.email
     
 class UserPreferences(models.Model):
-    notification_enabled = models.BooleanField(default=False)
+    notification_enabled = models.BooleanField(default=True)
     notification_time = models.IntegerField(default=3)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 
@@ -59,22 +59,8 @@ class Placement(models.Model):
 
     def __str__(self):
         return f"{self.role} at {self.company}"
+    
 
-
-class Notifications(models.Model):
-    company = models.CharField(max_length=100)
-    role = models.CharField(max_length=100)
-    days = models.IntegerField()
-    status = models.CharField(max_length=22, choices=STATUS_CHOICES)
-    description = models.TextField(null=True, blank=True)
-    shown = models.BooleanField(default=False)
-    read = models.BooleanField(default=False)
-    created = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    placement= models.ForeignKey(Placement, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"{self.status} for {self.company} in {self.days}"
     
 class ToDo(models.Model):
     company = models.CharField(max_length=100)
@@ -89,3 +75,20 @@ class ToDo(models.Model):
 
     def __str__(self):
         return f"{self.role} at {self.company}"
+    
+
+class Notifications(models.Model):
+    company = models.CharField(max_length=100)
+    role = models.CharField(max_length=100)
+    days = models.IntegerField()
+    status = models.CharField(max_length=22, choices=STATUS_CHOICES)
+    description = models.TextField(null=True, blank=True)
+    shown = models.BooleanField(default=False)
+    read = models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    placement = models.ForeignKey(Placement, on_delete=models.CASCADE, null=True, blank=True)
+    todo = models.ForeignKey(ToDo, on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.status} for {self.company} in {self.days}"

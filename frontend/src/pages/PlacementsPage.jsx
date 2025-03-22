@@ -211,7 +211,7 @@ function PlacementsPage() {
         .then((res) => res.data)
         .then((data) => {
           setNotifications(data);
-
+        
           const filteredNotifications = data.filter(
             (notification) => !notification.shown
           );
