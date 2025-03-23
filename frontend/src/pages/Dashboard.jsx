@@ -69,12 +69,14 @@ function Dashboard() {
       .get("/api/todos/")
       .then((res) => res.data)
       .then((data) => {
-        setToDos(data);
-        console.log(todos)
+        const limitedData = data.slice(0, 5);
+        setToDos(limitedData);
+        
+        console.log(limitedData);
       })
-
       .catch((err) => alert(err));
-  };
+};
+
 
   useEffect(() => {
     console.log("Updated todos:", todos);
