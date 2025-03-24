@@ -26,10 +26,18 @@ function ToDoPage() {
   const [contact, setContact] = useState("");
   const [description, setDescription] = useState("");
   const [sortToDo, setSortToDo] = useState({ key: null, ascending: true });
+  const [showFilter, setShowFilter] = useState(false);
+  const [filterRoles, setFilterRoles] = useState([]);
+  const [isFiltered, setIsFiltered] = useState(false);
+  const [filteredToDos, setFilteredToDos] = useState([])
 
   useEffect(() => {
     getToDos();
   }, []);
+
+  useEffect(() => {
+    filteredPlacementsInProg();
+  }, [filterRoles]);
 
   const getToDos = () => {
     api
@@ -126,6 +134,13 @@ function ToDoPage() {
     setSortToDo({ key: header, ascending: isAscending });
   };
 
+  const filteredPlacementsInProg = () => {
+    const pip = toDos.filter((todo) =>
+        filterRoles.includes(todo.role)
+    );
+    setFilteredToDos(pip);
+  };
+
   return (
     <div>
       <h1 id="todo-title">To Do</h1>
@@ -140,6 +155,13 @@ function ToDoPage() {
         <img src="src/assets/add.svg" />
       </button>
       <div id="to-dos-container">
+        <button
+          id="filter-button-todo"
+          className="no-select"
+          onClick={() => setShowFilter(true)}
+        >
+          <img src="/src/assets/filter.svg"></img>
+        </button>
         <table id="idk">
           <thead id="todo-header-container">
             <tr>
@@ -198,41 +220,76 @@ function ToDoPage() {
             </tr>
           </thead>
         </table>
-        {toDos.map((todo) => (
-          <ToDo
-            todo={todo}
-            key={todo.id}
-            onDelete={deleteToDo}
-            getToDos={getToDos}
-            company={company}
-            setCompany={setCompany}
-            role={role}
-            setRole={setRole}
-            salary={salary}
-            setSalary={setSalary}
-            startingDate={startingDate}
-            setStartingDate={setStartingDate}
-            duration={duration}
-            setDuration={setDuration}
-            deadline={deadline}
-            setDeadline={setDeadline}
-            applicationLink={applicationLink}
-            setApplicationLink={setApplicationLink}
-            dateApplied={dateApplied}
-            setDateApplied={setDateApplied}
-            status={status}
-            setStatus={setStatus}
-            cv={cv}
-            setCv={setCv}
-            coverLetter={coverLetter}
-            setCoverLetter={setCoverLetter}
-            contact={contact}
-            setContact={setContact}
-            description={description}
-            setDescription={setDescription}
-          />
-        ))}
-
+        {!isFiltered &&
+          toDos.map((todo) => (
+            <ToDo
+              todo={todo}
+              key={todo.id}
+              onDelete={deleteToDo}
+              getToDos={getToDos}
+              company={company}
+              setCompany={setCompany}
+              role={role}
+              setRole={setRole}
+              salary={salary}
+              setSalary={setSalary}
+              startingDate={startingDate}
+              setStartingDate={setStartingDate}
+              duration={duration}
+              setDuration={setDuration}
+              deadline={deadline}
+              setDeadline={setDeadline}
+              applicationLink={applicationLink}
+              setApplicationLink={setApplicationLink}
+              dateApplied={dateApplied}
+              setDateApplied={setDateApplied}
+              status={status}
+              setStatus={setStatus}
+              cv={cv}
+              setCv={setCv}
+              coverLetter={coverLetter}
+              setCoverLetter={setCoverLetter}
+              contact={contact}
+              setContact={setContact}
+              description={description}
+              setDescription={setDescription}
+            />
+          ))}
+        {isFiltered &&
+          filteredToDos.map((todo) => (
+            <ToDo
+              todo={todo}
+              key={todo.id}
+              onDelete={deleteToDo}
+              getToDos={getToDos}
+              company={company}
+              setCompany={setCompany}
+              role={role}
+              setRole={setRole}
+              salary={salary}
+              setSalary={setSalary}
+              startingDate={startingDate}
+              setStartingDate={setStartingDate}
+              duration={duration}
+              setDuration={setDuration}
+              deadline={deadline}
+              setDeadline={setDeadline}
+              applicationLink={applicationLink}
+              setApplicationLink={setApplicationLink}
+              dateApplied={dateApplied}
+              setDateApplied={setDateApplied}
+              status={status}
+              setStatus={setStatus}
+              cv={cv}
+              setCv={setCv}
+              coverLetter={coverLetter}
+              setCoverLetter={setCoverLetter}
+              contact={contact}
+              setContact={setContact}
+              description={description}
+              setDescription={setDescription}
+            />
+          ))}
         {showAddModal && (
           <AddModal
             company={company}
@@ -270,6 +327,15 @@ function ToDoPage() {
           ></AddModal>
         )}
       </div>
+      {showFilter && (
+        <FilterModal
+          setShowFilter={setShowFilter}
+          placementsInProgress={toDos}
+          setFilterRoles={setFilterRoles}
+          setIsFiltered={setIsFiltered}
+          filteredPlacementsInProg={filteredToDos}
+        ></FilterModal>
+      )}
     </div>
   );
 }

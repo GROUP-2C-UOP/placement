@@ -24,3 +24,24 @@
     table-layout: fixed;
     padding: 10px;
 }
+
+#filter-button-todo {
+    background-color: blue;
+    border-radius: 40px;
+    border: none;
+    padding: 4px;
+    transition: transform 0.1s ease-in;
+    position: absolute;;
+  }
+  
+  #filter-button-todo:hover {
+    transform: scale(1.2) rotate(90deg);
+  }
+  
+  #filter-button-todo img {
+    width: 20px;
+    height: auto;
+    filter: invert(1);
+    position: relative;
+    margin-bottom: -3px;
+  }
