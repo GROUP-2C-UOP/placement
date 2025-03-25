@@ -3,8 +3,6 @@ import { statusLabels } from "../constants";
 import { useState, useEffect } from "react";
 import ConfirmationModal from "./ConfirmationModal.jsx";
 import api from "../api";
-import { getAdapter } from "axios";
-import ToDo from "./ToDo.jsx";
 
 function PlacementModal({
   placement,
@@ -271,7 +269,9 @@ function PlacementModal({
               <div className="detail">
                 <label>Duration:</label>
                 <br />
-                {placement.duration === "null" ? "" : placement.duration || ""}
+                {placement.duration === "null" || !placement.duration
+                  ? ""
+                  : `${placement.duration} Months`}
               </div>
               <div className="detail">
                 <label>Deadline:</label>

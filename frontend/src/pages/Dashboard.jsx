@@ -37,12 +37,12 @@ function Dashboard() {
       .get("/api/placements/") //get all placements
       .then((res) => res.data) //extract data from response object
       .then((data) => {
-        const today = new Date(); //get todays date
+        const today = new Date().toISOString().split("T")[0]; //date only, no time stamp
 
         const sortedPlacements = data
           .filter((p) => {
             //filter with placement parameter
-            const deadlineDate = new Date(p.next_stage_deadline); //get placement deadline date
+            const deadlineDate = new Date(p.next_stage_deadline).toISOString().split("T")[0]; //get placement deadline date
             return (
               p.status !== "rejected" && //include if status is not rejected
               p.status !== "hired" && //include if...

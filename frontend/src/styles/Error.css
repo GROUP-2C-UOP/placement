@@ -1,0 +1,62 @@
+#message-container {
+    position: fixed;
+    bottom: 50px;
+    left: 30px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-left: 5px solid #ff4d4d; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: auto;
+    max-width: 300px;
+    padding: 12px 16px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: fadeInSlide 0.4s ease-in-out;
+}
+
+@keyframes fadeInSlide {
+    from {
+        opacity: 0;
+        transform: translateY(20px); 
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#message {
+    color: #333;
+    font-size: 14px;
+    font-weight: 500;
+    margin: 0;
+    flex: 1;
+    word-wrap: break-word;
+}
+
+#close-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease-in-out;
+}
+
+#close-button:hover {
+    transform: scale(1.1);
+}
+
+#close-button img {
+    width: 14px;
+    height: auto;
+    opacity: 0.7;
+    transition: opacity 0.2s ease-in-out;
+}
+
+#close-button img:hover {
+    opacity: 1;
+}

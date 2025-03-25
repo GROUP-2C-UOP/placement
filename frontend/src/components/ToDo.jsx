@@ -45,7 +45,7 @@ function ToDo({
     const deadlineDate = new Date(placement.next_stage_deadline);
     const timeDifference = deadlineDate - today;
     let daysRemaining = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-    return `${daysRemaining} Days`;
+    return daysRemaining > 0 ? `${daysRemaining} Days` : "Deadline Passed";
   };
 
   const openModal = (todo) => {
@@ -94,7 +94,7 @@ function ToDo({
         if (res.status === 201) {
           console.log("Placement created successfully");
           setShowModal(false);
-          getToDos(); // Refresh the list
+          getToDos(); 
         } else {
           alert("Error creating placement");
         }

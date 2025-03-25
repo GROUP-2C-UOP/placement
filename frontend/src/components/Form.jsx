@@ -2,6 +2,7 @@ import { useState } from "react";
 import api from "../api";
 import { useNavigate } from "react-router-dom";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
+import ErrorMessage from "./Error";
 import "../styles/Form.css";
 
 function Form({ route, method }) {
@@ -10,6 +11,7 @@ function Form({ route, method }) {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [showError, setShowError] = useState(false);
   const navigate = useNavigate();
 
   const typename = method === "login" ? "Login" : "Register";
@@ -38,10 +40,7 @@ function Form({ route, method }) {
         navigate("/login");
       }
     } catch (error) {
-      console.error(error.response);
-      alert(error);
-    } finally {
-      setLoading(false);
+      setShowError(true);
     }
   };
 
@@ -50,7 +49,9 @@ function Form({ route, method }) {
       <div id="login-container">
         <div id="title">
           <h2 id="welcomer">Welcome To</h2>
-          <h1 id="namer"><img src="../src/assets/react.svg"></img>Career Compass</h1>
+          <h1 id="namer">
+            <img src="../src/assets/react.svg"></img>Career Compass
+          </h1>
         </div>
         <form onSubmit={handleSubmit} className="form-container">
           <div id="credentials-container">
@@ -94,11 +95,17 @@ function Form({ route, method }) {
                 checked={rememberMe}
                 onChange={() => setRememberMe(!rememberMe)}
               />{" "}
-              <label id="remember-label" htmlFor="chkbx">Remember Me</label>
+              <label id="remember-label" htmlFor="chkbx">
+                Remember Me
+              </label>
             </div>
           )}
           <div id="but-cont">
-            <button id={typename === "Login" ? "log-but" : "reg-but"} className="form-button" type="submit">
+            <button
+              id={typename === "Login" ? "log-but" : "reg-but"}
+              className="form-button"
+              type="submit"
+            >
               {typename === "Login" ? "SIGN IN" : "REGISTER"}
             </button>
           </div>
@@ -120,9 +127,13 @@ function Form({ route, method }) {
           )}
         </form>
       </div>
-      <div id="slash">
-          <p>d</p>
-        </div>
+      <div id="slash"></div>
+      {showError && (
+        <ErrorMessage
+          message={"Incorrect Credentials: Try Again"}
+          setShowError={setShowError}
+        ></ErrorMessage>
+      )}
     </div>
   );
 }
