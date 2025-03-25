@@ -42,6 +42,8 @@ function AddModal({
     { label: "Offer Made", value: "offer_made" },
   ];
 
+  const todoModal = type === "todo" ? "todo-mod" : ""
+
   const resetForm = () => {
     setCompany("");
     setRole("");
@@ -118,7 +120,7 @@ function AddModal({
       <div
         className={`add-placement ${fadeOut ? "fade-out" : ""} ${
           fadeOutSave ? "fade-out-save" : ""
-        }`}
+        } ${todoModal}`}
       >
         <h2 id="title">Add Placement</h2>
         <p>(Fields marked with * are required)</p>

@@ -164,6 +164,10 @@ textarea {
   width: 100%;
 }
 
+.todo-mod {
+  width: 45vw !important;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;

@@ -221,6 +221,15 @@ textarea {
   animation: backgroundFadeOut 0.1s ease-out forwards;
  }
 
+ #note-on-modal {
+  margin-top: 20px;
+  margin-bottom: 50px;
+ }
+
+ .todo-mod {
+  height: 75vh !important;
+ }
+
 @keyframes backgroundFadeIn {
   from {
     opacity: 0;

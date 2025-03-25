@@ -48,6 +48,7 @@ function PlacementModal({
     ? "dashboard-modal-screen"
     : "placement-modal-screen";
   const spacingClass = isDashboard ? "dashboard-spacing" : "home-spacing";
+  const todoModal = type === "todo" ? "todo-mod" : "";
 
   const statusDropdown = [
     { label: "Applied", value: "applied" },
@@ -209,7 +210,7 @@ function PlacementModal({
             id="modal-window"
             className={`${fadeOut ? "fade-out" : ""} ${
               isDashboard ? "dashboard-modal-window" : ""
-            }`}
+            } ${todoModal}`}
           >
             <button className="close-button" onClick={handleClose}>
               <img src="src/assets/close.svg" />
@@ -460,7 +461,7 @@ function PlacementModal({
       )}
       {editing && (
         <div className={`${modalType} ${fadeOut ? "fade-out-update" : ""}`}>
-          <div id="modal-window" className="editing-window">
+          <div id="modal-window" className={`${todoModal} editing-window`}>
             <button
               className="close-button"
               onClick={() => {
@@ -712,7 +713,7 @@ function PlacementModal({
             }
           }}
           method={editing ? "edit" : "delete"}
-          type={"Placement"}
+          type={type === "placement" ? "Placement" : "Application"}
           onClose={() => {
             setConfirmation(false);
           }}
