@@ -35,10 +35,15 @@ function ToDo({
   setContact,
   description,
   setDescription,
+  isDashboard,
+  type,
 }) {
   const [showModal, setShowModal] = useState(false);
   const [selectedTodo, setSelectedTodo] = useState(null);
   const [showCheckOff, setShowCheckOff] = useState(false);
+
+  const spacing = type === "dashboard" ? "tdds" : "to-do-home-spacing"
+  const checkOffContSpacing = type === "dashboard" ? "dashboard-checkoff-cont" : "checkoff-container"
 
   const calculateRemaining = (placement) => {
     const today = new Date();
@@ -61,7 +66,7 @@ function ToDo({
     const formData = new FormData();
     const today = new Date();
     const formattedToday = today.toISOString().split("T")[0];
-    console.log(selectedTodo.starting_date)
+    console.log(selectedTodo.starting_date);
     const fields = {
       company: selectedTodo.company,
       role: selectedTodo.role,
@@ -94,7 +99,7 @@ function ToDo({
         if (res.status === 201) {
           console.log("Placement created successfully");
           setShowModal(false);
-          getToDos(); 
+          getToDos();
         } else {
           alert("Error creating placement");
         }
@@ -106,7 +111,7 @@ function ToDo({
     <div id="td-cont">
       <div className="gen-cont">
         <div
-          className="checkoff-container"
+          className={checkOffContSpacing}
           onClick={() => {
             setSelectedTodo(todo);
             setShowCheckOff(true);
@@ -114,14 +119,16 @@ function ToDo({
         ></div>
         <div className="todo-container-home" onClick={() => openModal(todo)}>
           <table>
-            <thead className="to-do-home-spacing">
+            <thead className={spacing}>
               <tr>
                 <th>{todo.company}</th>
                 <th>{todo.role}</th>
                 <th>{calculateRemaining(todo)}</th>
-                <th className="task-description">
-                  {todo.description === "null" ? "" : todo.description}
-                </th>
+                {type !== "dashboard" && (
+                  <th className="task-description">
+                    {todo.description === "null" ? "" : todo.description}
+                  </th>
+                )}
               </tr>
             </thead>
           </table>
@@ -164,7 +171,7 @@ function ToDo({
           toClose={closeModal}
           getPlacements={getToDos}
           setShowModal={setShowModal}
-          isDashboard={false}
+          isDashboard={isDashboard}
           type="todo"
           onDelete={() => onDelete(selectedTodo.id)}
         />
@@ -174,7 +181,7 @@ function ToDo({
         <ConfirmationModal
           func={() => {
             createPlacement();
-            onDelete(selectedTodo.id)
+            onDelete(selectedTodo.id);
           }}
           method={"complete"}
           type={"Application"}

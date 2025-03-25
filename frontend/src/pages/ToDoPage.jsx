@@ -253,6 +253,7 @@ function ToDoPage() {
               setContact={setContact}
               description={description}
               setDescription={setDescription}
+              isDashboard={false}
             />
           ))}
         {isFiltered &&
@@ -288,6 +289,7 @@ function ToDoPage() {
               setContact={setContact}
               description={description}
               setDescription={setDescription}
+              isDashboard={false}
             />
           ))}
         {showAddModal && (

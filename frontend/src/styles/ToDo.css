@@ -17,6 +17,14 @@ body {
   margin-bottom: 20px;
 }
 
+.dashboard-checkoff-cont {
+  border-radius: 100px;
+  background-color: white;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 20px;
+}
+
 .todo-container-home {
   width: 80%;
   padding: 10px;
@@ -47,6 +55,23 @@ body {
 }
 
 
+.dashboard-checkoff-cont:hover {
+  background-color: rgb(22, 255, 22);
+  transition: background-color 0.3s ease-in-out;
+}
+
+.checkoff-container:hover + .dashboard-checkoff-cont,
+.dashboard-checkoff-cont:hover + .checkoff-container {
+  background-color: rgb(22, 255, 22);
+  transition: background-color 0.3s ease-in-out;
+}
+
+.todo-container-home:hover + .dashboard-checkoff-cont,
+.dashboard-checkoff-cont:hover + .todo-container-home {
+  background-color: rgb(142, 142, 207);
+  transition: background-color 0.3s ease-in-out;
+}
+
 table {
   width: 100%;
 }
@@ -70,4 +95,9 @@ thead {
 .to-do-home-spacing {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+}
+
+.tdds {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
 }

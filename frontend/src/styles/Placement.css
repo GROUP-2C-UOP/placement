@@ -15,9 +15,9 @@
   width: 95%;
   margin: 10px auto;
   padding: 15px;
-  background-color: rgb(9, 9, 160);
-  border-radius: 50px;
-  color: white;
+  background-color: white;
+  border-radius: 5px;
+  color: blue;
   font-size: 1.1rem;
 }
 
@@ -95,5 +95,5 @@ thead {
   white-space: nowrap;   
   overflow: hidden;   
   text-overflow: ellipsis;  
-   
 }
+

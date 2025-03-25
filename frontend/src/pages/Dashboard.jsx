@@ -13,10 +13,9 @@ function Dashboard() {
     getToDos();
   }, []);
 
-
   const [name, setName] = useState("");
   const [placements, setPlacements] = useState([]);
-  const [todos, setToDos] = useState([])
+  const [todos, setToDos] = useState([]);
   const isDashboard = true;
 
   const getUser = () => {
@@ -42,7 +41,9 @@ function Dashboard() {
         const sortedPlacements = data
           .filter((p) => {
             //filter with placement parameter
-            const deadlineDate = new Date(p.next_stage_deadline).toISOString().split("T")[0]; //get placement deadline date
+            const deadlineDate = new Date(p.next_stage_deadline)
+              .toISOString()
+              .split("T")[0]; //get placement deadline date
             return (
               p.status !== "rejected" && //include if status is not rejected
               p.status !== "hired" && //include if...
@@ -57,7 +58,7 @@ function Dashboard() {
             ) =>
               new Date(a.next_stage_deadline) - new Date(b.next_stage_deadline) // used to sort, if the result is negative a is put before b and if positive vice versa
           )
-          .slice(0, 5); //take the top 5 ones
+          .slice(0, 4); //take the top 5 ones
         console.log(sortedPlacements);
         setPlacements(sortedPlacements);
       })
@@ -69,28 +70,49 @@ function Dashboard() {
       .get("/api/todos/")
       .then((res) => res.data)
       .then((data) => {
-        const limitedData = data.slice(0, 5);
+        const today = new Date().toISOString().split("T")[0];
+
+        const filteredData = data.filter((t) => {
+          const deadlineDate = new Date(t.next_stage_deadline)
+            .toISOString()
+            .split("T")[0];
+          return deadlineDate >= today;
+        }).sort((a,b) => new Date(a.next_stage_deadline) - new Date(b.next_stage_deadline))
+
+        const limitedData = filteredData.slice(0, 4);
         setToDos(limitedData);
-        
+
         console.log(limitedData);
       })
       .catch((err) => alert(err));
-};
+  };
 
+  const deleteToDo = (id) => {
+    api
+      .delete(`/api/todos/delete/${id}/`)
+      .then((res) => {
+        if (res.status === 204) {
+          console.log("ToDo deleted successfully");
+        } else alert("Error deleting Todo");
+        getToDos();
+      })
+      .catch((err) => alert(err));
+  };
 
   useEffect(() => {
     console.log("Updated todos:", todos);
-  }, [todos]); // Runs whenever `todos` is updated
+  }, [todos]);
 
   return (
     <div id="container">
       <header id="welcome">Welcome {name}</header>
       <header id="dashboard">Your Dashboard</header>
       <div id="main-container">
-        <header id="deadlines-header">Upcoming deadlines</header>
-        <header id="applications-header">Applications To Do</header>
+       
+        
         <div id="div-container">
           <div id="placement-container">
+          <header id="deadlines-header">Upcoming deadlines</header>
             <div id="top">
               <header>Company</header>
               <header>Type</header>
@@ -136,11 +158,18 @@ function Dashboard() {
               </div>
             </div>
           </div>
+          
           <div id="todo-container">
-          <div id="placements">
+          <header id="applications-header">Applications To Do</header>
+            <div id="top-todo">
+              <header>Company</header>
+              <header>Role</header>
+              <header>Days</header>
+            </div>
+            <div id="todos">
               {todos.map((todo) => (
                 <ToDo
-                  isDashboard={isDashboard}
+                  isDashboard={true}
                   todo={todo}
                   statusLabels={statusLabels}
                   key={todo.id}
@@ -152,18 +181,21 @@ function Dashboard() {
                   deadline={todo.deadline}
                   applicationLink={todo.applicationLink}
                   description={todo.description}
+                  onDelete={deleteToDo}
+                  getToDos={getToDos}
+                  type="dashboard"
                 />
               ))}
               <div id="bottom">
                 {todos.length === 0 && (
-                  <Link to="/placements">
+                  <Link to="/todo">
                     <button id="add" className="no-select">
                       <img src="src/assets/add.svg" />
                     </button>
                   </Link>
                 )}
-                {placements.length > 0 && (
-                  <Link to="/placements">
+                {todos.length > 0 && (
+                  <Link to="/todo">
                     <button id="see">
                       <img src="src/assets/ellipses.svg" />
                     </button>

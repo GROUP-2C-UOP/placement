@@ -42,7 +42,7 @@
 }
 
 .dashboard-modal-window {
-  height: 70vh !important;
+  height: 79vh !important;
 }
 
 .close-button {
@@ -227,7 +227,8 @@ textarea {
  }
 
  .todo-mod {
-  height: 75vh !important;
+  height: fit-content !important;
+  padding-bottom: 60px !important;
  }
 
 @keyframes backgroundFadeIn {
