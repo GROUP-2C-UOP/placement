@@ -26,6 +26,14 @@ Before you begin, you need to have:
 3. Start the frontend server ----> `npm run dev`
 4. Control + Click the frontend link to access the app.
 
+*IMPORTANT*
+Create .env-backend file within the main backend folder.
+Add the lines:
+EMAIL_HOST_USER="your-email"
+EMAIL_HOST_PASSWORD="app-password"
+
+DO NOT USE YOUR REAL GMAIL PASSWORD!!!
+HAVE 2FA ENABLED WITHIN GMAIL, SEARCH UP APP PASSWORDS IN SECURITY AND CREATE ONE, USE THE 16 CHARACTER STRING AS THE PASSWORD!!!!
 
 # The Application's Structure 
 
