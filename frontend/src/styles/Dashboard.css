@@ -38,7 +38,7 @@
 
 #placement-container {
   height: 100%;
-  width: 60%;
+  width: 61%;
   border-radius: 20px;
   position: relative;
   background-color: navy;
@@ -81,7 +81,7 @@
 
 #todo-container {
   height: 100%;
-  width: 39%;
+  width: 39.5%;
   position: absolute;
   right: -1%;
   border-radius: 20px;

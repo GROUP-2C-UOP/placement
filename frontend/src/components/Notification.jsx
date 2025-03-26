@@ -34,7 +34,7 @@ function Notification({ notification, getNotifications }) {
     <div id="single-noti-cont">
       <div id="noti-text-cont">
         <div>
-          {statusLabels[notification.status]} for {notification.company} due{" "}
+          {statusLabels[notification.status] ? statusLabels[notification.status] : "Application"} for {notification.company} due{" "}
           {notification.days === 0
             ? "today"
             : `in ${notification.days} day${

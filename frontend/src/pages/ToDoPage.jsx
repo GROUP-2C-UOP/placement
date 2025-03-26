@@ -29,11 +29,29 @@ function ToDoPage() {
   const [showFilter, setShowFilter] = useState(false);
   const [filterRoles, setFilterRoles] = useState([]);
   const [isFiltered, setIsFiltered] = useState(false);
-  const [filteredToDos, setFilteredToDos] = useState([])
+  const [filteredToDos, setFilteredToDos] = useState([]);
+  const [notificationsOn, setNotificationsOn] = useState("");
+  const [showNoti, setShowNoti] = useState(false);
+  const [showSingleNoti, setShowSingleNoti] = useState(false);
+  const [singleNotification, setSingleNotification] = useState(null);
+  const [notifications, setNotifications] = useState([]);
+  const [toShowNotifications, setToShowNotifications] = useState([]);
 
   useEffect(() => {
     getToDos();
   }, []);
+
+  useEffect(() => {
+    getNotificationStatus();
+  }, []);
+
+  useEffect(() => {
+    getNotifications(); //called twice due to strictmode -- makes two notifications. strict mode needs to be disabled in main.jsx
+  }, [notificationsOn]);
+
+  useEffect(() => {
+    getNotifications();
+  }, [toDos]);
 
   useEffect(() => {
     filteredPlacementsInProg();
@@ -135,10 +153,50 @@ function ToDoPage() {
   };
 
   const filteredPlacementsInProg = () => {
-    const pip = toDos.filter((todo) =>
-        filterRoles.includes(todo.role)
-    );
+    const pip = toDos.filter((todo) => filterRoles.includes(todo.role));
     setFilteredToDos(pip);
+  };
+
+  const getNotificationStatus = () => {
+    api
+      .get(`/api/account/notification/status/`)
+      .then((res) => res.data)
+      .then((data) => {
+        const status = data.notification_enabled;
+        setNotificationsOn(status);
+        console.log(data);
+      })
+      .catch((err) => alert(err));
+  };
+
+  const getNotifications = () => {
+    if (notificationsOn) {
+      api
+        .get("/api/notifications/")
+        .then((res) => res.data)
+        .then((data) => {
+          setNotifications(data);
+
+          const filteredNotifications = data.filter(
+            (notification) => !notification.shown
+          );
+          setToShowNotifications(filteredNotifications);
+
+          console.log(data);
+          console.log(`to show notifications`, filteredNotifications);
+
+          if (filteredNotifications.length > 1) {
+            setSingleNotification(null);
+            setShowSingleNoti(false);
+            setShowNoti(true);
+          } else if (filteredNotifications.length === 1) {
+            setSingleNotification(filteredNotifications[0]);
+            setShowSingleNoti(true);
+            setShowNoti(false);
+          }
+        })
+        .catch((err) => alert(err));
+    }
   };
 
   return (
@@ -337,6 +395,23 @@ function ToDoPage() {
           setIsFiltered={setIsFiltered}
           filteredPlacementsInProg={filteredToDos}
         ></FilterModal>
+      )}
+      {showSingleNoti && (
+        <NotificationsPopUp
+          setShowSingleNoti={setShowSingleNoti}
+          singleNotification={singleNotification}
+          company={singleNotification.company}
+          role={singleNotification.role}
+          days={singleNotification.days}
+          status={singleNotification.status}
+        ></NotificationsPopUp>
+      )}
+      {showNoti && (
+        <NotificationsPopUp
+          setShowNoti={setShowNoti}
+          toShowNotifications={toShowNotifications}
+          type={"multi"}
+        ></NotificationsPopUp>
       )}
     </div>
   );

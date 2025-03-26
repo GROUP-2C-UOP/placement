@@ -191,6 +191,8 @@ class NotificationListCreate(generics.ListCreateAPIView):
     def create_notifications(self, user):
         try:
             user_preferences = UserPreferences.objects.get(user=user)
+            if not user_preferences.notification_enabled:
+                return
             notification_time = user_preferences.notification_time  
         except UserPreferences.DoesNotExist:
             notification_time = 3
@@ -240,8 +242,12 @@ class NotificationListCreate(generics.ListCreateAPIView):
                         company=todo.company,
                         role=todo.role,
                         description=todo.description,
+                        days=deadline_days,
                         shown=True
                     ).first()
+
+                    print(existing_notification.days if existing_notification else "No existing notification") 
+
 
                     if not existing_notification:
                         print(f"Creating todo notification for {todo.company} - {todo.role}")

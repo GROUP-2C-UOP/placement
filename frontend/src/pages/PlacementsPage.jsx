@@ -213,7 +213,7 @@ function PlacementsPage() {
           setNotifications(data);
         
           const filteredNotifications = data.filter(
-            (notification) => !notification.shown
+            (notification) => !notification.shown && notification.status //notification status so only placement notifications are used
           );
           setToShowNotifications(filteredNotifications);
 
