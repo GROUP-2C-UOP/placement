@@ -49,4 +49,4 @@ coverage/
 *.tar
 *.gz
 
-.env-backend
+backend/.env-backend
