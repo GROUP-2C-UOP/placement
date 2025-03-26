@@ -191,6 +191,8 @@ class NotificationListCreate(generics.ListCreateAPIView):
     serializer_class = NotificationSerializers
     permission_classes = [IsAuthenticated]
 
+    notifications = {}
+
     def create_notifications(self, user):
         try:
             user_preferences = UserPreferences.objects.get(user=user)
@@ -205,6 +207,9 @@ class NotificationListCreate(generics.ListCreateAPIView):
 
         todos = ToDo.objects.filter(user=user)
         self.create_todo_notifications(user, todos, notification_time)
+
+        if self.notifications:
+            self.send_email_notification(user)
 
     def create_placement_notifications(self, user, placements, notification_time):
         for placement in placements:
@@ -234,7 +239,16 @@ class NotificationListCreate(generics.ListCreateAPIView):
                             read=False
                         )
 
-                        self.send_email_notification(user, placement, deadline_days)
+                        if user not in self.notifications:
+                            self.notifications[user] = []
+                        self.notifications[user].append({
+                            'type': 'placement',
+                            'company': placement.company,
+                            'role': placement.role,
+                            'deadline_days': deadline_days,
+                            'description': placement.description
+                        })
+                       
 
     def create_todo_notifications(self, user, todos, notification_time):
         for todo in todos:
@@ -267,21 +281,36 @@ class NotificationListCreate(generics.ListCreateAPIView):
                             read=False
                         )
 
-                        self.send_email_notification(user, todo, deadline_days)
+                        if user not in self.notifications:
+                            self.notifications[user] = []
+                        self.notifications[user].append({
+                            'type': 'Application',
+                            'company': todo.company,
+                            'role': todo.role,
+                            'deadline_days': deadline_days,
+                            'description': todo.description
+                        })
 
-    def send_email_notification(self, user, task, deadline_days):
-        subject = f"Career Compass - Deadline"
-        message = f"Reminder: The deadline for {task.company} is coming up in {deadline_days} days."
+    def send_email_notification(self, user):
+        subject = "Career Compass - Upcoming Deadlines"
+        message = f"Hello {user.first_name},\n\nYou have the following upcoming deadlines:\n"
+
+        for task in self.notifications.get(user, []):
+            message += f"- {task['type'].capitalize()} for {task['company']} ({task['role']}) in {task['deadline_days']} days.\n"
+
+        message += "\nBest regards,\nCareer Compass Team"
+
         recipient_email = user.email
 
-        # Send email using Django's send_mail function
         send_mail(
             subject,
             message,
-            settings.DEFAULT_FROM_EMAIL,  # Ensure that you have a default sender email in your settings.py
+            settings.DEFAULT_FROM_EMAIL,  
             [recipient_email],
             fail_silently=False,
         )
+
+        self.notifications[user] = []
 
 
 
