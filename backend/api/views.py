@@ -6,6 +6,9 @@ from .serializers import UserSerializers, PlacementSerializers, ToDoSerializers,
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Placement, ToDo, CustomUser, Notifications, UserPreferences
 from datetime import date
+from django.core.mail import send_mail
+from django.conf import settings
+
 
 class PlacementListCreate(generics.ListCreateAPIView):
     serializer_class = PlacementSerializers
@@ -231,6 +234,8 @@ class NotificationListCreate(generics.ListCreateAPIView):
                             read=False
                         )
 
+                        self.send_email_notification(user, placement, deadline_days)
+
     def create_todo_notifications(self, user, todos, notification_time):
         for todo in todos:
             if todo.next_stage_deadline:
@@ -261,6 +266,23 @@ class NotificationListCreate(generics.ListCreateAPIView):
                             shown=False,
                             read=False
                         )
+
+                        self.send_email_notification(user, todo, deadline_days)
+
+    def send_email_notification(self, user, task, deadline_days):
+        subject = f"Career Compass - Deadline"
+        message = f"Reminder: The deadline for {task.company} is coming up in {deadline_days} days."
+        recipient_email = user.email
+
+        # Send email using Django's send_mail function
+        send_mail(
+            subject,
+            message,
+            settings.DEFAULT_FROM_EMAIL,  # Ensure that you have a default sender email in your settings.py
+            [recipient_email],
+            fail_silently=False,
+        )
+
 
 
     def get_queryset(self):
