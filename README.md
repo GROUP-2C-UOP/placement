@@ -6,6 +6,7 @@
 Before you begin, you need to have:
 - [Node.js](https://nodejs.org/en/)
 - [Python](https://www.python.org/downloads/)
+- [Redis](https://www.youtube.com/watch?v=DLKzd3bvgt8) **Follow tutorial**
 
 
 ## Project Setup 
@@ -19,21 +20,25 @@ Before you begin, you need to have:
 4. Install requirements.txt ----> `pip install -r requirements.txt`
 5. Set up the database ----> `python manage.py makemigrations` & `python manage.py migrate`
 6. Start the backend server ----> `python manage.py runserver`
-
+7. Create .env-backend file within the main backend folder ----> Where requirements.txt is
+8. Add the line ----> `EMAIL_HOST_USER="your-email"` With your email
+9. Add the line ----> `EMAIL_HOST_PASSWORD="app-password"` DO NOT USE YOUR REAL GMAIL PASSWORD: Enable Gmail 2FA, within settings search up App Passwords. Create a new app and use the generated 16 character string as the password.
+  
 ### Frontend
 1. Split terminal and start virtual environment ----> `.\venv\Scripts\activate`
 2. Change to the frontend and install dependencies ----> `cd ../frontend` & `npm install`
 3. Start the frontend server ----> `npm run dev`
 4. Control + Click the frontend link to access the app.
 
-*IMPORTANT*
-Create .env-backend file within the main backend folder.
-Add the lines:
-EMAIL_HOST_USER="your-email"
-EMAIL_HOST_PASSWORD="app-password"
+### Redis
+1. Open the Redis folder you installed from the Youtube Tutorial and open redis-server.exe
+2. If your port !== 6379 change it to what is said on the cmd terminal
+3. Split terminal again and start virtual environment ----> `.\venv\Scripts\activate`
+4. Make sure you are in "\placement\backend" and run the celery worker ----> `celery -A backend worker --loglevel=info --pool=solo`
+5. Split terminal again (you should have 4 terminals now) and start virtual environment ----> `.\venv\Scripts\activate`
+6. Make sure you are in "\placement\backend" and run the celery beat ----> `celery -A backend beat --loglevel=info`
 
-DO NOT USE YOUR REAL GMAIL PASSWORD!!!
-HAVE 2FA ENABLED WITHIN GMAIL, SEARCH UP APP PASSWORDS IN SECURITY AND CREATE ONE, USE THE 16 CHARACTER STRING AS THE PASSWORD!!!!
+
 
 # The Application's Structure 
 
@@ -77,9 +82,6 @@ Wrapper for our app.
 
 
 
-
-
-
 # Flow of App
 To help understand how the app works
 > **Note:** In this context the user has already registered.
@@ -107,5 +109,5 @@ Please make a branch named after the feature you're working on and after it's be
 As you run into new issues add these into our backlog within Jira to then tackle in the next week.
 
 # Contributors
-1. Basit
-2. Steven
+1. Basit (Everything except statistics)
+2. Andrew (Statistics)
