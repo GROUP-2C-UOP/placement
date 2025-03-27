@@ -50,3 +50,5 @@ coverage/
 *.gz
 
 backend/.env-backend
+
+backend/celerybeat-schedule

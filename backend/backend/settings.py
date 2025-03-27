@@ -3,6 +3,7 @@ from datetime import timedelta
 from dotenv import load_dotenv 
 import os
 import environ
+from celery.schedules import crontab
 
 load_dotenv()
 
@@ -152,6 +153,17 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = '587'
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = env('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER') ##ADD YOUR OWN .env-backend -- CHECK READ ME FOR HELP
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD') ##ADD YOUR OWN .env-backend -- CHECK READ ME FOR HELP
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+CELERY_BROKER_URL = "redis://localhost:6379/0" ## CHANGE IF YOUR PORT IS DIFFERENT (CHECK THE REDIS-SERVER.EXE)
+CELERY_RESULT_BACKEND = "redis://localhost:6379/0" ## CHANGE IF YOUR PORT IS DIFFERENT (CHECK THE REDIS-SERVER.EXE)
+CELERY_BEAT_SCHEDULE = { ## RUNS NOTIFICATION TASK EVERY DAY AT 8AM
+    'send_scheduled_notifications' : {
+        'task' : 'api.tasks.send_scheduled_notifications' ,
+        'schedule': crontab(minute=0, hour=8)
+    }
+}
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_TASK_SERIALIZER = "json"
