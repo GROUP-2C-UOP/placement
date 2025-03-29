@@ -25,6 +25,7 @@ class CustomUser(AbstractUser):
     
 class UserPreferences(models.Model):
     notification_enabled = models.BooleanField(default=True)
+    email_notification_enabled = models.BooleanField(default=True)
     notification_time = models.IntegerField(default=3)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 
@@ -86,6 +87,7 @@ class Notifications(models.Model):
     shown = models.BooleanField(default=False)
     read = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
+    emailed = models.BooleanField(default=False)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     placement = models.ForeignKey(Placement, on_delete=models.CASCADE, null=True, blank=True)
     todo = models.ForeignKey(ToDo, on_delete=models.CASCADE, null=True, blank=True)

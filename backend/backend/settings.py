@@ -162,7 +162,7 @@ CELERY_RESULT_BACKEND = "redis://localhost:6379/0" ## CHANGE IF YOUR PORT IS DIF
 CELERY_BEAT_SCHEDULE = { ## RUNS NOTIFICATION TASK EVERY DAY AT 8AM
     'send_scheduled_notifications' : {
         'task' : 'api.tasks.send_scheduled_notifications' ,
-        'schedule': crontab(minute=0, hour=8)
+        'schedule': timedelta(seconds=5)
     }
 }
 CELERY_ACCEPT_CONTENT = ["json"]

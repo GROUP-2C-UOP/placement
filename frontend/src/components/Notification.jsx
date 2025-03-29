@@ -5,7 +5,7 @@ import api from "../api";
 function Notification({ notification, getNotifications }) {
   const deleteNotification = (notification) => {
     api
-      .patch(`/api/notifications/update/${notification.id}/`, { read: true })
+      .patch(`/api/notifications/update/${notification.id}/`, { read: true, emailed: true })
       .then((response) => {
         getNotifications();
         console.log("Single Notification updated:", response.data);

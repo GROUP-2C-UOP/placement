@@ -142,6 +142,19 @@ class GetNotificationStatus(generics.RetrieveAPIView):
                 fields = ["notification_enabled"]
         return StatusSerializer
     
+class GetEmailNotificationStatus(generics.RetrieveAPIView):
+    serializer_class = UserPreferencesSerializers
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return UserPreferences.objects.get(user=self.request.user)
+    
+    def get_serializer_class(self):
+        class StatusSerializer(UserPreferencesSerializers):
+            class Meta(UserPreferencesSerializers.Meta):
+                fields = ["email_notification_enabled"]
+        return StatusSerializer
+    
 class GetNotificationTime(generics.RetrieveAPIView):
     serializer_class = UserPreferencesSerializers
     permission_classes = [IsAuthenticated]
@@ -262,7 +275,8 @@ class NotificationListCreate(generics.ListCreateAPIView):
                             description=todo.description,
                             days=deadline_days,
                             shown=False,
-                            read=False
+                            read=False,
+                            emailed=False
                         )
 
 

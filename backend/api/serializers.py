@@ -76,7 +76,7 @@ class NotificationSerializers(serializers.ModelSerializer):
 class UserPreferencesSerializers(serializers.ModelSerializer):
     class Meta:
         model = UserPreferences
-        fields = ["notification_enabled", "notification_time"]
+        fields = ["notification_enabled", "email_notification_enabled", "notification_time"]
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):

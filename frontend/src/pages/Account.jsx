@@ -15,6 +15,7 @@ const Account = () => {
   const [newLastName, setNewLastName] = useState("");
   const [newEmail, setNewEmail] = useState("");
   const [notificationStatus, setNotificationStatus] = useState(false);
+  const [emailNotificationStatus, setEmailNotificationStatus] = useState(false);
   const [notificationTime, setNotificationTime] = useState(3);
   const [showEmailModal, setShowEmailModal] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
@@ -22,6 +23,7 @@ const Account = () => {
   useEffect(() => {
     getProfileDetails();
     getNotificationStatus();
+    getEmailNotificationStatus();
     getNotificationTime();
   }, []);
 
@@ -95,6 +97,19 @@ const Account = () => {
       .catch((err) => alert(err));
   };
 
+  const getEmailNotificationStatus = () => {
+    api
+      .get(`/api/account/notification/emailstatus/`)
+      .then((res) => res.data)
+      .then((data) => {
+        console.log(data)
+        const status = data.email_notification_enabled;
+        setEmailNotificationStatus(status);
+        console.log(status);
+      })
+      .catch((err) => alert(err));
+  };
+
   const getNotificationTime = () => {
     api
       .get(`/api/account/notification/time/`)
@@ -149,6 +164,22 @@ const Account = () => {
         newStatus,
         `/api/account/notification/update/`,
         getNotificationStatus
+      );
+      console.log("Updated notification status:", newStatus);
+      return newStatus; // return new status so that it is also set as the notification status in reacts use state
+    });
+  };
+
+  const changeEmailNotificationStatus = () => {
+    setEmailNotificationStatus((prevStatus) => {
+      //pass notificationstatus state as prevstatus as it is about to be changed (done automatically by react)
+      const newStatus = !prevStatus; // newStatus is inverse of previous
+      updateField(
+        //call updatefield function to set notification enabled with new status as new value
+        "email_notification_enabled",
+        newStatus,
+        `/api/account/notification/update/`,
+        getEmailNotificationStatus
       );
       console.log("Updated notification status:", newStatus);
       return newStatus; // return new status so that it is also set as the notification status in reacts use state
@@ -285,15 +316,27 @@ const Account = () => {
       <hr />
       <div id="notification-details-container">
         <h1 className="profile-subheader">Notifications</h1>
-        <div id="two-grid">
+        <div id="three-grid">
           <div id="turn-notis">
             <p id="notification" className="profile-part">
-              Get Notified
+              In-App Notifications
             </p>
 
-            <div className="switch" onClick={changeNotificationStatus}>
+            <div className="switch no-select" onClick={changeNotificationStatus}>
               <div className={`slider ${notificationStatus ? "on" : "off"}`}>
                 {notificationStatus ? "ON" : "OFF"}
+              </div>
+            </div>
+          </div>
+
+          <div id="turn-notis">
+            <p id="notification" className="profile-part">
+              Email Notifications
+            </p>
+
+            <div className="switch no-select" onClick={changeEmailNotificationStatus}>
+              <div className={`slider ${emailNotificationStatus ? "on" : "off"}`}>
+                {emailNotificationStatus ? "ON" : "OFF"}
               </div>
             </div>
           </div>

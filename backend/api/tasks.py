@@ -2,33 +2,43 @@ from celery import shared_task
 from django.core.mail import send_mail
 from django.conf import settings
 from datetime import date
-from .models import Notifications, CustomUser
+from .models import Notifications, CustomUser, UserPreferences
 
 @shared_task
 def send_scheduled_notifications():
     users = CustomUser.objects.all()
     for user in users:
-        notifications = Notifications.objects.filter(user=user, shown=False)
+        user_preferences = UserPreferences.objects.get(user=user)
+        if not user_preferences.email_notification_enabled:
+            continue
 
-        if notifications.exists():
-            subject = "Career Compass - Upcoming Deadlines"
-            message = f"Hello {user.first_name},\n\nYou have the following upcoming deadlines:\n"
+        notifications = Notifications.objects.filter(
+            user=user, 
+            emailed=False,
+            days__gte=0, #days greater than or equal to
+            days__lte=user_preferences.notification_time #days less than or equal to
+        )
 
-            for notif in notifications:
-                message += f"- {notif.company} ({notif.role}) in {notif.days} days.\n"
+        if not notifications.exists():  
+            continue
 
-            message += "\nBest regards,\nCareer Compass Team"
+        subject = "Career Compass - Upcoming Deadlines"
+        message = f"Hello {user.first_name},\n\nYou have the following upcoming deadlines:\n"
 
-            send_mail(
-                subject,
-                message,
-                settings.DEFAULT_FROM_EMAIL,
-                [user.email],
-                fail_silently=False,
-            )
+        for notif in notifications:
+            message += f"- {notif.company} ({notif.role}) in {notif.days} days.\n"
 
-            # Mark notifications as shown
-            notifications.update(shown=True)
+        message += "\nBest regards,\nCareer Compass Team"
 
-    return "Email notifications sent."
+        send_mail(
+            subject,
+            message,
+            settings.DEFAULT_FROM_EMAIL,
+            [user.email],
+            fail_silently=False,
+        )
+
+        notifications.update(emailed=True)
+
+    return "Email notifications sent successfully."
 
