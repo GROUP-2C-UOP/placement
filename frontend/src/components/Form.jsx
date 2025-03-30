@@ -12,21 +12,34 @@ function Form({ route, method }) {
   const [loading, setLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [showError, setShowError] = useState(false);
+  const [verificationCode, setVerificationCode] = useState("");
+  const [showVerificationInput, setShowVerificationInput] = useState(false);
+  const [verificationSent, setVerificationSent] = useState(false)
   const navigate = useNavigate();
 
   const typename = method === "login" ? "Login" : "Register";
 
   const handleSubmit = async (e) => {
-    setLoading(true);
     e.preventDefault();
 
     try {
       const payload = { email, password };
       if (method === "register") {
+        if (!verificationSent) {
+          await api.post("/api/user/register/verification/", { email })
+          setVerificationSent(true)
+          return
+        }
+
+        payload.verification_code = verificationCode;
+      }
+
+      if (method === "register") {
         const nameParts = name.split(" ");
         payload.first_name = nameParts[0];
         payload.last_name = nameParts.slice(1).join(" ");
       }
+
       if (method === "login") {
         payload.remember_me = rememberMe;
       }
@@ -44,18 +57,19 @@ function Form({ route, method }) {
     }
   };
 
-  return (
+ return (
     <div id="cont">
       <div id="login-container">
         <div id="title">
           <h2 id="welcomer">Welcome To</h2>
           <h1 id="namer">
-            <img src="../src/assets/react.svg"></img>Career Compass
+            <img src="../src/assets/react.svg" alt="Career Compass" />
+            Career Compass
           </h1>
         </div>
         <form onSubmit={handleSubmit} className="form-container">
           <div id="credentials-container">
-            {method === "register" && (
+            {method === "register" && !verificationSent && (
               <>
                 <label htmlFor="name">Full Name</label>
                 <input
@@ -86,7 +100,20 @@ function Form({ route, method }) {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
+            {method === "register" && verificationSent && (
+              <>
+                <label htmlFor="verificationCode">Verification Code</label>
+                <input
+                  className="form-input"
+                  type="text"
+                  value={verificationCode}
+                  onChange={(e) => setVerificationCode(e.target.value)}
+                  required
+                />
+              </>
+            )}
           </div>
+
           {method === "login" && (
             <div id="remember-me-button">
               <input
@@ -94,21 +121,27 @@ function Form({ route, method }) {
                 type="checkbox"
                 checked={rememberMe}
                 onChange={() => setRememberMe(!rememberMe)}
-              />{" "}
+              />
               <label id="remember-label" htmlFor="chkbx">
                 Remember Me
               </label>
             </div>
           )}
+
           <div id="but-cont">
             <button
               id={typename === "Login" ? "log-but" : "reg-but"}
               className="form-button"
               type="submit"
             >
-              {typename === "Login" ? "SIGN IN" : "REGISTER"}
+              {loading
+                ? "Processing..."
+                : typename === "Login"
+                ? "SIGN IN"
+                : "REGISTER"}
             </button>
           </div>
+
           {method === "login" && (
             <div id="reg-container">
               <p>Don't have an account?</p>
@@ -117,7 +150,7 @@ function Form({ route, method }) {
               </p>
             </div>
           )}
-          {method === "register" && (
+          {method === "register" && !verificationSent && (
             <div id="reg-container">
               <p>Have an account?</p>
               <p className="clickable" onClick={() => navigate("/login")}>
@@ -132,7 +165,7 @@ function Form({ route, method }) {
         <ErrorMessage
           message={"Incorrect Credentials: Try Again"}
           setShowError={setShowError}
-        ></ErrorMessage>
+        />
       )}
     </div>
   );

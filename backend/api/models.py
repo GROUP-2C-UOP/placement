@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from datetime import timedelta
+from django.utils import timezone
 
 STATUS_CHOICES = [
     ('applied', 'Applied'),
@@ -22,6 +24,18 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.email
+    
+def default_valid_until():
+    return timezone.now() + timedelta(minutes=5)
+
+class UserVerification(models.Model):
+    email = models.EmailField(unique=True)
+    code = models.CharField(max_length=6)
+    created_at = models.DateTimeField(auto_now_add=True)
+    valid_until = models.DateTimeField(default=default_valid_until)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
     
 class UserPreferences(models.Model):
     notification_enabled = models.BooleanField(default=True)

@@ -95,3 +95,5 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         return data
 
+class SendCodeSerializer(serializers.Serializer):
+    email = serializers.EmailField()

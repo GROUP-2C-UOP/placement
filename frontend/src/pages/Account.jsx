@@ -192,6 +192,7 @@ const Account = () => {
 
     if (emailPattern.test(newEmail)) {
       setShowEmailModal(true); // Show modal if email is valid
+      setEmail(newEmail)
     } else {
       alert("Please enter an email");
       setShowEmailModal(false);

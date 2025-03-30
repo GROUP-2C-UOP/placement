@@ -2,12 +2,14 @@ from django.shortcuts import render
 from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import UserSerializers, PlacementSerializers, ToDoSerializers, NotificationSerializers, UserPreferencesSerializers
+from .serializers import UserSerializers, PlacementSerializers, ToDoSerializers, NotificationSerializers, UserPreferencesSerializers, SendCodeSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .models import Placement, ToDo, CustomUser, Notifications, UserPreferences
+from .models import Placement, ToDo, CustomUser, Notifications, UserPreferences, UserVerification
 from datetime import date
 from django.core.mail import send_mail
 from django.conf import settings
+import random
+from django.utils import timezone
 
 
 class PlacementListCreate(generics.ListCreateAPIView):
@@ -39,6 +41,50 @@ class CreateUserView(generics.CreateAPIView):
     serializer_class = UserSerializers
     permission_classes = [AllowAny]
 
+    def post(self, request, *args, **kwargs):
+        email = request.data.get("email")
+        verification_code = request.data.get("verification_code")
+
+        try:
+            verification_entry = UserVerification.objects.get(email=email)
+        except UserVerification.DoesNotExist:
+            return Response({"detail": "Invalid email or verification code."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if verification_entry.code != verification_code:
+            return Response({"detail": "Incorrect verification code."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if timezone.now() > verification_entry.valid_until:
+            return Response({"detail": "Verification code has expired."}, status=status.HTTP_400_BAD_REQUEST)
+
+        
+        return super().post(request, *args, **kwargs)
+
+
+class SendCode(generics.GenericAPIView):
+    serializer_class = SendCodeSerializer
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        email = serializer.validated_data["email"]
+
+        code = str(random.randint(10000, 99999))
+
+        verification_entry = UserVerification.objects.create(email=email, code=code)
+
+        subject = "Career Compass - Account Creation"
+        message = f"Welcome to Career Compass!\n\nBefore you get started confirm your account with this code:\n\n{code}\n\nBest regards,\nCareer Compass Team!"
+
+        send_mail(
+            subject,
+            message,
+            settings.DEFAULT_FROM_EMAIL,
+            [email],
+            fail_silently = True
+        )
+
+        return Response({"message": "Code sent successfully."}, status=200)
 
 class PlacementUpdate(generics.UpdateAPIView):
     serializer_class = PlacementSerializers
