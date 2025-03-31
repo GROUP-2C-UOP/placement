@@ -11,7 +11,7 @@ function Form({ route, method }) {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
-  const [showError, setShowError] = useState(false);
+  const [showError, setShowError] = useState( {hasError: false, detail: ""} );
   const [verificationCode, setVerificationCode] = useState("");
   const [showVerificationInput, setShowVerificationInput] = useState(false);
   const [verificationSent, setVerificationSent] = useState(false);
@@ -56,7 +56,15 @@ function Form({ route, method }) {
         navigate("/login");
       }
     } catch (error) {
-      setShowError(true);
+      if (error.response.data.detail === "incorrect") {
+        setShowError( {hasError: true, detail: "The verification code is incorrect."})
+      }
+      else if (error.response.data.detail === "expired") {
+        setShowError( {hasError: true, detail: "The verification code has expired."})
+      }
+      else if (error.response.data.detail === "exists") {
+        setShowError( {hasError: true, detail: "This email already has an account."})
+      }
       setLoading(false);
     }
   };
@@ -178,9 +186,9 @@ function Form({ route, method }) {
         </form>
       </div>
       <div id="slash"></div>
-      {showError && (
+      {showError.hasError && (
         <ErrorMessage
-          message={"Incorrect Credentials: Try Again"}
+          message={showError.detail}
           setShowError={setShowError}
         />
       )}

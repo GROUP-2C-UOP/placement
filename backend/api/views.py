@@ -61,10 +61,10 @@ class CreateUserView(generics.CreateAPIView):
         print(f"Current time: {timezone.now()}")
 
         if verification_entry.code != verification_code:
-            return Response({"detail": "Incorrect verification code."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"detail": "incorrect"}, status=status.HTTP_400_BAD_REQUEST)
         
         if timezone.now() > verification_entry.valid_until:
-            return Response({"detail": "Verification code has expired."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"detail": "expired"}, status=status.HTTP_400_BAD_REQUEST)
         
         return super().post(request, *args, **kwargs)
 
@@ -78,7 +78,7 @@ class SendCode(generics.GenericAPIView):
         email = serializer.validated_data["email"]
 
         if CustomUser.objects.filter(email=email).exists():
-            return Response({"detail": "Account already exists"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"detail": "exists"}, status=status.HTTP_400_BAD_REQUEST)
 
         code = str(random.randint(10000, 99999))
 
