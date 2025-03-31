@@ -14,7 +14,7 @@ function Form({ route, method }) {
   const [showError, setShowError] = useState(false);
   const [verificationCode, setVerificationCode] = useState("");
   const [showVerificationInput, setShowVerificationInput] = useState(false);
-  const [verificationSent, setVerificationSent] = useState(false)
+  const [verificationSent, setVerificationSent] = useState(false);
   const navigate = useNavigate();
 
   const typename = method === "login" ? "Login" : "Register";
@@ -26,9 +26,12 @@ function Form({ route, method }) {
       const payload = { email, password };
       if (method === "register") {
         if (!verificationSent) {
-          await api.post("/api/user/register/verification/", { email })
-          setVerificationSent(true)
-          return
+          // if verification code hasnt been sent then trigger the send code view via the url
+          setLoading(true);
+          await api.post("/api/user/register/verification/", { email });
+          setVerificationSent(true);
+          setLoading(false);
+          return;
         }
 
         payload.verification_code = verificationCode;
@@ -54,10 +57,11 @@ function Form({ route, method }) {
       }
     } catch (error) {
       setShowError(true);
+      setLoading(false);
     }
   };
 
- return (
+  return (
     <div id="cont">
       <div id="login-container">
         <div id="title">
@@ -82,26 +86,32 @@ function Form({ route, method }) {
                 />
               </>
             )}
-            <label htmlFor="email">Email</label>
-            <input
-              className="form-input"
-              id="email-input"
-              type="email"
-              name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            <label htmlFor="password">Password</label>
-            <input
-              className="form-input"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            {method === "register" && verificationSent && (
+  
+            {!verificationSent && (
               <>
+                <label htmlFor="email">Email</label>
+                <input
+                  className="form-input"
+                  id="email-input"
+                  type="email"
+                  name="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+                <label htmlFor="password">Password</label>
+                <input
+                  className="form-input"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </>
+            )}
+  
+            {method === "register" && verificationSent && (
+              <div id="verification-input">
                 <label htmlFor="verificationCode">Verification Code</label>
                 <input
                   className="form-input"
@@ -110,10 +120,15 @@ function Form({ route, method }) {
                   onChange={(e) => setVerificationCode(e.target.value)}
                   required
                 />
-              </>
+                <div id="reg-container-input">
+              <p className="clickable" onClick={() => setVerificationSent(false)}>
+                <u>Go Back?</u>
+              </p>
+            </div>
+              </div>
             )}
           </div>
-
+  
           {method === "login" && (
             <div id="remember-me-button">
               <input
@@ -127,21 +142,23 @@ function Form({ route, method }) {
               </label>
             </div>
           )}
-
+  
           <div id="but-cont">
             <button
               id={typename === "Login" ? "log-but" : "reg-but"}
               className="form-button"
               type="submit"
             >
-              {loading
-                ? "Processing..."
-                : typename === "Login"
-                ? "SIGN IN"
-                : "REGISTER"}
+              {loading ? (
+                <div className="spinner"></div> 
+              ) : typename === "Login" ? (
+                "SIGN IN"
+              ) : (
+                "REGISTER"
+              )}
             </button>
           </div>
-
+  
           {method === "login" && (
             <div id="reg-container">
               <p>Don't have an account?</p>
@@ -169,6 +186,7 @@ function Form({ route, method }) {
       )}
     </div>
   );
+  
 }
 
 export default Form;

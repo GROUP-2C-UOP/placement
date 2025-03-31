@@ -5,11 +5,12 @@ from rest_framework.response import Response
 from .serializers import UserSerializers, PlacementSerializers, ToDoSerializers, NotificationSerializers, UserPreferencesSerializers, SendCodeSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Placement, ToDo, CustomUser, Notifications, UserPreferences, UserVerification
-from datetime import date
+from datetime import date, timedelta
 from django.core.mail import send_mail
 from django.conf import settings
 import random
 from django.utils import timezone
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class PlacementListCreate(generics.ListCreateAPIView):
@@ -44,21 +45,28 @@ class CreateUserView(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         email = request.data.get("email")
         verification_code = request.data.get("verification_code")
+        
+        print(f"THIS IS THE VERIFICATION CODE YOU SENT: {verification_code}")
+        print(f"Type of verification code sent: {type(verification_code)}")
 
         try:
             verification_entry = UserVerification.objects.get(email=email)
         except UserVerification.DoesNotExist:
             return Response({"detail": "Invalid email or verification code."}, status=status.HTTP_400_BAD_REQUEST)
-        
+
+        print(f"THIS IS THE VERIFICATION CODE THAT SHOULD BE USED: {verification_entry.code}")
+        print(f"Type of verification code in the database: {type(verification_entry.code)}")
+        print(f"Verification entry: {verification_entry}")
+        print(f"Valid until: {verification_entry.valid_until}")
+        print(f"Current time: {timezone.now()}")
+
         if verification_entry.code != verification_code:
             return Response({"detail": "Incorrect verification code."}, status=status.HTTP_400_BAD_REQUEST)
         
         if timezone.now() > verification_entry.valid_until:
             return Response({"detail": "Verification code has expired."}, status=status.HTTP_400_BAD_REQUEST)
-
         
         return super().post(request, *args, **kwargs)
-
 
 class SendCode(generics.GenericAPIView):
     serializer_class = SendCodeSerializer
@@ -69,19 +77,31 @@ class SendCode(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
         email = serializer.validated_data["email"]
 
+        if CustomUser.objects.filter(email=email).exists():
+            return Response({"detail": "Account already exists"}, status=status.HTTP_400_BAD_REQUEST)
+
         code = str(random.randint(10000, 99999))
 
-        verification_entry = UserVerification.objects.create(email=email, code=code)
+        try:
+            verification_entry = UserVerification.objects.get(email=email)
+            verification_entry.code = code
+            verification_entry.created_at = timezone.now()  # Update timestamp
+            verification_entry.valid_until = timezone.now() + timedelta(minutes=5)
+            verification_entry.save()
+        except ObjectDoesNotExist:
+            verification_entry = UserVerification.objects.create(
+                email=email, code=code, created_at=timezone.now(), valid_until=timezone.now() + timedelta(minutes=5)
+            )
 
         subject = "Career Compass - Account Creation"
-        message = f"Welcome to Career Compass!\n\nBefore you get started confirm your account with this code:\n\n{code}\n\nBest regards,\nCareer Compass Team!"
+        message = f"Welcome to Career Compass!\n\nBefore you get started, confirm your account with this code:\n\n{code}\n\nBest regards,\nCareer Compass Team!"
 
         send_mail(
             subject,
             message,
             settings.DEFAULT_FROM_EMAIL,
             [email],
-            fail_silently = True
+            fail_silently=True
         )
 
         return Response({"message": "Code sent successfully."}, status=200)
