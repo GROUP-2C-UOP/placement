@@ -680,7 +680,7 @@ function PlacementModal({
                           e.target.value === "" ? null : e.target.value
                         )
                       }
-                      value={description}
+                      placeholder={placement.description}
                     />
                   </div>
                 </>
