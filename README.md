@@ -1,4 +1,5 @@
 # Project Setup Instructions - Basit
+** SUBJECT TO CHANGE - PLEASE REGULARLY CHECK FOR CHANGES IF YOU CANNOT RUN THE APP**
 
 
 ## Prerequisites
