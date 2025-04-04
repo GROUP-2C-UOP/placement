@@ -46,6 +46,8 @@
 
 #top {
   color: white;
+  width: 90%;
+  margin: auto;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   text-align: center;

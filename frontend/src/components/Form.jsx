@@ -65,6 +65,9 @@ function Form({ route, method }) {
       else if (error.response.data.detail === "exists") {
         setShowError( {hasError: true, detail: "This email already has an account."})
       }
+      else if (error.response.data.detail === "No active account found with the given credentials") {
+        setShowError( {hasError: true, detail: "Incorrect Credentials."})
+      }
       setLoading(false);
     }
   };
