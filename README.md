@@ -24,7 +24,11 @@ Before you begin, you need to have:
 7. Create .env-backend file within the main backend folder ----> Where requirements.txt is
 8. Add the line ----> `EMAIL_HOST_USER="your-email"` With your email
 9. Add the line ----> `EMAIL_HOST_PASSWORD="app-password"` DO NOT USE YOUR REAL GMAIL PASSWORD: Enable Gmail 2FA, within settings search up App Passwords. Create a new app and use the generated 16 character string as the password.
-  
+10. Add the line ----> `SECRET-KEY=your-generated-secret-key`
+11. To generate a secret key use this script:
+`import secrets
+print(secrets.token_urlsafe(50))`
+ 
 ### Frontend
 1. Split terminal and start virtual environment ----> `.\venv\Scripts\activate`
 2. Change to the frontend and install dependencies ----> `cd ../frontend` & `npm install`
