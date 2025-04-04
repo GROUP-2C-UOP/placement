@@ -10,4 +10,4 @@ app.config_from_object("django.conf:settings", namespace="CELERY")
 
 app.autodiscover_tasks()
 
-##CELERY SET UP -- TAKEN FROM CELERY DOCUMENTATION
+##CELERY SET UP -- TAKEN FROM OFFICIAL CELERY DOCUMENTATION ONLINE

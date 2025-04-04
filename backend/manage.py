@@ -20,3 +20,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+#GENERATED AUTOMATICALLY BY DJANGO ON INITIALISATION OF THE APP

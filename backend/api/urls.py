@@ -1,6 +1,8 @@
 from django.urls import path
 from . import views
 
+#endpoints that are called within the frontend to trigger the view defined -- Arent actual urls, you cant go to the browser and search up website/account/details/, restricted to the project itself.
+
 urlpatterns = [
     path("placements/", views.PlacementListCreate.as_view(), name="placement-list"),
     path("placements/delete/<int:pk>/", views.PlacementDelete.as_view(), name="placement-delete"),
