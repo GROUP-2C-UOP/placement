@@ -1,7 +1,9 @@
-export const ACCESS_TOKEN = "access";
+//for constant values that are used throughout the app
+
+export const ACCESS_TOKEN = "access"; 
 export const REFRESH_TOKEN = "refresh";
 
-export const statusLabels = {
+export const statusLabels = { //object mapping application statuses to user friendly labels for display in the UI
   applied: "Applied",
   phone_interview: "Phone Interview",
   face_to_face_interview: "Face to Face Interview",
@@ -11,7 +13,7 @@ export const statusLabels = {
   withdrawn: "Withdrawn",
 };
 
-export const icons = {
+export const icons = { //object mapping icons to be used in the ui
   applied: {
     id: "appl",
     class: "icons",

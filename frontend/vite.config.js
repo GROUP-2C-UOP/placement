@@ -5,3 +5,5 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
 })
+
+//configuration of vite -- configured automatically on creation/initialisation of frontend
