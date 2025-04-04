@@ -117,6 +117,7 @@ function PlacementsPage() {
         filterRoles.includes(placement.role)
     );
     setFilteredPlacementsInProgress(pip);
+    return pip
   };
 
   const placementsRej = () => {
@@ -706,7 +707,7 @@ function PlacementsPage() {
           placementsInProgress={placementsInProgress}
           setFilterRoles={setFilterRoles}
           setIsFiltered={setIsFiltered}
-          filteredPlacementsInProg={filteredPlacementsInProg}
+          filteredPlacementsInProgress={filteredPlacementsInProgress}
         ></FilterModal>
       )}
       {showSingleNoti && (

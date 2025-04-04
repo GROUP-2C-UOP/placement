@@ -117,19 +117,20 @@ function PlacementModal({
 
   const check = () => {
     let formData = new FormData();
-
+  
     for (const field in updatedData) {
       if (
-        updatedData[field] !== "" &&
+        (field === "description" || updatedData[field] !== "") &&
         updatedData[field] !== null &&
         updatedData[field] !== undefined
       ) {
         formData.append(field, updatedData[field]);
       }
     }
-
+  
     return formData;
   };
+  
 
   const updatePlacement = (id, getPlacements, setShowModal) => {
     const modifiedFields = check();
@@ -440,7 +441,7 @@ function PlacementModal({
                 id="description"
                 name="description"
                 onChange={(e) =>
-                  setDescription(e.target.value === "" ? null : e.target.value)
+                  setDescription(e.target.value)
                 }
                 value={description}
               />

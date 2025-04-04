@@ -6,16 +6,14 @@ function FilterModal({
   placementsInProgress,
   setFilterRoles,
   setIsFiltered,
-  filteredPlacementsInProg,
+  filteredPlacementsInProgress, 
 }) {
-  const placementRoles = new Set();
+  const placementRoles = new Set(placementsInProgress.map((p) => p.role));
 
-  for (const placement of placementsInProgress) {
-    placementRoles.add(placement.role);
-  }
-
-  const [selectedRoles, setSelectedRoles] = useState(new Set());
   const [fadeOutFilter, setFadeOutFilter] = useState(false);
+  const [selectedRoles, setSelectedRoles] = useState(
+    new Set(filteredPlacementsInProgress?.map((p) => p.role) || []) 
+  );
 
   const handleRoleChange = (role) => {
     const newSelectedRoles = new Set(selectedRoles);
@@ -33,7 +31,7 @@ function FilterModal({
     } else {
       setFadeOutFilter(true);
       setTimeout(() => {
-        setFilterRoles([...selectedRoles]);
+        setFilterRoles([...selectedRoles]); 
         setIsFiltered(true);
         setShowFilter(false);
       }, 100);
@@ -50,8 +48,8 @@ function FilterModal({
   const handleClearFilter = () => {
     setFadeOutFilter(true);
     setTimeout(() => {
-      setSelectedRoles(new Set());
-      setFilterRoles([]);
+      setSelectedRoles(new Set()); 
+      setFilterRoles([]); 
       setIsFiltered(false);
       setShowFilter(false);
     }, 100);
@@ -59,10 +57,7 @@ function FilterModal({
 
   return (
     <div id="overlay" className={fadeOutFilter ? "fade-out-filter" : ""}>
-      <div
-        id="filter-modal-window"
-        className={fadeOutFilter ? "fade-out-filter" : ""}
-      >
+      <div id="filter-modal-window" className={fadeOutFilter ? "fade-out-filter" : ""}>
         <button className="close-button" onClick={handleCloseFilter}>
           <img src="src/assets/close.svg" alt="Close" />
         </button>
@@ -77,7 +72,8 @@ function FilterModal({
               <label key={role}>
                 <input
                   type="checkbox"
-                  onChange={() => handleRoleChange(role)}
+                  checked={selectedRoles.has(role)} 
+                  onChange={() => handleRoleChange(role)} 
                 />
                 {role}
               </label>

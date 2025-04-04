@@ -393,7 +393,7 @@ function ToDoPage() {
           placementsInProgress={toDos}
           setFilterRoles={setFilterRoles}
           setIsFiltered={setIsFiltered}
-          filteredPlacementsInProg={filteredToDos}
+          filteredPlacementsInProgress={filteredToDos}
         ></FilterModal>
       )}
       {showSingleNoti && (
