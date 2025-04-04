@@ -7,7 +7,7 @@
 Before you begin, you need to have:
 - [Node.js](https://nodejs.org/en/)
 - [Python](https://www.python.org/downloads/)
-- [Redis](https://www.youtube.com/watch?v=DLKzd3bvgt8) **Follow tutorial**
+- [Redis](https://www.youtube.com/watch?v=DLKzd3bvgt8)  <---- **Follow tutorial**
 
 
 ## Project Setup 
