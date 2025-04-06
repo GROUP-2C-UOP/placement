@@ -110,9 +110,3 @@ Check our Jira's project pages for the listed user requirements we should progra
 ### Branch Creation
 Please make a branch named after the feature you're working on and after it's been fully implemented we will merge it during our group meeting to ensure conflicts are solved without the loss of work
 
-### Issue Tracking
-As you run into new issues add these into our backlog within Jira to then tackle in the next week.
-
-# Contributors
-1. Basit (Everything except statistics)
-2. Andrew (Statistics)
