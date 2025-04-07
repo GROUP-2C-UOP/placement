@@ -1,4 +1,4 @@
-Setup
+Project Setup
 ==================================
 
 Prerequisites

@@ -11,9 +11,9 @@ Welcome to the documentation for the Placements Tracker app.
 Contents:
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Getting Started
+   :maxdepth: 3
 
    intro
    setup
+   structure
 
