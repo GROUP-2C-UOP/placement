@@ -6,9 +6,9 @@ Prerequisites
 
 Before you begin, you need to have:
 
-- `Node.js <https://nodejs.org/>`_
+- `Node.js <https://nodejs.org/en/>`_
 - `Python <https://www.python.org/downloads/>`_
-- `Redis <https://www.youtube.com/watch?v=8u90rj3zB9w>`_ *(Follow tutorial for instillation)*
+- `Redis <https://www.youtube.com/watch?v=DLKzd3bvgt8>`_ *(Follow tutorial for instillation)*
 
 Project Setup
 -------------
@@ -120,7 +120,7 @@ Redis
 
      .\venv\Scripts\activate
 
-6. Still in `\placement\backend`, run the celery beat:
+6. Still in ``\placement\backend``, run the celery beat:
 
    ::
 
