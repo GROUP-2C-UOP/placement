@@ -1,4 +1,4 @@
-Project Setup Instructions - Basit
+Setup
 ==================================
 
 Prerequisites
@@ -108,7 +108,7 @@ Redis
 
      .\venv\Scripts\activate
 
-4. Make sure you're in `\placement\backend` and run the celery worker:
+4. Make sure you're in ``\placement\backend`` and run the celery worker:
 
    ::
 
