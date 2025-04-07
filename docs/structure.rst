@@ -51,6 +51,22 @@ The main file that structures the application and defines navigation between pag
 
 Wrapper for our app.
 
+Redis & Celery
+-------
+
+**CELERY.PY**
+
+Initialises the Celery app -- taken from the official Celery documentation.
+
+**TASKS.PY**
+
+Contains all functions that define Celery tasks. Tasks are then registered and configured via Settings.py.
+
+**Redis Port**
+
+Acts as a message broker between Django & Celery. Tasks are queued and sent to Redis to store. Celery workers pull the tasks from Redis and excute them.
+
+
 Flow of App
 -----------
 
