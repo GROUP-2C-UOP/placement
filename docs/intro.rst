@@ -1,5 +1,4 @@
 Introduction
-
 =========================
 
 The Placement Tracker is a web app that helps students manage their placement applications.
