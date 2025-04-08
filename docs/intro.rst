@@ -35,7 +35,7 @@ Database
 ~~~~~~~~~
 - **DBSqlite** - the default with a Django Backend
 
-Asynchronous Task Queue
+Task Queue
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 - **Celery** - for handling background tasks like sending emails
 - **Redis** - as the message broker for Celery

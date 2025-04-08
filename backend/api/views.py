@@ -21,13 +21,15 @@ from django.core.exceptions import ObjectDoesNotExist #for checking if an object
     - ListCreateAPIView: Used for listing and creating objects in a single view
     - CreateAPIView: Used for handling the creation of an object
     - DestroyAPIView: Used for handling the deletion of an object
+    - UpdateAPIView: Used for handling the changing of an object's fields
     - GenericAPIView: A base class for custom views, providing general functionality like handling HTTP methods
     - RetrieveAPIView: Used for handling the retrieval of a single object
 
-    
+    **THE OBJECT THAT NEEDS TO BE UPDATED/DELETED IS SPECIFIED BY IT'S PRIMARY KEY WITHIN THE ASSOICATED URL (LOOK AT URLS.PY)**
+
 
     General Structure for Views:
-    
+    ============================
     class Name(generics.xyzAPIView)                                 ---> the view the class uses based on Django's generics library
         serializer_class = serializer                               ---> the serializer the view uses to validate incoming data and convert returns
         permission_classes = [IsAuthenticated/AllowAny]             ---> the permission class defines who is allowed to access the view, authenticated users or anyone
@@ -37,6 +39,40 @@ from django.core.exceptions import ObjectDoesNotExist #for checking if an object
             data = Object.objects.filter(user=user)                 ---> filter the objects where the foreign key USER matches the currently authenticated user
             return data                                             ---> return the data for the class to use in it's logic
     
+        
+        get_serializer_class(): Used where only specific fields are returned (e.g., profile picture)
+                                Inherits existing associated serializer and overrides the Meta class to define what specific fields to be included
+
+    General Return Behaviour:
+    =========================
+        For each view, the following status codes apply depending on the action and outcome:
+            
+        - List Views (e.g., ToDoListCreate):
+            - 200 OK: retrieved all relevant objects and returned
+            - 401 Unauthorized: user not authenticated
+
+        - Create Views:
+            - 201 Created: successfully created object
+            - 400 Bad Request: invalid data provided
+            - 401 Unauthorized: user not authenticated
+
+        - Retrieve Views:
+            - 200 OK: retrieved object and returned
+            - 401 Unauthorized: user not authenticated
+            - 404 Not Found: object does not exist 
+
+        - Update Views:
+            - 200 OK: updated object 
+            - 400 Bad Request: invalid update data
+            - 401 Unauthorized: user not authenticated
+            - 404 Not Found: object does not exist 
+
+        - Delete Views:
+            - 204 No Content: object deleted
+            - 401 Unauthorized: user not authenticated
+            - 404 Not Found: object does not exist 
+
+
     
     AUTHOR OF ALL VIEWS = UP2109066/b9sit
 """
@@ -176,10 +212,7 @@ class SendCode(generics.GenericAPIView): #generic api view with no built in crea
 class PlacementUpdate(generics.UpdateAPIView): 
     """
         API view to update placement details for a specific user
-        View allows authenticated users to update their own placement information
-            
-        returns:
-        The updated placement object in the response body (status 200) 
+        View allows authenticated users to update their own placement information 
     """
     serializer_class = PlacementSerializers 
     permission_classes = [IsAuthenticated] 
@@ -189,6 +222,9 @@ class PlacementUpdate(generics.UpdateAPIView):
         return Placement.objects.filter(user=user) 
     
 class ToDoListCreate(generics.ListCreateAPIView): 
+    """
+        API View to list and create ToDo objects
+    """
     serializer_class = ToDoSerializers 
     permission_classes = [IsAuthenticated] 
 
@@ -198,129 +234,166 @@ class ToDoListCreate(generics.ListCreateAPIView):
 
         return todos
     
-    def perform_create(self, serializer): #method for creating objects
-        if serializer.is_valid(): #if the inputted data is valid
-            serializer.save(user=self.request.user) #save with the associated user
+    def perform_create(self, serializer):
+        if serializer.is_valid():
+            serializer.save(user=self.request.user) 
         else:
-            print(serializer.errors) #for debugging
+            print(serializer.errors) 
 
-class ToDoDelete(generics.DestroyAPIView): #view for deletion
-    serializer_class = ToDoSerializers #use to do serializer
-    permission_classes = [IsAuthenticated] #only logged in users can use this view
-
-    def get_queryset(self):
-        user = self.request.user #get the user making the request
-        return ToDo.objects.filter(user=user) #limit the data to only the todo objects associated with the request user
-    
-class ToDoUpdate(generics.UpdateAPIView): #view for updating
-    serializer_class = ToDoSerializers #use to do serializer
-    permission_classes = [IsAuthenticated] #only logged in users can use this view
+class ToDoDelete(generics.DestroyAPIView):
+    """
+        API View to delete ToDo objects
+    """
+    serializer_class = ToDoSerializers 
+    permission_classes = [IsAuthenticated] 
 
     def get_queryset(self):
-        user = self.request.user #get the user making the request
-        return ToDo.objects.filter(user=user) #limit the data to only the todo objects associated with the request user
+        user = self.request.user 
+        return ToDo.objects.filter(user=user) 
     
-class GetUserDetails(generics.RetrieveAPIView): #view for retrieval of the user (their detials are included in the return)
-    serializer_class = UserSerializers #use user serializer
-    permission_classes = [IsAuthenticated] #only logged in users can use this view
+class ToDoUpdate(generics.UpdateAPIView): 
+    """
+        API View to update an existing ToDo object
+    """
+    serializer_class = ToDoSerializers 
+    permission_classes = [IsAuthenticated] 
+
+    def get_queryset(self):
+        user = self.request.user 
+        return ToDo.objects.filter(user=user) 
+    
+class GetUserDetails(generics.RetrieveAPIView):
+    """
+        API View to get ALL of a user's details from their model
+    """
+    serializer_class = UserSerializers 
+    permission_classes = [IsAuthenticated] 
 
     def get_object(self):
-        return self.request.user #return the user making the request
+        return self.request.user 
     
-class GetProfilePicture(generics.RetrieveAPIView): #get the users profile picture using django's prebuilt retrieve api view
-    serializer_class = UserSerializers #use user serializer
-    permission_classes = [IsAuthenticated] #only logged in users can use this view
+class GetProfilePicture(generics.RetrieveAPIView): 
+    """
+        API View to get only user's profile picture
+    """
+    serializer_class = UserSerializers 
+    permission_classes = [IsAuthenticated] 
 
     def get_object(self):
-        return self.request.user #return the user making the request
+        return self.request.user
     
     def get_serializer_class(self):
-        class ProfilePictureSerializer(UserSerializers): #custom serializer using user serializer
-            class Meta(UserSerializers.Meta): #where the only fields that is processed is the profile_picture 
+        class ProfilePictureSerializer(UserSerializers): 
+            class Meta(UserSerializers.Meta): 
                 fields = ["profile_picture"]
 
         return ProfilePictureSerializer
     
     
-class GetUserName(generics.RetrieveAPIView):  #get the users name using django's prebuilt retrieve api view
-    serializer_class = UserSerializers #use user serializer
-    permission_classes = [IsAuthenticated] #only logged in users can use this view
+class GetUserName(generics.RetrieveAPIView):
+    """
+        API View to get only user's name
+    """
+    serializer_class = UserSerializers 
+    permission_classes = [IsAuthenticated] 
 
     def get_object(self):
-        return self.request.user #return the user making the request
+        return self.request.user 
     
     def get_serializer_class(self):
-        class UserNameSerializer(UserSerializers): #custom serializer using user serializer
-            class Meta(UserSerializers.Meta):  #where the only fields that is processed is the first and last name
+        class UserNameSerializer(UserSerializers):
+            class Meta(UserSerializers.Meta):  
                 fields = ["first_name", "last_name"]
 
         return UserNameSerializer
     
-class GetEmail(generics.RetrieveAPIView): #get the users email using django's prebuilt retrieve api view
-    serializer_class = UserSerializers #use user serializer
-    permission_classes = [IsAuthenticated] #only logged in users can use this view
+class GetEmail(generics.RetrieveAPIView):
+    """
+        API View to get only user's email
+    """ 
+    serializer_class = UserSerializers 
+    permission_classes = [IsAuthenticated] 
 
     def get_object(self):
-        return self.request.user #return the user making the request
+        return self.request.user
     
     def get_serializer_class(self):
-        class EmailSerializer(UserSerializers): #custom serializer using user serializer
-            class Meta(UserSerializers.Meta): #where the only fields that is processed is the email
+        class EmailSerializer(UserSerializers): 
+            class Meta(UserSerializers.Meta):
                 fields = ["email"]
         return EmailSerializer
     
-class GetNotificationStatus(generics.RetrieveAPIView): #view to get the user notification status using django's retrieve api view
-    serializer_class = UserPreferencesSerializers #use user preferences serializer as the serializer to validate the data
-    permission_classes = [IsAuthenticated] #only logged in users can use this view
+class GetNotificationStatus(generics.RetrieveAPIView):
+    """
+        API View to get only user's notification status
+    """
+    serializer_class = UserPreferencesSerializers
+    permission_classes = [IsAuthenticated] 
 
     def get_object(self):
-        return UserPreferences.objects.get(user=self.request.user) #get the user preferences object linked to the user
+        return UserPreferences.objects.get(user=self.request.user) 
     
     def get_serializer_class(self):
-        class StatusSerializer(UserPreferencesSerializers): #custom serializer using the user preferences serializer
-            class Meta(UserPreferencesSerializers.Meta): #from the userpreferences serializer only process the notification_enabled field
+        class StatusSerializer(UserPreferencesSerializers):
+            class Meta(UserPreferencesSerializers.Meta): 
                 fields = ["notification_enabled"]
         return StatusSerializer
     
-class GetEmailNotificationStatus(generics.RetrieveAPIView): #view to get the email notification status using django's retrieve api view
-    serializer_class = UserPreferencesSerializers #use user preferences serializer as the serializer to validate the data
-    permission_classes = [IsAuthenticated] #only logged in users can use this view
+class GetEmailNotificationStatus(generics.RetrieveAPIView):
+    """
+        API View to get only user's email notification status
+    """
+    serializer_class = UserPreferencesSerializers 
+    permission_classes = [IsAuthenticated] 
 
     def get_object(self):
-        return UserPreferences.objects.get(user=self.request.user) #get the user preferences object linked to the user
+        return UserPreferences.objects.get(user=self.request.user) 
     
     def get_serializer_class(self):
-        class StatusSerializer(UserPreferencesSerializers): #custom serializer using the user preferences serializer
-            class Meta(UserPreferencesSerializers.Meta): #from the userpreferences serializer only process the email_notification_enabled field
+        class StatusSerializer(UserPreferencesSerializers):
+            class Meta(UserPreferencesSerializers.Meta): 
                 fields = ["email_notification_enabled"]
         return StatusSerializer
     
-class GetNotificationTime(generics.RetrieveAPIView): #view to get the user notification time using django's retrieve api view
-    serializer_class = UserPreferencesSerializers #use user preferences serializer as the serializer to validate the data
-    permission_classes = [IsAuthenticated] #only logged in users can use this view
+class GetNotificationTime(generics.RetrieveAPIView): 
+    """
+        API View to get only user's notification time preference
+    """
+    serializer_class = UserPreferencesSerializers 
+    permission_classes = [IsAuthenticated] 
 
     def get_object(self):
-        return UserPreferences.objects.get(user=self.request.user) #get the user preferences object linked to the user
+        return UserPreferences.objects.get(user=self.request.user) 
     
     def get_serializer_class(self):
-        class TimeSerializer(UserPreferencesSerializers): #custom serializer using the user preferences serializer
-            class Meta(UserPreferencesSerializers.Meta): #from the userpreferences serializer only process the notification_time field
+        class TimeSerializer(UserPreferencesSerializers):
+            class Meta(UserPreferencesSerializers.Meta): 
                 fields = ["notification_time"]
         return TimeSerializer
     
-class NotificationSettingsUpdate(generics.UpdateAPIView): #view for updating values within userpreferences objects using put and patch via django's prebuilt update api view
-    serializer_class = UserPreferencesSerializers #use user preferences serializer as the serializer to validate the data
-    permission_classes = [IsAuthenticated] #only logged in users can use this view
+class NotificationSettingsUpdate(generics.UpdateAPIView):
+    """
+        API View to get update user's preferences via the UserPreferences table
+    """
+    serializer_class = UserPreferencesSerializers 
+    permission_classes = [IsAuthenticated] 
 
     def get_object(self):
-        return UserPreferences.objects.get(user=self.request.user) #get the user preferences object linked to the user
+        return UserPreferences.objects.get(user=self.request.user) 
     
-class PasswordUpdate(generics.UpdateAPIView): #view to allow user to change their password using django's prebuilt update api view
-    serializer_class = UserSerializers #use the user serializer as the serializer 
-    permission_classes = [IsAuthenticated] #only logged in users can access this view
+class PasswordUpdate(generics.UpdateAPIView):
+    """
+        API View to update user's password 
+
+        Returns:
+        - Status 200 ok with message "Password updated successfully"
+        - Status 400 Bad Request with message "Password not provided"
+    """
+    serializer_class = UserSerializers 
+    permission_classes = [IsAuthenticated] 
 
     def get_object(self):
-        return self.request.user #get the user making the request
+        return self.request.user 
     
     def patch(self, request, *args, **kwargs): #override patch function to change password
         user = self.get_object() #get the user
@@ -333,16 +406,36 @@ class PasswordUpdate(generics.UpdateAPIView): #view to allow user to change thei
             return Response({"message": "Password updated successfully"}, status=status.HTTP_200_OK) #if worked then return 200 successful
         return Response({"message": "Password not provided"}, status=status.HTTP_400_BAD_REQUEST) #if not then return 400 bad request
     
-class UserUpdate(generics.UpdateAPIView): #view for updating any of the user's fields
-    serializer_class = UserSerializers #serializer class is the user serializer
-    permission_classes = [IsAuthenticated] #only logged in users can access this view
+class UserUpdate(generics.UpdateAPIView):
+    """
+        API View to update any of a user's fields
+    """
+    serializer_class = UserSerializers 
+    permission_classes = [IsAuthenticated]
 
     def get_object(self):
-        return self.request.user #get the user making the request in order to update their data
+        return self.request.user 
     
 class NotificationListCreate(generics.ListCreateAPIView): #view for listing and creating notification objects using django's list create api view
-    serializer_class = NotificationSerializers #use serializer notificationserializers to validate the data
-    permission_classes = [IsAuthenticated] #make the view only available to those authenticated
+    """
+        API View to list and create notifications for an authenticated user
+
+        View allows for the creation of notifications by checking the user's preferences and if a notification with the relevant fields already exisits. Additionally lists all the notifications related to the user.
+
+        Flow of function:
+            1. Check if notifications are enabled
+            2. Create notification for upcoming placement deadlines if it doesn't already exist
+            3. Create notification for upcoming ToDo deadlines if it doesn't already exist
+            4. Return a list of notifications associated to the user
+
+        Returns:
+            - 200 OK: Successfully listed notifications
+            - 201 Created: Notification object created successfully
+            - 400 Bad Request: Invalid data provided
+            - 401 Unauthorised: User is not authenticated
+    """
+    serializer_class = NotificationSerializers 
+    permission_classes = [IsAuthenticated]
 
     def create_notifications(self, user): #function to create notification
         try:
@@ -421,24 +514,40 @@ class NotificationListCreate(generics.ListCreateAPIView): #view for listing and 
                         )
 
 
-    def get_queryset(self): #define the query set for the view to work with
-        user = self.request.user #define the user as the one making the request
-        return Notifications.objects.filter(user=user) #have the queryset be all notifications that the user has associated to them
+    def get_queryset(self): 
+        user = self.request.user 
+        return Notifications.objects.filter(user=user) 
     
     def list(self, request, *args, **kwargs): #overrides default list method to autmoatically create notifications before fetching and returning user's notification list
         self.create_notifications(request.user)  
         return super().list(request, *args, **kwargs)
 
 
-class NotificationDelete(generics.DestroyAPIView): #view for deleting notifications
-    serializer_class = NotificationSerializers #use the notificaiton serializer as the serializer
-    permission_classes = [IsAuthenticated] #only logged in users can use this view
+class NotificationDelete(generics.DestroyAPIView): 
+    """
+        API View to delete notification objects
+    """
+    serializer_class = NotificationSerializers 
+    permission_classes = [IsAuthenticated] 
 
     def get_queryset(self):
-        user = self.request.user #set user variable as the user making the request
-        return Notifications.objects.filter(user=user) #set the data that the view works upon as the notifications associated to the user making the request
+        user = self.request.user 
+        return Notifications.objects.filter(user=user)
         
 class NotificationBulkUpdate(APIView): #uses base API view to manually construct the PATCH logic
+    """
+        API View to update multiple notifications at once
+
+        View handles bulk update of notification by accepting a list of notification data and updating each notification associated with the authenticated user.
+        User can update mulitple fields in one or more notifications in a single request
+
+        Request body must contain a list of notifications
+
+        Returns:
+        - 200 OK: Successfully updated the notifications
+        - 400 Bad Request: Invalid request data
+        - 401 Unauthorized: User is not authenticated
+    """
     serializer_class = NotificationSerializers #use notification serializers as the serializer
     permission_classes = [IsAuthenticated] #only logged in users can use this view
 
@@ -460,11 +569,14 @@ class NotificationBulkUpdate(APIView): #uses base API view to manually construct
 
         return Response({"updated_notifications": updated_notifications}, status=status.HTTP_200_OK) #return response 200 successful and show all the updated notifications within the body of the response
     
-class NotificationUpdate(generics.UpdateAPIView): #updating of a single notification
-    serializer_class = NotificationSerializers #use notification serializer
-    permission_classes = [IsAuthenticated] #only logged in users can use this view
+class NotificationUpdate(generics.UpdateAPIView): 
+    """
+        API View to update the fields of a single notification object
+    """
+    serializer_class = NotificationSerializers 
+    permission_classes = [IsAuthenticated] 
 
     def get_queryset(self):
-        user = self.request.user #get the user who is making the request
-        return Notifications.objects.filter(user=user) #return the data as all the notification objects that the user has associated to them
+        user = self.request.user
+        return Notifications.objects.filter(user=user) 
 
