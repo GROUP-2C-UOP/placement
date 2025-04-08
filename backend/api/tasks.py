@@ -3,7 +3,7 @@ from django.core.mail import send_mail #import inbuilt django function for sendi
 from django.conf import settings #import django settings for accesing email configurations like 'DEFAULT_FROM_EMAIL'
 from .models import Notifications, CustomUser, UserPreferences #import the relevant models used
 
-@shared_task #define shared task to be executed asynchronously via Celery
+@shared_task #to mark the function as a Celery task so it can run asynchronously 
 def send_scheduled_notifications(): 
     users = CustomUser.objects.all() #fetch all users
     for user in users: #for every user fetched

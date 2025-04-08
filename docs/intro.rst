@@ -9,7 +9,7 @@ Motivation
 ----------
 As students all of us were aiming to land placements. We identified that there was no sufficient answer to Placement Tracking that had all the features we wanted. As a result, we created a Placement Tracking app that helps students manage their placement applications.
 
-Features: 
+Features
 -----------
 - Add & Edit Placements
 - Track Deadline and Statuses
@@ -18,7 +18,7 @@ Features:
 - Save Associated CVs and Cover Letters to the Placement
 - Recieve In-App and Email Notifications for Deadlines
 
-Tech Stack:
+Tech Stack
 ------------
 
 Frontend

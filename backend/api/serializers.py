@@ -4,11 +4,28 @@ from rest_framework_simplejwt.tokens import RefreshToken #import the refresh tok
 from datetime import timedelta 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer #import django's inbuilt serializer for refresh and access tokens
 
-class UserSerializers(serializers.ModelSerializer): #serializer for user model
-    profile_picture = serializers.ImageField(required=False) #dont make prof pic required on creation of user
-    class Meta: #defines how the data from the model should be converted
-        model = CustomUser #specify this serializer is for customuser
-        fields = ["id", "email", "password", "first_name", "last_name", "profile_picture"] #fields to include in serialization
+
+"""
+    Serializers: 
+    Each Serializer corresponds to a model, defining how the model data should be serialized and validated.
+    Converts between Python objets and JSON to enable communication between the backend and frontend.
+
+    General Strucure of serializers:
+    class Meta: specifies how data from the model should be converted
+        model: the model associated with the serializer
+        fields: specified which fields to include in the serialized data
+        extra_kwargs: additional restrictions or validation for specific fields
+
+    Most serializers inherit from `serializers.ModelSerializer`, which provides a convenient way to create custom serializers 
+    for Django models.
+
+"""
+
+class UserSerializers(serializers.ModelSerializer):
+    profile_picture = serializers.ImageField(required=False) #dont make prof pic required for serialization
+    class Meta: 
+        model = CustomUser 
+        fields = ["id", "email", "password", "first_name", "last_name", "profile_picture"] 
         extra_kwargs = {"password": {"write_only": True}} #extra keyword argument for password is that it is write only and cannot be read, enforced for security
 
     def create(self, validated_data):
@@ -17,10 +34,10 @@ class UserSerializers(serializers.ModelSerializer): #serializer for user model
 
         return CustomUser.objects.create_user(email=email, **validated_data) #create and return new user
 
-class PlacementSerializers(serializers.ModelSerializer): #serializer for placement
+class PlacementSerializers(serializers.ModelSerializer): 
     class Meta:
-        model = Placement #specify this serializer is for placements
-        fields = ["id",         #fields to be serialized
+        model = Placement 
+        fields = ["id",   
                   "company", 
                   "role", 
                   "salary", 
@@ -38,10 +55,10 @@ class PlacementSerializers(serializers.ModelSerializer): #serializer for placeme
         extra_kwargs = {"user": {"read_only": True}} #make the user field read only so it cannot be modified directly by the API for security
 
 
-class ToDoSerializers(serializers.ModelSerializer): #serializer for todo
+class ToDoSerializers(serializers.ModelSerializer): 
     class Meta:
-        model = ToDo #specify this serializer is for todos
-        fields = ["id",         #fields to be serialized
+        model = ToDo 
+        fields = ["id",        
                   "company", 
                   "role", 
                   "salary", 
@@ -54,10 +71,10 @@ class ToDoSerializers(serializers.ModelSerializer): #serializer for todo
         extra_kwargs = {"user": {"read_only": True}} #make the user field read only so it cannot be modified directly by the API for security
 
 
-class NotificationSerializers(serializers.ModelSerializer): #serializer for notifications
+class NotificationSerializers(serializers.ModelSerializer): 
     class Meta:
-        model = Notifications #specify this serializer is for notifications
-        fields = ["id",         #fields to be serialized
+        model = Notifications 
+        fields = ["id",       
                   "company",
                   "role",
                   "days",
@@ -71,12 +88,20 @@ class NotificationSerializers(serializers.ModelSerializer): #serializer for noti
         extra_kwargs = {"user": {"read_only": True}} #make the user field read only so it cannot be modified directly by the API for security
         
 
-class UserPreferencesSerializers(serializers.ModelSerializer): #serializer for user preferences
+class UserPreferencesSerializers(serializers.ModelSerializer):
     class Meta:
-        model = UserPreferences #specify this serializer for user preferences
-        fields = ["notification_enabled", "email_notification_enabled", "notification_time"] #fields to be serialized
+        model = UserPreferences 
+        fields = ["notification_enabled", "email_notification_enabled", "notification_time"]
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer): #custom token obtain pair serializer which inherits django's token obtain pair serializer
+
+    """
+    Custom serializer for obtaining JavaScript Web Tokens
+    
+    Expiration of refresh token is changed based on rmember_me flag within the payload sent by the user
+    """
+
+
     def validate(self, attrs): #validate function that has parameters self and attrs where attrs is the data being passed to the serializer 
         data = super().validate(attrs) #call parent class validate method to handle standard validation
 

@@ -11,53 +11,107 @@ import random #for generating random verification code
 from django.utils import timezone #to retrieve the current time
 from django.core.exceptions import ObjectDoesNotExist #for checking if an object exists and raising an error if not
 
+"""
+    All but one class within this file have parameters that follow the pattern generics.xyzAPIVIEW.
+    This is because the classes use Django's prebuilt classes to provide common CRUD functionalities.
+    Django's generic views are prebuilt views that provide standard functionality for common operations.
+    These generic views already include the logic of returing the appropriate data and status codes. So it isn't explicitly coded within some of the Views within this file.
+    
+    These include:
+    - ListCreateAPIView: Used for listing and creating objects in a single view
+    - CreateAPIView: Used for handling the creation of an object
+    - DestroyAPIView: Used for handling the deletion of an object
+    - GenericAPIView: A base class for custom views, providing general functionality like handling HTTP methods
+    - RetrieveAPIView: Used for handling the retrieval of a single object
 
-class PlacementListCreate(generics.ListCreateAPIView): #view to list all placements for a user and allow creation of a new one, through django's generic view for creating objects
-    serializer_class = PlacementSerializers #use the placement serializer for this view
-    permission_classes = [IsAuthenticated] #only authenticated (logged in) users are allowed
+    
 
-    def get_queryset(self): #get placements that are associated with the logged in user
-        user = self.request.user #get the user making the request
-        placements = Placement.objects.filter(user=user) #from all placements within the db, return those where the user field is the user making the request
+    General Structure for Views:
+    
+    class Name(generics.xyzAPIView)                                 ---> the view the class uses based on Django's generics library
+        serializer_class = serializer                               ---> the serializer the view uses to validate incoming data and convert returns
+        permission_classes = [IsAuthenticated/AllowAny]             ---> the permission class defines who is allowed to access the view, authenticated users or anyone
+
+        def get_queryset(self)                                      ---> function that automatically defines the dataset the view works on
+            user = self.request.user                                ---> retrieve the user making the request
+            data = Object.objects.filter(user=user)                 ---> filter the objects where the foreign key USER matches the currently authenticated user
+            return data                                             ---> return the data for the class to use in it's logic
+    
+    
+    AUTHOR OF ALL VIEWS = UP2109066/b9sit
+"""
+
+
+class PlacementListCreate(generics.ListCreateAPIView): 
+    """
+        API view for listing all placements associated to an authenticated user as well as creating new placements.
+        Listing logic is already inbuilt within the generics.ListCreateAPIView.
+    """
+    serializer_class = PlacementSerializers
+    permission_classes = [IsAuthenticated] 
+
+    def get_queryset(self): 
+        user = self.request.user 
+        placements = Placement.objects.filter(user=user)
 
         return placements 
     
-    def perform_create(self, serializer): #save new placement and assign it to the logged in user making the request
-        if serializer.is_valid(): #if incoming data is valid by its serializer
+    def perform_create(self, serializer): #function for creating placement
+        if serializer.is_valid(): #if incoming data is valid according to the serializer
             serializer.save(user=self.request.user) #save placement where the user is the user making the request
         else:
             print(serializer.errors) #for debugging
 
-class PlacementDelete(generics.DestroyAPIView): #uses django's generic destroy api view to delete objects passed to it
-    serializer_class = PlacementSerializers #use the placement serializer for this view
-    permission_classes = [IsAuthenticated] #only authenticated (logged in) users are allowed
+class PlacementDelete(generics.DestroyAPIView): 
+    """
+        API view for deleing placements associated to an authenticated user.
+        Placement to be deleted is defined through the URL endpoint where the PK of the placement is included.
+    """
+    serializer_class = PlacementSerializers
+    permission_classes = [IsAuthenticated] 
 
     def get_queryset(self):
-        user = self.request.user #get user making the request
-        return Placement.objects.filter(user=user) #from all placements within the db, return those where the user field is the user making the request
+        user = self.request.user 
+        return Placement.objects.filter(user=user) 
 
 class CreateUserView(generics.CreateAPIView): #view to create users using django's generic view for creating objects
-    queryset = CustomUser.objects.all() #required for createAPIView but not really used
-    serializer_class = UserSerializers #use the user serializer for validation
-    permission_classes = [AllowAny] #allows any one to access this view
+    """
+        API view for creating a new user
+        View relies on checking whether the email and verification code provided by the user matches that within the user verification table for the inputted email.
+        This verification step is to ensure users sign up with their own emails.
 
-    def post(self, request, *args, **kwargs): #overrides default post value in order to add custom logic, *args = arguments & *kwargs = keyword arguments
+        View checks if verification code provided matches one gerneated for the given email
+        If valid, user is created, if not, an error response is returned with the relevant detail.
+    """
+    queryset = CustomUser.objects.all() 
+    serializer_class = UserSerializers 
+    permission_classes = [AllowAny] 
+
+    def post(self, request, *args, **kwargs): #overrides default post value in order to add custom logic
+        """
+            Custom POST method to handle user registration with the verification step.
+            Method retrieves the user's inputted email and verification code from the request data, validates the code against the database and ensures the code hasnt expired.
+            If successful, the user is created otherwise the relevant error is returned.
+
+            Params:
+            request: the request object containing the request data
+            *args: tuple of arguments passed to the method (not used but needs to be present)
+            **kwargs: dict of keyword arguments passed to the method (not used but needs to be present)
+
+            Returns:
+            If successful: new user created and response of 201 returned
+            If unsuccessful:
+                - Invalid email or verification code ---> Returns error 400 bad request with detail of invalid email or verification code
+                - Incorrect verificaation code ---> Returns error 400 bad request with detail of incorrect
+                - Expried verification code ---> Returens error 400 bad request with deatil of expired
+        """
         email = request.data.get("email") #get the email from the request's payload
         verification_code = request.data.get("verification_code") #get the code from the request's payload
         
-        print(f"THIS IS THE VERIFICATION CODE YOU SENT: {verification_code}") #this is for debugging
-        print(f"Type of verification code sent: {type(verification_code)}") #this is for debugging
-
         try: 
-            verification_entry = UserVerification.objects.get(email=email) #retrieve thee verification code generated for the user registering by retrieving it usingn the email from the payload
+            verification_entry = UserVerification.objects.get(email=email) #retrieve the verification code generated for the user registering by retrieving it usingn the email from the payload
         except UserVerification.DoesNotExist: #if nothing is fetched
             return Response({"detail": "Invalid email or verification code."}, status=status.HTTP_400_BAD_REQUEST) #return error 400 bad request with the detail of invalid email or verification code
-
-        print(f"THIS IS THE VERIFICATION CODE THAT SHOULD BE USED: {verification_entry.code}") #for debugging
-        print(f"Type of verification code in the database: {type(verification_entry.code)}") #for debugging
-        print(f"Verification entry: {verification_entry}") #for debugging
-        print(f"Valid until: {verification_entry.valid_until}") #for debugging
-        print(f"Current time: {timezone.now()}") #for debugging
 
         if verification_entry.code != verification_code: #if the code the user inputted is not equal to the one generated for them
             return Response({"detail": "incorrect"}, status=status.HTTP_400_BAD_REQUEST) #return error 400 bad request with detail incorrect
@@ -68,27 +122,41 @@ class CreateUserView(generics.CreateAPIView): #view to create users using django
         return super().post(request, *args, **kwargs) #if all good, then create the user
 
 class SendCode(generics.GenericAPIView): #generic api view with no built in create,update,delete methods
-    serializer_class = SendCodeSerializer #use sendcode serializer
-    permission_classes = [AllowAny] #allow any user to use this view
+    """
+        API view to send verification code to user's email
+        Logic is all within it's post method
+        View validates inbcoming email and send verification code if email is not already registered
+        
+        Handles updating and creation entries within UserVerification for the given email:
+            if an entry of the email within the database exists, updates the generated code, the time it was created and the expiration time otherwise creates a new entry with the necessary fields
 
-    def post(self, request): #post request
+        Sends verification code to user's email using Django's send_mail function
+
+        Returns:
+            On success: Status 200 with message: code sent successfully
+            On failure: error 400 bad request with detail "exists" -- for if an account has already successfully registered with the email
+    """
+    serializer_class = SendCodeSerializer 
+    permission_classes = [AllowAny] 
+
+    def post(self, request): 
         serializer = self.get_serializer(data=request.data) #validate incoming data using the sendcodes serlalizer
         serializer.is_valid(raise_exception=True) #check if incoming data is valid by serializer standard (if all fields are filled and appropriate) if not raise an exception
         email = serializer.validated_data["email"] #extract the email from the validated data (from the serializer)
 
         if CustomUser.objects.filter(email=email).exists(): #check if the user already exists using the email the user has inputted
-            return Response({"detail": "exists"}, status=status.HTTP_400_BAD_REQUEST) #if so return 400 bad request with detail exists
+            return Response({"detail": "exists"}, status=status.HTTP_400_BAD_REQUEST) 
 
         code = str(random.randint(10000, 99999)) #define the code that is generated for the user using random and is between 10000 and 99999
 
-        try: #if an entry exists, upate the code, created at and valid until fields (avoids duplication of entries and allows for an email to be used for sign up again if failed to sign up previously)
+        try: #try to do the fetch and update UserVerification entry
             verification_entry = UserVerification.objects.get(email=email) 
             verification_entry.code = code
-            verification_entry.created_at = timezone.now()  # update timestamp
-            verification_entry.valid_until = timezone.now() + timedelta(minutes=5) #update expiration date
+            verification_entry.created_at = timezone.now()  
+            verification_entry.valid_until = timezone.now() + timedelta(minutes=5) 
             verification_entry.save() #save the object
-        except ObjectDoesNotExist: #if the entry doesn't exist
-            verification_entry = UserVerification.objects.create( #create a new instance of UserVerification where the email is the email the user inputted, the code is the one generated previously, created at is the current time and its valid until 5 minutes from now
+        except ObjectDoesNotExist: #if the error is ObjectDoesNotExist
+            verification_entry = UserVerification.objects.create( 
                 email=email, code=code, created_at=timezone.now(), valid_until=timezone.now() + timedelta(minutes=5)
             )
 
@@ -105,21 +173,28 @@ class SendCode(generics.GenericAPIView): #generic api view with no built in crea
 
         return Response({"message": "Code sent successfully."}, status=200) #return status 200 meaning successful with the message being code sent successfuly
 
-class PlacementUpdate(generics.UpdateAPIView): #view to update placement objects using put and patch via django's prebuilt update api view
-    serializer_class = PlacementSerializers #use placement serializer
-    permission_classes = [IsAuthenticated] #only logged in users can access this view
+class PlacementUpdate(generics.UpdateAPIView): 
+    """
+        API view to update placement details for a specific user
+        View allows authenticated users to update their own placement information
+            
+        returns:
+        The updated placement object in the response body (status 200) 
+    """
+    serializer_class = PlacementSerializers 
+    permission_classes = [IsAuthenticated] 
 
     def get_queryset(self):
-        user = self.request.user #define user as the one making the request
-        return Placement.objects.filter(user=user) #to get the data that the user is working with, filter where the user field is the user variable defined above
+        user = self.request.user 
+        return Placement.objects.filter(user=user) 
     
-class ToDoListCreate(generics.ListCreateAPIView): #api view to list and create to do objests, param is django's prebuilt view allowing for listing and creation
-    serializer_class = ToDoSerializers #use to do serializer to validate data
-    permission_classes = [IsAuthenticated] #only logged in users can use this view
+class ToDoListCreate(generics.ListCreateAPIView): 
+    serializer_class = ToDoSerializers 
+    permission_classes = [IsAuthenticated] 
 
-    def get_queryset(self): #retrieve the data the view works with
-        user = self.request.user #get the user making the request
-        todos = ToDo.objects.filter(user=user) #use only their to do objects 
+    def get_queryset(self):
+        user = self.request.user 
+        todos = ToDo.objects.filter(user=user) 
 
         return todos
     
