@@ -1,8 +1,19 @@
 import "../styles/AddModal.css";
 import { useEffect, useState } from "react";
 
+/**
+ * Function for creating new placements and todo objects through a form
+ * 
+ * Params:
+ * UseState variables passed from parent function - Relevant to placements and todo objects e.g company = company of placement and todo object
+ * create parameter = function to trigger necessary endpoint to create placement/todo object
+ * toClose parameter = function to attatch to the close button in order to remove the AddModal from the screen
+ * type parameter = variable used to dictate what fields should be displayed (some placement fields aren't necessary for a todo object)
+ */
+
+
 function AddModal({
-  company,
+  company, 
   setCompany,
   role,
   setRole,
@@ -32,6 +43,7 @@ function AddModal({
   toClose,
   type,
 }) {
+  // Dropdown options for the "status" field
   const statusDropdown = [
     { label: "Applied", value: "applied" },
     { label: "Phone Interview", value: "phone_interview" },
@@ -42,8 +54,16 @@ function AddModal({
     { label: "Offer Made", value: "offer_made" },
   ];
 
+  /**
+   * Determines the CSS class name for the modal
+   * toDoModal is "todo-mod" if type is "todo" otherwise its an empty string 
+   */
   const todoModal = type === "todo" ? "todo-mod" : ""
 
+  /**
+   * Resets all form fields to their initial state
+   * Ensures that the form is cleared when the modal is opened since we are reusing UseState variables from the parent function
+   */
   const resetForm = () => {
     setCompany("");
     setRole("");
@@ -60,38 +80,46 @@ function AddModal({
     setDescription("");
   };
 
+  /**
+   * Runs the resetForm function when the component is rendered
+   * Ensures the form is cleared every time the modal is displayed
+   */
   useEffect(() => {
     resetForm();
   }, []);
 
+  /**
+   * State to control the fade-out animation when submitting a form successfully
+   */
   const [fadeOutSave, setFadeOutSave] = useState(false);
 
+    /**
+   * Handles the form submission
+   * 
+   * e param - The event object from the form submission. 
+   * e.preventDefault() - Prevents the default form submit behaviour (e.g. page load)
+   * setFadeOutSave(true)- Triggers a fade-out animation by setting fadeOutSave to true
+   * setTimeout(...  ) - Waits 100ms (for animation effect), then calls the create function passed from the parent
+   */
   const handleSubmit = (e) => {
     e.preventDefault();
     setFadeOutSave(true);
     setTimeout(() => {
       create(e);
-
-      console.log("Company:", company);
-      console.log("Role:", role);
-      console.log("Salary:", salary);
-      console.log("Starting Date:", startingDate);
-      console.log("Duration:", duration);
-      console.log("Deadline:", deadline);
-      console.log("Application Link:", applicationLink);
-      console.log("Date Applied:", dateApplied);
-      console.log("Status:", status);
-      console.log("CV:", cv ? cv.name : "No file uploaded");
-      console.log(
-        "Cover Letter:",
-        coverLetter ? coverLetter.name : "No file uploaded"
-      );
-      console.log("Contact:", contact);
-      console.log("Description:", description);
     }, 100);
   };
 
+   /**
+   * State to control the fade-out animation when closing the modal
+   */
   const [fadeOut, setFadeOut] = useState(false);
+  
+   /**
+   * Handles behaviour when closing modal
+   * 
+   * setFadeOut(true) - Sets fadeOut to true to trigger the fade-out animation
+   * setTimeout(...  ) - Waits 100ms before calling the toClose function from parent to remove the modal from the screen
+   */
   const handleClose = () => {
     setFadeOut(true);
     setTimeout(() => {
@@ -99,15 +127,30 @@ function AddModal({
     }, 100);
   };
 
+  /**
+   * Local state variables to handle the label attatched to the CV and CoverLetter fields
+   */
   const [cvName, setCvName] = useState("Choose CV");
   const [coverLetterName, setCoverLetterName] = useState("Choose Cover Letter");
 
+  /**
+   * Handles change event for CV file input
+   * 
+   * Extracts file from the input and updates cv state from props with the selected file
+   * Updates cvName state to show file name on the associated label
+   */
   const handleCvChange = (e) => {
     const file = e.target.files[0];
     setCv(file);
     setCvName(file ? file.name : "Choose CV");
   };
 
+  /**
+   * Handles change event for Cover Letter file input
+   * 
+   * Extracts file from the input and updates cover letter state from props with the selected file
+   * Updates coverLetterName state to show file name on the associated label
+   */
   const handleCoverLetterChange = (e) => {
     const file = e.target.files[0];
     setCoverLetter(file);
