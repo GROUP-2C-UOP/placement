@@ -2,17 +2,36 @@ import "../styles/AllNotifications.css";
 import Notification from "./Notification";
 import { useEffect, useState } from "react";
 
+/**
+ * Displays a tab within the nav bar that has all the in-app notifications
+ *
+ * Params:
+ * - setShowAllNotifications: useState function to close this tab
+ * - notifications: array of notification objects to display
+ * - getNotifications: function to fetch notifications
+ */
+
 function AllNotifications({
   setShowAllNotifications,
   notifications,
   getNotifications,
 }) {
+
+
+  /**
+   * On render, the getNotifications function is called to ensure user sees latest notifications everytime the tab is opened
+   */
   useEffect(() => {
     getNotifications();
   }, []);
 
+  //State for triggering fade out animation when closing tab
   const [fadeOut, setFadeOut] = useState(false);
 
+  /**
+   * Handles closing the tab
+   * Triggers fade out animation and after 200ms, hides the tab
+   */
   const handleClose = () => {
     setFadeOut(true);
     setTimeout(() => {

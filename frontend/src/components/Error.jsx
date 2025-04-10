@@ -1,6 +1,13 @@
 import { useEffect } from "react";
 import "../styles/Error.css";
 
+/**
+ * Displays error message that automatically disappears after 3 seconds, for usability purposes
+ *
+ * Params:
+ * - message: error text to be displayed
+ * - setShowError: useState function used to hide component
+ */
 function ErrorMessage({ message, setShowError }) {
     useEffect(() => {
         const timer = setTimeout(() => {
