@@ -3,7 +3,7 @@ import { useState } from "react";
 
 /**
  * Modal for handling filtering of placements and todos
- * 
+ *
  * Params:
  * - setShowFilter: useState function used to hide modal
  * - placementsInProgress: list, used for both todos and placements (all todos and placements are filtered by status in parent component)
@@ -16,7 +16,7 @@ function FilterModal({
   placementsInProgress,
   setFilterRoles,
   setIsFiltered,
-  filteredPlacementsInProgress, 
+  filteredPlacementsInProgress,
 }) {
   //Set of unique roles from the current placements/todos
   const placementRoles = new Set(placementsInProgress.map((p) => p.role));
@@ -24,12 +24,12 @@ function FilterModal({
   //States for fade out animation and selected roles
   const [fadeOutFilter, setFadeOutFilter] = useState(false);
   const [selectedRoles, setSelectedRoles] = useState(
-    new Set(filteredPlacementsInProgress?.map((p) => p.role) || []) 
+    new Set(filteredPlacementsInProgress?.map((p) => p.role) || [])
   );
 
-    /**
+  /**
    * Toggles selection of a role checkbox
-   * 
+   *
    * Takes the clicked role and either adds it to or removes it from the selectedRoles set, then updates the state with the new selection.
    */
   const handleRoleChange = (role) => {
@@ -44,26 +44,27 @@ function FilterModal({
 
   /**
    * Saves selected roles and applies filter
-   * 
+   *
    * If no roles selected, raises an alert
    * Otherwise triggers the fadeout animation and after 100ms, updates filter with the selected roles, sets the filter state to true and closes the filter modal
    */
   const handleSave = () => {
-    if (selectedRoles.size === 0) {
-      alert("Please select at least one role.");
-    } else {
-      setFadeOutFilter(true);
-      setTimeout(() => {
-        setFilterRoles([...selectedRoles]); 
+    setFadeOutFilter(true);
+    setTimeout(() => {
+      if (selectedRoles.size === 0) {
+        setFilterRoles([]); // no filter applied
+        setIsFiltered(false);
+      } else {
+        setFilterRoles([...selectedRoles]);
         setIsFiltered(true);
-        setShowFilter(false);
-      }, 100);
-    }
+      }
+      setShowFilter(false);
+    }, 100);
   };
 
   /**
    * Logic for closing the filter modal
-   * 
+   *
    * Triggers the fadeout animation and after 100ms sets showFilter to false to close the modal
    */
   const handleCloseFilter = () => {
@@ -75,14 +76,14 @@ function FilterModal({
 
   /**
    * Logic for clear button which clears all selected roles, resetting the filter
-   * 
+   *
    * Triggers the fade out animation and after 100ms. resets the selected roles, clears the filterroles list, sets isFiltered to false and closes the filter modal
    */
   const handleClearFilter = () => {
     setFadeOutFilter(true);
     setTimeout(() => {
-      setSelectedRoles(new Set()); 
-      setFilterRoles([]); 
+      setSelectedRoles(new Set());
+      setFilterRoles([]);
       setIsFiltered(false);
       setShowFilter(false);
     }, 100);
@@ -90,7 +91,10 @@ function FilterModal({
 
   return (
     <div id="overlay" className={fadeOutFilter ? "fade-out-filter" : ""}>
-      <div id="filter-modal-window" className={fadeOutFilter ? "fade-out-filter" : ""}>
+      <div
+        id="filter-modal-window"
+        className={fadeOutFilter ? "fade-out-filter" : ""}
+      >
         <button className="close-button" onClick={handleCloseFilter}>
           <img src="src/assets/close.svg" alt="Close" />
         </button>
@@ -105,8 +109,8 @@ function FilterModal({
               <label key={role}>
                 <input
                   type="checkbox"
-                  checked={selectedRoles.has(role)} 
-                  onChange={() => handleRoleChange(role)} 
+                  checked={selectedRoles.has(role)}
+                  onChange={() => handleRoleChange(role)}
                 />
                 {role}
               </label>
