@@ -101,12 +101,3 @@ Urls.py routes this endpoint to the TokenObtainPairView. The TokenObtainPairView
 
 4. App.jsx defines that when at "/" the Home page is rendered. The home page is wrapped within a ProtectedRoute component that checks if a user is authenticated with the right tokens before rendering the element wrapped within it. The tokens are valid so the home page is rendered and the user is logged in.
 
-
-# Git Instructions
-
-### Check User Requirements
-Check our Jira's project pages for the listed user requirements we should program for.
-
-### Branch Creation
-Please make a branch named after the feature you're working on and after it's been fully implemented we will merge it during our group meeting to ensure conflicts are solved without the loss of work
-
