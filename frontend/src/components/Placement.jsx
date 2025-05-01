@@ -3,6 +3,20 @@ import { useState } from "react";
 import PlacementModal from "./PlacementModal";
 import { icons } from "../constants";
 
+/**
+ * Placement component that displays individual placement cards; all brought together within placementspage.jsx
+ * 
+ * Props:
+ * - placement: Object containing all placement data
+ * - onDelete: fucntion for placement deletion
+ * - statusLabels: Object mapping status values to display labels
+ * - company...description: State values and setters for placement attributes
+ * - createPlacement: function for creating new placements inherited from parent
+ * - toClose: Function for closing the modal inherited from parent
+ * - getPlacements: function for getting all the placements; inherited from parent
+ * - isDashboard: Boolean indicating if placmeent is displayed on dashboard
+ * - placementType: String indicating placement status type; todo vs actual placement
+ */
 function Placement({
   placement,
   onDelete,
@@ -41,6 +55,7 @@ function Placement({
 }) {
   const [selectedPlacement, setSelectedPlacement] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  //dynamically setting the classes based on whether it the placement is displayed on the dashboard or not
   const containerClass = isDashboard
     ? "placement-container-dashboard"
     : "placement-container-home";
@@ -61,6 +76,7 @@ function Placement({
     setShowModal(false);
   };
 
+  //function for calculating the days remaining for the deadline; takes the placement object containing the deadline info and returns a formatted remaining time string in days
   const calculateRemaining = (placement) => {
     const today = new Date();
     const deadlineDate = new Date(placement.next_stage_deadline);
@@ -91,6 +107,7 @@ function Placement({
     return `${daysRemaining} Days`;
   };
 
+  //function for determining the css class based on deadline, for applying the appropriate colour to the days remaining column
   const getDeadlineClass = (placement) => {
     const remainingTime = calculateRemaining(placement);
 

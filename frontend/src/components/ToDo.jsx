@@ -5,6 +5,15 @@ import { icons } from "../constants";
 import ConfirmationModal from "./ConfirmationModal";
 import api from "../api";
 
+/**
+ * Displays and manages individual todo items -- similair structure to placement component
+ * 
+ * Props:
+ * - todo: todo object containing relevant data
+ * - onDelete: handles todo deletion
+ * - getToDos: handles fetching all todos
+ * - isDashboard: Boolean indicating if on dashboard
+ */
 function ToDo({
   todo,
   onDelete,
@@ -45,6 +54,7 @@ function ToDo({
   const spacing = type === "dashboard" ? "tdds" : "to-do-home-spacing"
   const checkOffContSpacing = type === "dashboard" ? "dashboard-checkoff-cont" : "checkoff-container"
 
+  //similiar to placement component, calculates days remaning to apply for the to do placement
   const calculateRemaining = (placement) => {
     const today = new Date();
     const deadlineDate = new Date(placement.next_stage_deadline);
@@ -62,6 +72,10 @@ function ToDo({
     setShowModal(false);
   };
 
+  /**
+   * Converts todo object to a placement object by creating new placement record
+   * Uses current date as application date
+   */
   const createPlacement = () => {
     const formData = new FormData();
     const today = new Date();

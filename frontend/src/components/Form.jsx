@@ -5,6 +5,14 @@ import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 import ErrorMessage from "./Error";
 import "../styles/Form.css";
 
+/**
+ * Form component for handling login/registration
+ *
+ * Params:
+ * - route: API endpoint for form submission
+ * - method: "login" or "register
+ */
+
 function Form({ route, method }) {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -17,8 +25,25 @@ function Form({ route, method }) {
   const [verificationSent, setVerificationSent] = useState(false);
   const navigate = useNavigate();
 
+  // for dynamically displaying within the actual form 
   const typename = method === "login" ? "Login" : "Register";
 
+  /**
+   * Handles form submission for both login and registration
+   *
+   * For registration:
+   * - sends verification email if not already sent
+   * - submits registration with verification code
+   *
+   * For login:
+   * - submits credentials
+   *
+   * On success:
+   * - For login: stores tokens and navigates to home
+   * - For registration: navigates to login page
+   *
+   * On error: sets showError to true in order to render in the error.jsx component with the appropriate values
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
 

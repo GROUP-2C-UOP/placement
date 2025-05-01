@@ -4,12 +4,21 @@ import { useState, useEffect, useRef } from "react";
 import AllNotifications from "./AllNotifications";
 import api from "../api";
 
+/**
+ * Navigation bar component used within layout component.
+ * 
+ * Holds the main navigation links to all pages
+ * Holds the notifications dropdown box for all notifications unread
+ * Has profile picture display
+ *
+ */
 function NavBar() {
   const [showAllNotifications, setShowAllNotifications] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [profile, setProfile] = useState("");
   const notificationsRef = useRef(null);
 
+  //on page load fetch all notifications and the profile picture of the user
   useEffect(() => {
     getNotifications();
     getProfilePicture();
@@ -36,6 +45,7 @@ function NavBar() {
     };
   }, [showAllNotifications]);
 
+  //function for fetching all notifications of the user and filtering to get those marked as unread through the notifications boolean attribute "read"
   const getNotifications = () => {
     api
       .get("/api/notifications/")
@@ -49,6 +59,7 @@ function NavBar() {
       .catch((err) => alert(err));
   };
 
+  //function for fetching the users profile picture and setting it as the state variable setProfile
   const getProfilePicture = () => {
     api
       .get("/api/account/picture/")

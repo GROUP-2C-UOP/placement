@@ -4,6 +4,9 @@ import { useState, useEffect } from "react";
 import ConfirmationModal from "./ConfirmationModal.jsx";
 import api from "../api";
 
+/**
+ * Modal component for viewing aand editing all of placement/todo details
+ */
 function PlacementModal({
   placement,
   getPlacements,
@@ -50,6 +53,7 @@ function PlacementModal({
   const spacingClass = isDashboard ? "dashboard-spacing" : "home-spacing";
   const todoModal = type === "todo" ? "todo-mod" : "";
 
+  //status options for the dropdown when editing a placement/todo
   const statusDropdown = [
     { label: "Applied", value: "applied" },
     { label: "Phone Interview", value: "phone_interview" },
@@ -60,6 +64,7 @@ function PlacementModal({
     { label: "Offer Made", value: "offer_made" },
   ];
 
+  //form data object
   const updatedData = {
     company,
     role,
@@ -76,6 +81,7 @@ function PlacementModal({
     description,
   };
 
+  //resets all form fields to empty values, called once an action is completed
   const resetForm = () => {
     setCompany("");
     setRole("");
@@ -115,6 +121,9 @@ function PlacementModal({
     }, 100);
   };
 
+   /**
+   * Prepares form data for submission creating a new instance of form data and extracts the updated data from the form object declared above "updatedData". returns the newly declared FormData with the updated data
+   */
   const check = () => {
     let formData = new FormData();
   
@@ -132,6 +141,12 @@ function PlacementModal({
   };
   
 
+   /**
+   * Updates a placement via API
+   * id = the id of the placement being updated
+   * getPlacements = function to get placements, called to refresh the data once a placement is updated
+   * setShowModal = function to control the visibility of the componment itself
+   */
   const updatePlacement = (id, getPlacements, setShowModal) => {
     const modifiedFields = check();
 
@@ -155,6 +170,7 @@ function PlacementModal({
       });
   };
 
+  //same thing but for the to do object
   const updateToDo = (id, getPlacements, setShowModal) => {
     const modifiedFields = check();
 
@@ -191,12 +207,14 @@ function PlacementModal({
   const [cvName, setCvName] = useState("Choose CV");
   const [coverLetterName, setCoverLetterName] = useState("Choose Cover Letter");
 
+  // handles cv change where on input change event, updates the state cv to be the newly selected file
   const handleCvChange = (e) => {
     const file = e.target.files[0];
     setCv(file);
     setCvName(file ? file.name : "Choose CV");
   };
 
+    // handles cover letter change where on input change event, updates the state coverLetter to be the newly selected file
   const handleCoverLetterChange = (e) => {
     const file = e.target.files[0];
     setCoverLetter(file);

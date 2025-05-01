@@ -2,7 +2,22 @@ import "../styles/Notification.css";
 import { statusLabels } from "../constants";
 import api from "../api";
 
+/**
+ * single notification component to display for a single upcoming application /todo
+ *
+ * Props:
+ * - notification: Object containing notification data 
+ * - getNotifications: function to refresh notifications after an update
+ *
+ * - displays application status with company name and due date
+ * - displays creation timestamp
+ * - delete functionality to mark notification as read
+ */
 function Notification({ notification, getNotifications }) {
+
+  /**
+   * sneds a patch request to update a notifications values in order for it to be declared as read and emailed to be ignored in the future
+   */
   const deleteNotification = (notification) => {
     api
       .patch(`/api/notifications/update/${notification.id}/`, { read: true, emailed: true })
@@ -15,6 +30,7 @@ function Notification({ notification, getNotifications }) {
       });
   };
 
+  //helper function to format the time
   const formatDateTime = (rawDateTime) => {
     const date = new Date(rawDateTime);
     return date

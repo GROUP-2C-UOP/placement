@@ -3,6 +3,16 @@ import api from "../api";
 import { statusLabels } from "../constants";
 import { useState } from "react";
 
+/**
+ * Popup component for displaying placement notifications
+ *
+ * Props:
+ * - setShowSingleNoti: fucntion controlling the visibility of a single notification
+ * - singleNotification: Object containing data for a single notification
+ * - toShowNotifications: Array of notifications to display 
+ * - setShowNoti: function to control visibility of the notification popup
+ */
+
 function NotificationsPopUp({
   setShowSingleNoti,
   singleNotification,
@@ -16,6 +26,11 @@ function NotificationsPopUp({
 }) {
   const [fadeOutPopUp, setFadeOutPopUp] = useState(false);
 
+
+   /**
+   * Triggers fade-out animation and closes after delay
+   * Updates notification status in backend after closing
+   */
   const closeNoti = () => {
     setFadeOutPopUp(true);
     setTimeout(() => {
@@ -28,6 +43,10 @@ function NotificationsPopUp({
     }, 200);
   };
 
+    /**
+   * Updates notification status in backend when dismissed through api call changing the notification's shown attribute to true
+   * done seperately for multiple and single notifications through dictating whether the type param is present
+   */
   const updateNotiShown = () => {
     if (type) {
       const updatedNotifications = toShowNotifications.map((notification) => ({

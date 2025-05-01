@@ -5,6 +5,13 @@ import { REFRESH_TOKEN } from "../constants";
 import { ACCESS_TOKEN } from "../constants";
 import { useState, useEffect } from "react";
 
+/**
+ * Wrapper to wrap all pages that need to be accessed through log in
+ * checks for valid access token on load and automatically refreshes expired tokens
+ * if unauthorised, taken to login page
+ * 
+ *  
+ */
 function ProtectedRoute({ children }) {
   const [isAuthorized, setIsAuthorized] = useState(null);
 
@@ -12,6 +19,11 @@ function ProtectedRoute({ children }) {
     auth().catch(() => setIsAuthorized(false));
   }, []);
 
+  /**
+   * Accesses local storage to get the refresh token and attempts to refresh the access token using the refresh token.
+   * Updaytes the access token within local storage on success
+   * Sets authorisation state based on result
+   */
   const refreshToken = async () => {
     const refreshToken = localStorage.getItem(REFRESH_TOKEN);
     try {
@@ -30,6 +42,12 @@ function ProtectedRoute({ children }) {
     }
   };
 
+  /**
+   * Checks for access token 
+   * Validates token expiration
+   * Refreshes if expired
+   * Sets authorization state
+   */
   const auth = async () => {
     const token = localStorage.getItem(ACCESS_TOKEN);
     if (!token) {
@@ -51,6 +69,7 @@ function ProtectedRoute({ children }) {
     return <div>Loading...</div>;
   }
 
+  //if authorised, show the page otherwise redirect to the login page
   return isAuthorized ? children : <Navigate to="/login" />;
 }
 
