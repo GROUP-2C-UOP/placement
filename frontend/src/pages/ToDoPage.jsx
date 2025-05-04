@@ -118,6 +118,7 @@ function ToDoPage() {
       .delete(`/api/todos/delete/${id}/`)
       .then((res) => {
         if (res.status === 204) {
+          console.log(`ToDo ID:, ${id}`);
           console.log("ToDo deleted successfully");
         } else alert("Error deleting Todo");
         getToDos();

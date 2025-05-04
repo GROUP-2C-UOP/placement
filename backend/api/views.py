@@ -110,52 +110,48 @@ class PlacementDelete(generics.DestroyAPIView):
         user = self.request.user 
         return Placement.objects.filter(user=user) 
 
-class CreateUserView(generics.CreateAPIView): #view to create users using django's generic view for creating objects
+from rest_framework import serializers
+
+class CreateUserView(generics.CreateAPIView):
     """
-        API view for creating a new user
-        View relies on checking whether the email and verification code provided by the user matches that within the user verification table for the inputted email.
-        This verification step is to ensure users sign up with their own emails.
-
-        View checks if verification code provided matches one gerneated for the given email
-        If valid, user is created, if not, an error response is returned with the relevant detail.
+    API view for creating a new user.
+    This view checks whether the email and verification code provided by the user matches
+    the verification table for the inputted email.
     """
-    queryset = CustomUser.objects.all() 
-    serializer_class = UserSerializers 
-    permission_classes = [AllowAny] 
+    queryset = CustomUser.objects.all()
+    serializer_class = UserSerializers
+    permission_classes = [AllowAny]
 
-    def post(self, request, *args, **kwargs): #overrides default post value in order to add custom logic
+    def post(self, request, *args, **kwargs):
         """
-            Custom POST method to handle user registration with the verification step.
-            Method retrieves the user's inputted email and verification code from the request data, validates the code against the database and ensures the code hasnt expired.
-            If successful, the user is created otherwise the relevant error is returned.
-
-            Params:
-            request: the request object containing the request data
-            *args: tuple of arguments passed to the method (not used but needs to be present)
-            **kwargs: dict of keyword arguments passed to the method (not used but needs to be present)
-
-            Returns:
-            If successful: new user created and response of 201 returned
-            If unsuccessful:
-                - Invalid email or verification code ---> Returns error 400 bad request with detail of invalid email or verification code
-                - Incorrect verificaation code ---> Returns error 400 bad request with detail of incorrect
-                - Expried verification code ---> Returens error 400 bad request with deatil of expired
+        Custom POST method to handle user registration with the verification step.
+        Validates the provided email, verification code, and the user fields before creation.
         """
-        email = request.data.get("email") #get the email from the request's payload
-        verification_code = request.data.get("verification_code") #get the code from the request's payload
-        
-        try: 
-            verification_entry = UserVerification.objects.get(email=email) #retrieve the verification code generated for the user registering by retrieving it usingn the email from the payload
-        except UserVerification.DoesNotExist: #if nothing is fetched
-            return Response({"detail": "Invalid email or verification code."}, status=status.HTTP_400_BAD_REQUEST) #return error 400 bad request with the detail of invalid email or verification code
+        email = request.data.get("email")
+        verification_code = request.data.get("verification_code")
 
-        if verification_entry.code != verification_code: #if the code the user inputted is not equal to the one generated for them
-            return Response({"detail": "incorrect"}, status=status.HTTP_400_BAD_REQUEST) #return error 400 bad request with detail incorrect
-        
-        if timezone.now() > verification_entry.valid_until: #if the current time (when the view is called upon) is later than the expiration time of the generated code
-            return Response({"detail": "expired"}, status=status.HTTP_400_BAD_REQUEST) #return error 400 bad request with detail expired
-        
-        return super().post(request, *args, **kwargs) #if all good, then create the user
+        # Check for empty fields first
+        if not email or not verification_code:
+            return Response({"detail": "Email and verification code are required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Check if the user already exists
+        if CustomUser.objects.filter(email=email).exists():
+            return Response({"detail": "Email already in use."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            verification_entry = UserVerification.objects.get(email=email)
+        except UserVerification.DoesNotExist:
+            return Response({"detail": "Invalid email or verification code."}, status=status.HTTP_400_BAD_REQUEST)
+
+        if verification_entry.code != verification_code:
+            return Response({"detail": "Incorrect verification code."}, status=status.HTTP_400_BAD_REQUEST)
+
+        if timezone.now() > verification_entry.valid_until:
+            return Response({"detail": "Verification code has expired."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Now proceed to create the user after validation
+        return super().post(request, *args, **kwargs)
+
 
 class SendCode(generics.GenericAPIView): #generic api view with no built in create,update,delete methods
     """
@@ -241,6 +237,7 @@ class ToDoListCreate(generics.ListCreateAPIView):
             print(serializer.errors) 
 
 class ToDoDelete(generics.DestroyAPIView):
+    print("ToDo deleted successfully", generics.DestroyAPIView)
     """
         API View to delete ToDo objects
     """

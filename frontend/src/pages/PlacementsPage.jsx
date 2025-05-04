@@ -60,7 +60,7 @@ function PlacementsPage() {
   }, []);
 
   useEffect(() => {
-    getNotificationStatus(); 
+    getNotificationStatus();
   }, []);
 
   useEffect(() => {
@@ -117,7 +117,7 @@ function PlacementsPage() {
         filterRoles.includes(placement.role)
     );
     setFilteredPlacementsInProgress(pip);
-    return pip
+    return pip;
   };
 
   const placementsRej = () => {
@@ -140,6 +140,7 @@ function PlacementsPage() {
       .delete(`/api/placements/delete/${id}/`)
       .then((res) => {
         if (res.status === 204) {
+          console.log(`Placement id: ${id}`);
           console.log("Placement deleted successfully");
         } else alert("Error deleting placement");
         getPlacements();
@@ -212,7 +213,7 @@ function PlacementsPage() {
         .then((res) => res.data)
         .then((data) => {
           setNotifications(data);
-        
+
           const filteredNotifications = data.filter(
             (notification) => !notification.shown && notification.status //notification status so only placement notifications are used
           );
@@ -475,7 +476,7 @@ function PlacementsPage() {
         </div>
 
         <h2 className="placement-subtitle">
-        <span id="re">Rejected</span>
+          <span id="re">Rejected</span>
         </h2>
         <div className="header-containerrr">
           <table>

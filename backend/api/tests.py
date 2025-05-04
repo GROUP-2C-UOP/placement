@@ -1,3 +1,262 @@
 from django.test import TestCase
+from django.urls import reverse
+from django.contrib.auth import get_user_model
+from api.models import UserVerification
+from django.utils import timezone
+from datetime import timedelta
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.core.files.uploadedfile import SimpleUploadedFile
 
-# Create your tests here.
+User = get_user_model()
+
+class AuthenticationTests(TestCase):
+
+    def setUp(self):
+        # Use different emails for register vs login
+        self.register_email = "jebok57537@bocapies.com" #Must Change after every test run
+        self.login_email = "nehike3771@firain.com" #Must be independent from register email
+        self.verification_code = "12345"
+
+        # Verification code for registration
+        self.user = UserVerification.objects.create(
+            email=self.register_email,
+            code=self.verification_code,
+            created_at=timezone.now(),
+            valid_until=timezone.now() + timedelta(minutes=5)
+        )
+
+        # Create user for login test only
+        User.objects.create_user(
+            username="loginuser123",
+            email=self.login_email,
+            password="LoginPassword123"
+        )
+
+        # Generate JWT token for authenticated requests
+        refresh = RefreshToken.for_user(self.user)
+        self.access_token = str(refresh.access_token)
+
+
+        self.auth_headers = {
+            'HTTP_AUTHORIZATION': f'Bearer {self.access_token}'
+        }
+
+
+    # def test_register_valid_user(self):
+    #     response = self.client.post("/api/user/register/", {
+    #         "email": self.register_email,
+    #         "password": "TestPassword123",
+    #         "first_name": "Declan",
+    #         "last_name": "Mannion",
+    #         "verification_code": self.verification_code
+    #     }, content_type="application/json")
+    #     print(response.content)
+    #     self.assertEqual(response.status_code, 201)
+
+    # def test_register_empty_fields(self):
+    #     response = self.client.post('/api/user/register/', {}, content_type='application/json')
+    #     self.assertEqual(response.status_code, 400)
+    #     self.assertIn('detail', response.json())
+    #     self.assertEqual(response.json()['detail'], 'Email and verification code are required.')
+
+    # def test_register_invalid_email(self):
+    #     response = self.client.post('/api/user/register/', {
+    #         'email': 'invalidemail',
+    #         'password': 'Password123',
+    #         'verification_code': '123456',
+    #         'first_name': 'Declan',
+    #         'last_name': 'Mannion',
+    #     }, content_type='application/json')
+    #     self.assertEqual(response.status_code, 400)
+    #     self.assertIn('detail', response.json())
+    #     self.assertEqual(response.json()['detail'], 'Invalid email or verification code.')
+
+    # def test_register_existing_email(self):
+    #     # This email is pre-registered for login
+    #     response = self.client.post('/api/user/register/', {
+    #         'email': self.login_email,
+    #         'password': 'AnotherPassword123',
+    #         'verification_code': '123456',
+    #         'first_name': 'Declan',
+    #         'last_name': 'Mannion',
+    #     }, content_type='application/json')
+    #     self.assertEqual(response.status_code, 400)
+    #     self.assertIn('detail', response.json())
+    #     self.assertEqual(response.json()['detail'], 'Email already in use.')
+
+############################# LOGIN ##############################
+
+    # def test_login_valid_user(self):
+    #     response = self.client.post(reverse('token_obtain_pair'), {
+    #         'email': self.login_email,
+    #         'password': 'LoginPassword123',
+    #     }, content_type='application/json')
+    #     self.assertEqual(response.status_code, 200)
+    #     self.assertIn('access', response.json())
+    #     self.assertIn('refresh', response.json())
+
+
+    # def test_login_invalid_password(self):
+    #         response = self.client.post(reverse('token_obtain_pair'), {
+    #             'email': self.login_email,
+    #             'password': 'InvalidPassword',
+    #         }, content_type='application/json')
+    #         self.assertEqual(response.status_code, 401)
+    #         self.assertIn('detail', response.json())
+
+
+    # def test_login_empty_fields(self):
+    #         response = self.client.post(reverse('token_obtain_pair'), {
+    #             'email': '',
+    #             'password': '',
+    #         }, content_type='application/json')
+    #         self.assertEqual(response.status_code, 400)
+    #         self.assertIn('email', response.json())
+    #         self.assertIn('password', response.json())
+
+
+    # def test_login_invalid_email(self):
+    #         response = self.client.post(reverse('token_obtain_pair'), {
+    #             'email': 'invalidEmail',
+    #             'password': 'ILOVEYOUBASIT2',
+    #         }, content_type='application/json')
+    #         self.assertEqual(response.status_code, 401)
+    #         self.assertIn('detail', response.json())
+
+
+    # def test_login_nonRegistered_user(self):
+    #         response = self.client.post(reverse('token_obtain_pair'), {
+    #             'email': 'userEmail@example.com',
+    #             'password': 'LoginPassword123',
+    #         }, content_type='application/json')
+    #         self.assertEqual(response.status_code, 401) # 200 previous
+    #         self.assertIn('detail', response.json())
+
+    def test_create_placement(self):
+            cv_file = SimpleUploadedFile("cv.pdf", b"Fake CV Content", content_type="application/pdf")
+            coverLetter_file = SimpleUploadedFile("coverLetter.pdf", b"Fake CV Content", content_type="application/pdf")
+            response = self.client.post('/api/placements/', {
+                'company': 'Apple',
+                'role': 'Intern',
+                'salary': '20000',
+                'starting_date': '2025-09-06',
+                'duration': '5',
+                'next_stage_deadline': '2025-06-05',
+                'placement_link': 'https://www.youtube.com/',
+                'date_applied': '2025-04-02',
+                'status': 'applied',
+                'contact': '07566688344',
+                'cv': cv_file,
+                'cover_letter': coverLetter_file,
+                'description': ''
+            }, 
+            **self.auth_headers
+        )
+            self.assertEqual(response.status_code, 201)
+            self.assertIn('id', response.json())
+
+    def test_create_placement_invalidURL(self):
+                cv_file = SimpleUploadedFile("cv.pdf", b"Fake CV Content", content_type="application/pdf")
+                coverLetter_file = SimpleUploadedFile("coverLetter.pdf", b"Fake CV Content", content_type="application/pdf")
+                response = self.client.post('/api/placements/', {
+                    'company': 'Apple',
+                    'role': 'Intern',
+                    'salary': '20000',
+                    'starting_date': '2025-09-03',
+                    'duration': '5',
+                    'next_stage_deadline': '2025-06-04',
+                    'placement_link': 'youtube',
+                    'date_applied': '2025-04-03',
+                    'status': 'applied',
+                    'contact': '07566688344',
+                    'cv': cv_file,
+                    'cover_letter': coverLetter_file,
+                    'description': ''
+                }, 
+            **self.auth_headers
+        )
+                self.assertEqual(response.status_code, 400)
+                self.assertIn('placement_link', response.json())
+
+    def test_create_placement_invalidSalary(self):
+                cv_file = SimpleUploadedFile("cv.pdf", b"Fake CV Content", content_type="application/pdf")
+                coverLetter_file = SimpleUploadedFile("coverLetter.pdf", b"Fake CV Content", content_type="application/pdf")
+                response = self.client.post('/api/placements/', {
+                    'company': 'Apple',
+                    'role': 'Intern',
+                    'salary': 'Money',
+                    'starting_date': '2025-09-06',
+                    'duration': '5',
+                    'next_stage_deadline': '2025-06-05',
+                    'placement_link': 'https://www.youtube.com/',
+                    'date_applied': '2025-04-02',
+                    'status': 'applied',
+                    'contact': '07566688344',
+                    'cv': cv_file,
+                    'cover_letter': coverLetter_file,
+                    'description': ''
+                }, 
+                **self.auth_headers
+            )
+                self.assertEqual(response.status_code, 400)
+                self.assertIn('salary', response.json())
+
+
+    def test_create_placement_pastDeadline(self):
+            cv_file = SimpleUploadedFile("cv.pdf", b"Fake CV Content", content_type="application/pdf")
+            coverLetter_file = SimpleUploadedFile("coverLetter.pdf", b"Fake CV Content", content_type="application/pdf")
+            response = self.client.post('/api/placements/', {
+                'company': 'Apple',
+                'role': 'Intern',
+                'salary': '20000',
+                'starting_date': '2025-09-06',
+                'duration': '5',
+                'next_stage_deadline': '2023-06-05',
+                'placement_link': 'https://www.youtube.com/',
+                'date_applied': '2025-04-02',
+                'status': 'applied',
+                'contact': '07566688344',
+                'cv': cv_file,
+                'cover_letter': coverLetter_file,
+                'description': ''
+            }, 
+            **self.auth_headers
+        )
+            self.assertEqual(response.status_code, 201)
+            self.assertEqual(response.json()['next_stage_deadline'], '2023-06-05')
+
+    def test_create_placement_emptyFields(self):
+        payload = {
+            'company': '',
+            'role': '',
+            'salary': '',
+            'starting_date': '',
+            'duration': '',
+            'next_stage_deadline': '',
+            'placement_link': '',
+            'date_applied': '',
+            'status': '',
+            'contact': '',
+            'cv': '',
+            'cover_letter': '',
+            'description': ''
+        }
+
+        response = self.client.post('/api/placements/', payload, **self.auth_headers)
+        self.assertEqual(response.status_code, 400)
+
+        errors = response.json()
+
+        expected_errors = {
+            'company': 'This field may not be blank.',
+            'role': 'This field may not be blank.',
+            'date_applied': 'Date has wrong format'  # Partial match for format error
+        }
+
+        for field, expected_message in expected_errors.items():
+            self.assertIn(field, errors, msg=f"Missing error for field: {field}")
+            self.assertTrue(
+                any(expected_message in msg for msg in errors[field]),
+                msg=f"Expected error containing '{expected_message}' for field: {field}, got: {errors[field]}"
+            )
+

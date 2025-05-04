@@ -21,12 +21,37 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer #impo
 
 """
 
+from rest_framework import serializers
+from django.contrib.auth import get_user_model
+
+User = get_user_model()  # This retrieves the user model you are using (CustomUser or default User)
+
 class UserSerializers(serializers.ModelSerializer):
-    profile_picture = serializers.ImageField(required=False) #dont make prof pic required for serialization
-    class Meta: 
-        model = CustomUser 
-        fields = ["id", "email", "password", "first_name", "last_name", "profile_picture"] 
-        extra_kwargs = {"password": {"write_only": True}} #extra keyword argument for password is that it is write only and cannot be read, enforced for security
+    class Meta:
+        model = User  # Use your CustomUser model if you're not using Django's default User
+        fields = ['email', 'password', 'first_name', 'last_name']
+        extra_kwargs = {
+            'password': {'write_only': True},  # Make sure password is not exposed in responses
+        }
+
+    # Custom validation for the email field
+    def validate_email(self, value):
+        if not value:
+            raise serializers.ValidationError("Email is required.")
+        # Optional: Additional check for email format or uniqueness
+        if CustomUser.objects.filter(email=value).exists():
+            raise serializers.ValidationError("Email already exists.")
+        return value
+
+    # Custom validation for the password field
+    def validate_password(self, value):
+        if not value:
+            raise serializers.ValidationError("Password is required.")
+        # You can add more password rules here (like length, strength, etc.)
+        if len(value) < 8:
+            raise serializers.ValidationError("Password should be at least 8 characters.")
+        return value
+
 
     def create(self, validated_data):
         email = validated_data.pop("email")  # extract email to set as username

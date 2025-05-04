@@ -126,7 +126,7 @@ function PlacementModal({
    */
   const check = () => {
     let formData = new FormData();
-  
+
     for (const field in updatedData) {
       if (
         (field === "description" || updatedData[field] !== "") &&
@@ -136,10 +136,9 @@ function PlacementModal({
         formData.append(field, updatedData[field]);
       }
     }
-  
+
     return formData;
   };
-  
 
    /**
    * Updates a placement via API
@@ -158,6 +157,7 @@ function PlacementModal({
       })
       .then((res) => {
         if (res.status === 200 || res.status === 204) {
+          console.log(`Placement id: ${id} field:`);
           console.log("Placement Updated");
           getPlacements();
           handleClose();
@@ -458,9 +458,7 @@ function PlacementModal({
                 type="text"
                 id="description"
                 name="description"
-                onChange={(e) =>
-                  setDescription(e.target.value)
-                }
+                onChange={(e) => setDescription(e.target.value)}
                 value={description}
               />
             </div>
