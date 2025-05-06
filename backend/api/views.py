@@ -403,15 +403,20 @@ class PasswordUpdate(generics.UpdateAPIView):
             return Response({"message": "Password updated successfully"}, status=status.HTTP_200_OK) #if worked then return 200 successful
         return Response({"message": "Password not provided"}, status=status.HTTP_400_BAD_REQUEST) #if not then return 400 bad request
     
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
+from .serializers import UserSerializers
+
 class UserUpdate(generics.UpdateAPIView):
     """
-        API View to update any of a user's fields
+    API View to update any of a user's fields, including profile_picture.
     """
-    serializer_class = UserSerializers 
+    serializer_class = UserSerializers
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
-        return self.request.user 
+        return self.request.user  # Return the current authenticated user
+
     
 class NotificationListCreate(generics.ListCreateAPIView): #view for listing and creating notification objects using django's list create api view
     """

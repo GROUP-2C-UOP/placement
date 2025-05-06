@@ -6,6 +6,8 @@ from django.utils import timezone
 from datetime import timedelta
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.core.files.uploadedfile import SimpleUploadedFile
+import json
+
 
 User = get_user_model()
 
@@ -13,8 +15,8 @@ class AuthenticationTests(TestCase):
 
     def setUp(self):
         # Use different emails for register vs login
-        self.register_email = "jebok57537@bocapies.com" #Must Change after every test run
-        self.login_email = "nehike3771@firain.com" #Must be independent from register email
+        self.register_email = "jebok59997@bocapies.com" #Must Change after every test run
+        self.login_email = "nehike39991@firain.com" #Must be independent from register email
         self.verification_code = "12345"
 
         # Verification code for registration
@@ -28,7 +30,7 @@ class AuthenticationTests(TestCase):
         # Create user for login test only
         User.objects.create_user(
             username="loginuser123",
-            email=self.login_email,
+            email=self.register_email,
             password="LoginPassword123"
         )
 
@@ -41,96 +43,7 @@ class AuthenticationTests(TestCase):
             'HTTP_AUTHORIZATION': f'Bearer {self.access_token}'
         }
 
-
-    # def test_register_valid_user(self):
-    #     response = self.client.post("/api/user/register/", {
-    #         "email": self.register_email,
-    #         "password": "TestPassword123",
-    #         "first_name": "Declan",
-    #         "last_name": "Mannion",
-    #         "verification_code": self.verification_code
-    #     }, content_type="application/json")
-    #     print(response.content)
-    #     self.assertEqual(response.status_code, 201)
-
-    # def test_register_empty_fields(self):
-    #     response = self.client.post('/api/user/register/', {}, content_type='application/json')
-    #     self.assertEqual(response.status_code, 400)
-    #     self.assertIn('detail', response.json())
-    #     self.assertEqual(response.json()['detail'], 'Email and verification code are required.')
-
-    # def test_register_invalid_email(self):
-    #     response = self.client.post('/api/user/register/', {
-    #         'email': 'invalidemail',
-    #         'password': 'Password123',
-    #         'verification_code': '123456',
-    #         'first_name': 'Declan',
-    #         'last_name': 'Mannion',
-    #     }, content_type='application/json')
-    #     self.assertEqual(response.status_code, 400)
-    #     self.assertIn('detail', response.json())
-    #     self.assertEqual(response.json()['detail'], 'Invalid email or verification code.')
-
-    # def test_register_existing_email(self):
-    #     # This email is pre-registered for login
-    #     response = self.client.post('/api/user/register/', {
-    #         'email': self.login_email,
-    #         'password': 'AnotherPassword123',
-    #         'verification_code': '123456',
-    #         'first_name': 'Declan',
-    #         'last_name': 'Mannion',
-    #     }, content_type='application/json')
-    #     self.assertEqual(response.status_code, 400)
-    #     self.assertIn('detail', response.json())
-    #     self.assertEqual(response.json()['detail'], 'Email already in use.')
-
-############################# LOGIN ##############################
-
-    # def test_login_valid_user(self):
-    #     response = self.client.post(reverse('token_obtain_pair'), {
-    #         'email': self.login_email,
-    #         'password': 'LoginPassword123',
-    #     }, content_type='application/json')
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertIn('access', response.json())
-    #     self.assertIn('refresh', response.json())
-
-
-    # def test_login_invalid_password(self):
-    #         response = self.client.post(reverse('token_obtain_pair'), {
-    #             'email': self.login_email,
-    #             'password': 'InvalidPassword',
-    #         }, content_type='application/json')
-    #         self.assertEqual(response.status_code, 401)
-    #         self.assertIn('detail', response.json())
-
-
-    # def test_login_empty_fields(self):
-    #         response = self.client.post(reverse('token_obtain_pair'), {
-    #             'email': '',
-    #             'password': '',
-    #         }, content_type='application/json')
-    #         self.assertEqual(response.status_code, 400)
-    #         self.assertIn('email', response.json())
-    #         self.assertIn('password', response.json())
-
-
-    # def test_login_invalid_email(self):
-    #         response = self.client.post(reverse('token_obtain_pair'), {
-    #             'email': 'invalidEmail',
-    #             'password': 'ILOVEYOUBASIT2',
-    #         }, content_type='application/json')
-    #         self.assertEqual(response.status_code, 401)
-    #         self.assertIn('detail', response.json())
-
-
-    # def test_login_nonRegistered_user(self):
-    #         response = self.client.post(reverse('token_obtain_pair'), {
-    #             'email': 'userEmail@example.com',
-    #             'password': 'LoginPassword123',
-    #         }, content_type='application/json')
-    #         self.assertEqual(response.status_code, 401) # 200 previous
-    #         self.assertIn('detail', response.json())
+###################CREATE PLACEMENT#########################
 
     def test_create_placement(self):
             cv_file = SimpleUploadedFile("cv.pdf", b"Fake CV Content", content_type="application/pdf")
@@ -260,3 +173,117 @@ class AuthenticationTests(TestCase):
                 msg=f"Expected error containing '{expected_message}' for field: {field}, got: {errors[field]}"
             )
 
+#########################UPDATE PLACEMENT###############################
+
+    def test_update_placement_status_rejected(self):
+        #Create a placement to test
+        cv_file = SimpleUploadedFile("cv.pdf", b"Fake CV Content", content_type="application/pdf")
+        coverLetter_file = SimpleUploadedFile("coverLetter.pdf", b"Fake CV Content", content_type="application/pdf")
+
+        create_response = self.client.post('/api/placements/', {
+            'company': 'Netflix',
+            'role': 'Intern',
+            'salary': '30000',
+            'starting_date': '2025-09-10',
+            'duration': '6',
+            'next_stage_deadline': '2025-06-01',
+            'placement_link': 'https://netflix.com/careers',
+            'date_applied': '2025-04-01',
+            'status': 'applied',
+            'contact': '01234567890',
+            'cv': cv_file,
+            'cover_letter': coverLetter_file,
+            'description': ''
+        }, **self.auth_headers)
+
+        self.assertEqual(create_response.status_code, 201)
+        placement_id = create_response.json()['id']
+
+        # Update status
+        update_response = self.client.patch(
+            f'/api/placements/update/{placement_id}/',
+            data=json.dumps({'status': 'rejected'}),
+            content_type='application/json',
+            **self.auth_headers
+        )
+
+        self.assertEqual(update_response.status_code, 200)
+        self.assertEqual(update_response.json()['status'], 'rejected')
+
+    def test_update_placement_status_accepted(self):
+        #Create a placement to test
+        cv_file = SimpleUploadedFile("cv.pdf", b"Fake CV Content", content_type="application/pdf")
+        coverLetter_file = SimpleUploadedFile("coverLetter.pdf", b"Fake CV Content", content_type="application/pdf")
+
+        create_response = self.client.post('/api/placements/', {
+            'company': 'Netflix',
+            'role': 'Intern',
+            'salary': '30000',
+            'starting_date': '2025-09-10',
+            'duration': '6',
+            'next_stage_deadline': '2025-06-01',
+            'placement_link': 'https://netflix.com/careers',
+            'date_applied': '2025-04-01',
+            'status': 'applied',
+            'contact': '01234567890',
+            'cv': cv_file,
+            'cover_letter': coverLetter_file,
+            'description': ''
+        }, **self.auth_headers)
+
+        self.assertEqual(create_response.status_code, 201)
+        placement_id = create_response.json()['id']
+
+        # Update status
+        update_response = self.client.patch(
+            f'/api/placements/update/{placement_id}/',
+            data=json.dumps({'status': 'offer_made'}),
+            content_type='application/json',
+            **self.auth_headers
+        )
+
+        self.assertEqual(update_response.status_code, 200)
+        self.assertEqual(update_response.json()['status'], 'offer_made')
+
+#######################DELETE PLACEMENT###################################
+
+
+    def test_delete_placement(self):
+        # Create a placement to delete
+        cv_file = SimpleUploadedFile("cv.pdf", b"Fake CV Content", content_type="application/pdf")
+        coverLetter_file = SimpleUploadedFile("coverLetter.pdf", b"Fake CV Content", content_type="application/pdf")
+
+        create_response = self.client.post('/api/placements/', {
+            'company': 'Netflix',
+            'role': 'Intern',
+            'salary': '30000',
+            'starting_date': '2025-09-10',
+            'duration': '6',
+            'next_stage_deadline': '2025-06-01',
+            'placement_link': 'https://netflix.com/careers',
+            'date_applied': '2025-04-01',
+            'status': 'applied',
+            'contact': '01234567890',
+            'cv': cv_file,
+            'cover_letter': coverLetter_file,
+            'description': ''
+        }, **self.auth_headers)
+
+        self.assertEqual(create_response.status_code, 201)
+        placement_id = create_response.json()['id']
+
+        # Delete placement
+        delete_response = self.client.delete(
+            f'/api/placements/delete/{placement_id}/',
+            **self.auth_headers
+        )
+
+        self.assertEqual(delete_response.status_code, 204)
+
+        # Verify deletion
+        get_response = self.client.get(
+            f'/api/placements/{placement_id}/',
+            **self.auth_headers
+        )
+
+        self.assertEqual(get_response.status_code, 404)

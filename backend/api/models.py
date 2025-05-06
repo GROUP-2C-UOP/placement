@@ -33,6 +33,7 @@ class CustomUser(AbstractUser):
     """
     email = models.EmailField(unique=True)  #unique is flagged as true so that there arent duplicate usernames
     profile_picture = models.ImageField(upload_to="profiles/", null=True, blank=True) #profile pictures can be set later so they can be null and blank on creation. uploaded images will be stored within the profiles directory within the media directory
+    notification_enabled = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name'] 

@@ -26,13 +26,46 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()  # This retrieves the user model you are using (CustomUser or default User)
 
-class UserSerializers(serializers.ModelSerializer):
+from rest_framework import serializers
+from django.contrib.auth.models import User  # Use your custom user model if you're not using the default User
+
+class ProfilePictureSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User  # Use your CustomUser model if you're not using Django's default User
-        fields = ['email', 'password', 'first_name', 'last_name']
-        extra_kwargs = {
-            'password': {'write_only': True},  # Make sure password is not exposed in responses
-        }
+        model = User  # Use your actual User model
+        fields = ['profile_picture']
+
+from api.models import CustomUser
+
+class ProfilePictureSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser  # NOT User
+        fields = ['profile_picture']
+
+class UserSerializers(serializers.ModelSerializer):
+    profile_picture = serializers.ImageField(required=False)
+
+    class Meta:
+        model = CustomUser  # NOT User
+        fields = ['email', 'password', 'first_name', 'last_name', 'profile_picture']
+        extra_kwargs = {'password': {'write_only': True}}
+
+    def update(self, instance, validated_data):
+        profile_picture = validated_data.pop('profile_picture', None)
+        if profile_picture:
+            instance.profile_picture = profile_picture
+        return super().update(instance, validated_data)
+
+    def validate_first_name(self, value):
+        if not value.isalpha():
+            raise serializers.ValidationError("First name must contain only letters.")
+        return value
+
+    def validate_last_name(self, value):
+        if value and not value.replace(" ", "").isalpha():  # Allows multi-part names like "De La Cruz"
+            raise serializers.ValidationError("Last name must contain only letters and spaces.")
+        return value
+
+
 
     # Custom validation for the email field
     def validate_email(self, value):
