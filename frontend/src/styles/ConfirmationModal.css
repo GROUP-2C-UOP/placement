@@ -20,7 +20,7 @@
 
 #m-container {
   width: fit-content;
-  height: 15vh;
+  height: fit-content;
   background-color: white;
   display: flex;
   flex-direction: column;

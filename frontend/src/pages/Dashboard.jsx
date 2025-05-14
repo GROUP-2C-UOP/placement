@@ -58,7 +58,7 @@ function Dashboard() {
             ) =>
               new Date(a.next_stage_deadline) - new Date(b.next_stage_deadline) // used to sort, if the result is negative a is put before b and if positive vice versa
           )
-          .slice(0, 4); //take the top 5 ones
+          .slice(0, 3); //take the top 3 ones
         console.log(sortedPlacements);
         setPlacements(sortedPlacements);
       })
