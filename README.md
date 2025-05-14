@@ -16,16 +16,15 @@ Before you begin, you need to have:
 
 ### Backend
 1. Clone the repository
-2. Navigate to backend and start a virtual environment ----> `python -m venv venv` & `cd backend`
-3. Activate the virtual environment ----> `.\venv\Scripts\activate`
-4. Install requirements.txt ----> `pip install -r requirements.txt`
-5. Set up the database ----> `python manage.py makemigrations` & `python manage.py migrate`
-6. Start the backend server ----> `python manage.py runserver`
-7. Create .env-backend file within the main backend folder ----> Where requirements.txt is
-8. Add the line ----> `EMAIL_HOST_USER="your-email"` With your email
-9. Add the line ----> `EMAIL_HOST_PASSWORD="app-password"` DO NOT USE YOUR REAL GMAIL PASSWORD: Enable Gmail 2FA, within settings search up App Passwords. Create a new app and use the generated 16 character string as the password.
-10. Add the line ----> `SECRET_KEY=your-generated-secret-key`
-11. To generate a secret key use this script:
+2. Navigate to backend and start a virtual environment ----> `python -m venv venv` & `.\venv\Scripts\activate` & `cd backend`
+3. Install requirements.txt ----> `pip install -r requirements.txt`
+4. Set up the database ----> `python manage.py makemigrations` & `python manage.py migrate`
+5. Start the backend server ----> `python manage.py runserver`
+6. Create .env-backend file within the main backend folder ----> Where requirements.txt is
+7. Add the line ----> `EMAIL_HOST_USER="your-email"` With your email
+8. Add the line ----> `EMAIL_HOST_PASSWORD="app-password"` DO NOT USE YOUR REAL GMAIL PASSWORD: Enable Gmail 2FA, within settings search up App Passwords. Create a new app and use the generated 16 character string as the password.
+9. Add the line ----> `SECRET_KEY=your-generated-secret-key`
+10. To generate a secret key use this script:
 `import secrets
 print(secrets.token_urlsafe(50))`
  
